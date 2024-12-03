@@ -4,13 +4,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>TripPlanner - 회원정보수정</title>
+<title>TripPlanner</title>
 </head>
 <body>
 	<%
 		Member member = (Member)session.getAttribute("user");
 	%>
-
+	<a href="${pageContext.request.contextPath}">Home</a>
 	<form method="POST" action="updateMember">
 	    <input type="text" name="id" value="<%= member.getId()%>" placeholder="아이디" readonly>
 	    <br>

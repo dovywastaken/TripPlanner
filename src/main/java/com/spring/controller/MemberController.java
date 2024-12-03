@@ -1,5 +1,7 @@
 package com.spring.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,16 +10,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.spring.domain.Member;
 import com.spring.repository.MemberRepository;
+import com.spring.service.MemberService;
 
 
 @Controller
 public class MemberController 
 {
 	@Autowired
-	private MemberRepository memberRepository;
+	private MemberService memberService;
 	
 	@GetMapping("/") //메인페이지로
 	public String mainPage(HttpSession session, Model model) 
@@ -35,7 +40,7 @@ public class MemberController
 	}
 	
 //=====================================================================================================================================================
-	
+
 	@GetMapping("/signUp") //회원가입 페이지로 포워드시키기
 	public String toSignUp()
 	{
@@ -47,19 +52,19 @@ public class MemberController
 	}
 	
 	@PostMapping("/signUp") //회원가입 받고 메인페이지로 리다렉션 시키기
-	public String fromSignUp(@ModelAttribute Member member, Model model) 
+	public String fromSignUp(@ModelAttribute Member member) 
 	{
 		System.out.println("================================================================");
 		System.out.println("[MemberController: singUp(POST)으로 매핑되어 컨트롤러로 들어왔습니다]");
 		System.out.println("회원가입 요청 데이터: " + member);
-	    memberRepository.createMember(member); // DB에 회원 저장
+		memberService.createMember(member); // DB에 회원 저장
 	    System.out.println("메인페이지로 리다렉션 합니다"); // 성공 시 리다이렉션
 	    
-	    return "redirect:/";
+	    return "signUpSuccess";
 	}
 	
 //=====================================================================================================================================================
-	
+
 	@GetMapping("/signIn") //로그인 페이지로
 	public String toLoginPage() 
 	{
@@ -76,7 +81,7 @@ public class MemberController
 	{
 		System.out.println("================================================================");
 		System.out.println("[MemberController: signIn(POST)으로 매핑되어 컨트롤러로 들어왔습니다]");
-	    Member loginMb = memberRepository.findById(member.getId());
+	    Member loginMb = memberService.findById(member.getId());
 	    System.out.println("로그인한 아이디 " + loginMb);
 	    if (loginMb != null && loginMb.getPw().equals(member.getPw()))  //로그인 정보가 db에 있는 정보와 일치하다면
 	    {
@@ -124,13 +129,13 @@ public class MemberController
 		System.out.println("================================================================");
 		System.out.println("[MemberController: updateMember(POST)으로 매핑되어 컨트롤러로 들어왔습니다]");
 		Member updatemb = (Member) session.getAttribute("user"); //세션에서 로그인한 멤버dto 가져오기
-		memberRepository.updateMember(member); //비밀번호, 지역, 전화번호 업데이트
+		memberService.updateMember(member); //비밀번호, 지역, 전화번호 업데이트
 		
 		System.out.println("정보 업데이트를 하고 메인 페이지로 리다렉션");
 		return "redirect:/";
 	}
 	
-	//=====================================================================================================================================================
+//=====================================================================================================================================================
 	
 	@GetMapping("/deleteMember")
 	public String toDeleteMember() 
@@ -150,12 +155,38 @@ public class MemberController
 		
 		member = (Member)session.getAttribute("user");
 		
-		memberRepository.deleteMember(member);
+		memberService.deleteMember(member);
 		session.invalidate();
 		System.out.println("멤버 삭제를 하고 메인 페이지로 리다렉션");
 		
 		return "deleteUserSuccess";
 	}
+//=====================================================================================================================================================
+	
+	@GetMapping("/admin")
+	public String toAdminPage(Model model) 
+	{
+		System.out.println("================================================================");
+		System.out.println("[MemberController: admin(GET)으로 매핑되어 컨트롤러로 들어왔습니다]");
+		List<Member> memberList = memberService.readAllMember();
+		
+		model.addAttribute("memberList",memberList);
+		
+		System.out.println("admin.jsp로 이동합니다");
+		
+		return "admin";
+	}
 	
 	
+
+	@GetMapping("/admin/sorted")
+	@ResponseBody // JSON으로 응답
+	public List<Member> getSortedMembers(@RequestParam String sortBy) {
+	    System.out.println("================================================================");
+	    System.out.println("[MemberController: admin/sorted(GET)으로 매핑되어 컨트롤러로 들어왔습니다]");
+	    System.out.println("정렬 기준: " + sortBy);
+
+	    return memberService.readAllMemberSorted(sortBy);
+	}
+
 }

@@ -1,5 +1,7 @@
 package com.spring.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,4 +37,19 @@ public class MemberServiceImpl implements MemberService
 	{
 		memberRepository.deleteMember(member);
 	}
+
+	@Override
+	public List<Member> readAllMember() 
+	{
+		return memberRepository.readAllMember();
+	}
+
+	@Override
+	public List<Member> readAllMemberSorted(String sortBy) 
+	{
+		
+		return memberRepository.readAllMemberSorted(sortBy);
+	}
+
+	
 }

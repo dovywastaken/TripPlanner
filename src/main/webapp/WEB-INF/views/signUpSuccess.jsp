@@ -3,18 +3,18 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>회원가입 성공</title>
+<title>TripPlanner</title>
 </head>
 <body>
     <h1>회원가입 성공</h1>
-    <p>아이디: ${id}</p>
-    <p>비밀번호 : ${pw}</p>
-    <p>이름: ${name}</p>
-    <p>지역: ${region}</p>
-    <p>성별 : ${sex}</p>
-    <p>전화번호 : ${phone1} - ${phone2} - ${phone3}</p>
-    <p>생년월일 : ${birthday}</p>
+    <p>아이디: ${member.getId()}</p>
+    <p>비밀번호 : ${member.getPw()}</p>
+    <p>이름: ${member.getName()}</p>
+    <p>지역: ${member.getRegion()}</p>
+    <p>성별 : ${member.getSex()}</p>
+    <p>전화번호 : ${member.getPhone1()} - ${member.getPhone2()} - ${member.getPhone3()}</p>
+    <p>생년월일 : ${member.getBirthday()}</p>
     <p>
-    <a href="/TripPlanner">메인 페이지로 돌아가기</a>
+    <a href="${pageContext.request.contextPath}">Home</a>
 </body>
 </html>

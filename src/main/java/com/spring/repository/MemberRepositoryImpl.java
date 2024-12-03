@@ -1,5 +1,7 @@
 package com.spring.repository;
 
+import java.util.List;
+
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,30 +24,21 @@ public class MemberRepositoryImpl implements MemberRepository {
     {
         String sql = "INSERT INTO t_member (id, name, pw, region, sex, phone1, phone2, phone3, birthday) " +
                      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        template.update(sql, 
-                        member.getId(), member.getName(), member.getPw(), member.getRegion(),
-                        member.getSex(), member.getPhone1(), member.getPhone2(), member.getPhone3(),
-                        member.getBirthday());
+        	template.update(sql, 
+                    member.getId(), member.getName(), member.getPw(), member.getRegion(),
+                    member.getSex(), member.getPhone1(), member.getPhone2(), member.getPhone3(),
+                    member.getBirthday());
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public Member findById(String id) {
         String sql = "SELECT * FROM t_member WHERE id = ?";
         try {
-            return template.queryForObject(sql, new Object[]{id}, (rs, rowNum) -> {
-                Member member = new Member();
-                member.setId(rs.getString("id"));
-                member.setPw(rs.getString("pw"));
-                member.setName(rs.getString("name"));
-                member.setRegion(rs.getString("region"));
-                member.setSex(rs.getString("sex"));
-                member.setPhone1(rs.getString("phone1"));
-                member.setPhone2(rs.getString("phone2"));
-                member.setPhone3(rs.getString("phone3"));
-                member.setBirthday(rs.getString("birthday"));
-                return member;
-            });
+        	System.out.println("findById 함수 실행");
+            return template.queryForObject(sql, new Object[]{id}, new MemberMapper());
         } catch (Exception e) {
+        	System.out.println("에러 발생");
             return null; // 예외가 발생하면 null 반환 (회원이 없거나 오류 발생)
         }
     }
@@ -65,6 +58,23 @@ public class MemberRepositoryImpl implements MemberRepository {
 		String sql = "delete from t_member where id = ?";
 		template.update(sql, member.getId());
 	}
+
+	@Override
+	public List<Member> readAllMember() 
+	{
+		String sql = "select * from t_member";
+		List<Member> listOfBooks = template.query(sql, new MemberMapper());
+		System.out.println(listOfBooks.size());
+		
+		return listOfBooks;
+	}
     
-    
+	@Override
+	public List<Member> readAllMemberSorted(String sortBy) {
+	    String sql = "SELECT * FROM t_member ORDER BY " + sortBy;
+	    
+	    return template.query(sql, new MemberMapper());
+	}
+
+
 }

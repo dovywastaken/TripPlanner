@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Trip Planner</title>
+<title>TripPlanner</title>
 </head>
 <body>
 	<h1>그동안 함께 해주셔서 감사합니다</h1>

@@ -4,10 +4,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>TripPlanner - 회원정보수정</title>
+<title>TripPlanner</title>
 </head>
 <body>
-	<h1>정말로 삭제하시겠습니까?!?!?!?!?</h1>
+	<h1>정말로 삭제하시겠습니까?!?!?!?!?</h1><a href="${pageContext.request.contextPath}">Home</a>
 	<%
 		Member member = (Member)session.getAttribute("user");
 	%>

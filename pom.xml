@@ -18,15 +18,17 @@
   
   <name>TripPlanner</name>
   <url>http://maven.apache.org</url>
-  
+
   <dependencies>
+    <!--
     <dependency>
       <groupId>jakarta.servlet</groupId>
       <artifactId>jakarta.servlet-api</artifactId>
       <version>5.0.0</version>
       <scope>provided</scope>
     </dependency>
-
+	-->
+	
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>jstl</artifactId>
