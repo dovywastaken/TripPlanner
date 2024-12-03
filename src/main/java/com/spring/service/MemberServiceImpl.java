@@ -23,6 +23,16 @@ public class MemberServiceImpl implements MemberService
 	{
 		return memberRepository.findById(id);
 	}
-	
-	
+
+	@Override
+	public void updateMember(Member member) 
+	{
+		memberRepository.updateMember(member);
+	}
+
+	@Override
+	public void deleteMember(Member member) 
+	{
+		memberRepository.deleteMember(member);
+	}
 }

@@ -49,6 +49,22 @@ public class MemberRepositoryImpl implements MemberRepository {
             return null; // 예외가 발생하면 null 반환 (회원이 없거나 오류 발생)
         }
     }
+
+	
+    @Override
+	public void updateMember(Member member) 
+	{
+		String sql = "update t_member set pw = ?, region = ?, phone1 = ?, phone2 = ?, phone3 = ? where id = ?";
+		template.update(sql, member.getPw(), member.getRegion(),member.getPhone1(), member.getPhone2(), member.getPhone3(), member.getId());
+	}
+
+	
+    @Override
+	public void deleteMember(Member member) 
+	{
+		String sql = "delete from t_member where id = ?";
+		template.update(sql, member.getId());
+	}
     
     
 }
