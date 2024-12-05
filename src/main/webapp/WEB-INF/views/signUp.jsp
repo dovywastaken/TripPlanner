@@ -20,6 +20,42 @@
 	    <input type="password" name="pw" placeholder="비밀번호" required>
 	    <br>
 	    
+	    <label>Email : </label>
+		<input type="text" name="email" placeholder="이메일" required>
+		@
+		<input type="text" name="domain" id="domainInput" placeholder="sample.com" readonly>
+		<select name="emailSelect" id="emailSelect" required onchange="updateDomainInput(this)">
+		    <option value="custom">직접입력</option>
+		    <option value="naver.com">naver.com</option>
+		    <option value="gmail.com">gmail.com</option>
+		    <option value="hanmail.net">hanmail.net</option>
+		    <option value="daum.net">daum.net</option>
+		    <option value="icloud.com">icloud.com</option>
+		</select>
+		<br>
+		
+		<script>
+		document.addEventListener('DOMContentLoaded', function() {
+		    // 페이지가 로드되자마자 '직접입력'을 선택
+		    const emailSelect = document.getElementById("emailSelect");
+		    emailSelect.value = "custom";
+		    updateDomainInput(emailSelect);
+		});
+		
+		function updateDomainInput(selectElement) {
+		    const domainInput = document.getElementById("domainInput");
+		    if (selectElement.value === "custom") {
+		        domainInput.readOnly = false; // 직접입력 가능
+		        domainInput.value = ""; // 입력창 초기화
+		        domainInput.placeholder = "직접 입력";
+		    } else {
+		        domainInput.readOnly = true; // 입력 불가
+		        domainInput.value = selectElement.value; // 선택한 값 입력
+		        domainInput.placeholder = "sample.com"; // 기본 placeholder 복원
+		    }
+		}
+		</script>
+		
 	    <label for="region">지역 : </label>
 			<select name="region" id="region" required>
 			    <option value="" disabled selected>지역 선택</option>
@@ -63,6 +99,7 @@
 	    <input type="submit" value="회원가입">
 	</form>
 
+	
 
 </body>
 </html>

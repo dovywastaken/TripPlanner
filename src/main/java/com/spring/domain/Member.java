@@ -11,22 +11,7 @@ public class Member
 	private String phone2;   // 전화번호 중간부분
 	private String phone3;   // 전화번호 뒷부분
 	private String birthday; // 생년월일
-	
-	
-	@Override
-	public String toString() {
-	    return "Member{" +
-	           "name='" + name + '\'' +
-	           ", id='" + id + '\'' +
-	           ", pw='" + pw + '\'' +
-	           ", region='" + region + '\'' +
-	           ", sex='" + sex + '\'' +
-	           ", phone1='" + phone1 + '\'' +
-	           ", phone2='" + phone2 + '\'' +
-	           ", phone3='" + phone3 + '\'' +
-	           ", birthday='" + birthday + '\'' +
-	           '}';
-	}
+	private String email;
 	
 	public String getName() {
 		return name;
@@ -81,5 +66,13 @@ public class Member
 	}
 	public void setBirthday(String birthday) {
 		this.birthday = birthday;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 }

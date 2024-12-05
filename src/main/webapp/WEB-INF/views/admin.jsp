@@ -3,7 +3,7 @@
 <%@ page import="com.spring.domain.Member" %>
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <title>회원 목록</title>
@@ -30,11 +30,12 @@
     <table border="1" cellspacing="0" cellpadding="5" id="member">
         <thead>
             <tr>
-                <th onclick="sortTable(0)" style="cursor: pointer;">ID &darr;</th>
-                <th onclick="sortTable(1)" style="cursor: pointer;">이름 &darr;</th>
-                <th onclick="sortTable(2)" style="cursor: pointer;">지역 &darr;</th>
-                <th onclick="sortTable(3)" style="cursor: pointer;">성별 &darr;</th>
-                <th onclick="sortTable(4)" style="cursor: pointer;">생년월일 &darr;</th>
+            	<th onclick="sortTable(1)" style="cursor: pointer;">이름 &darr;</th>
+                <th onclick="sortTable(2)" style="cursor: pointer;">ID &darr;</th>
+                <th onclick="sortTable(3)" style="cursor: pointer;">Email &darr;</th>
+                <th onclick="sortTable(4)" style="cursor: pointer;">지역 &darr;</th>
+                <th onclick="sortTable(5)" style="cursor: pointer;">성별 &darr;</th>
+                <th onclick="sortTable(6)" style="cursor: pointer;">생년월일 &darr;</th>
                 <th>전화번호</th>
             </tr>
         </thead>
@@ -45,8 +46,9 @@
                     for (Member member : memberList) {
             %>
                 <tr>
+                	<td data-column="name"><%= member.getName() %></td>
                     <td data-column="id"><%= member.getId() %></td>
-                    <td data-column="name"><%= member.getName() %></td>
+                    <td data-column="email"><%= member.getEmail() %></td>
                     <td data-column="region"><%= member.getRegion() %></td>
                     <td data-column="sex"><%= member.getSex() %></td>
                     <td data-column="birthday"><%= member.getBirthday() %></td>

@@ -49,13 +49,4 @@ public class MemberServiceImpl implements MemberService
 	{
 	    return memberRepository.searchMember(name);
 	}
-
-	@Override
-	public List<Member> getAllMembersSorted() 
-	{
-		return memberRepository.getAllMembersSorted();
-	}
-
-	
-	
 }

@@ -11,27 +11,35 @@ import org.springframework.stereotype.Repository;
 import com.spring.domain.Member;
 
 @Repository
-public class MemberRepositoryImpl implements MemberRepository {
+public class MemberRepositoryImpl implements MemberRepository 
+{
     private JdbcTemplate template;
 
     @Autowired
-    public void setJdbcTemplate(DataSource dataSource) {
+    public void setJdbcTemplate(DataSource dataSource) 
+    {
         this.template = new JdbcTemplate(dataSource);
     }
 
+    //Create
+    
     @Override
-    public void createMember(Member member) {
-        String sql = "INSERT INTO t_member (id, name, pw, region, sex, phone1, phone2, phone3, birthday) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    public void createMember(Member member) 
+    {
+        String sql = "INSERT INTO t_member (name, id, pw, email, region, sex, phone1, phone2, phone3, birthday) " +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         template.update(sql, 
-                    member.getId(), member.getName(), member.getPw(), member.getRegion(),
-                    member.getSex(), member.getPhone1(), member.getPhone2(), member.getPhone3(),
-                    member.getBirthday());
+        			member.getName(), member.getId(), member.getPw(), member.getEmail(),
+        			member.getRegion(), member.getSex(), 
+                    member.getPhone1(), member.getPhone2(), member.getPhone3(), member.getBirthday());
     }
 
+    //Read
+    
     @SuppressWarnings("deprecation")
     @Override
-    public Member findById(String id) {
+    public Member findById(String id) 
+    {
         String sql = "SELECT * FROM t_member WHERE id = ?";
         try {
             return template.queryForObject(sql, new Object[]{id}, new MemberMapper());
@@ -39,40 +47,37 @@ public class MemberRepositoryImpl implements MemberRepository {
             return null; // 예외가 발생하면 null 반환
         }
     }
-
+    
     @Override
-    public void updateMember(Member member) {
-        String sql = "UPDATE t_member SET pw = ?, region = ?, phone1 = ?, phone2 = ?, phone3 = ? WHERE id = ?";
-        template.update(sql, member.getPw(), member.getRegion(), member.getPhone1(), member.getPhone2(), member.getPhone3(), member.getId());
-    }
-
-    @Override
-    public void deleteMember(Member member) {
-        String sql = "DELETE FROM t_member WHERE id = ?";
-        template.update(sql, member.getId());
-    }
-
-    @Override
-    public List<Member> readAllMember() {
+    public List<Member> readAllMember() 
+    {
         String sql = "SELECT * FROM t_member order by name";
         return template.query(sql, new MemberMapper());
     }
 
     @Override
-    public List<Member> searchMember(String name) {
-        String sql = "SELECT * FROM t_member WHERE name LIKE ?";
+    public List<Member> searchMember(String name) 
+    {
+        String sql = "SELECT * FROM t_member WHERE name LIKE ? order by name";
         String searchName = "%" + name + "%";
         return template.query(sql, new Object[]{searchName}, new MemberMapper());
     }
 
+    //Update
+    
     @Override
-    public List<Member> getAllMembersSorted() {
-        String sql = "SELECT * FROM t_member ORDER BY name";  // 예: 이름 기준 정렬
-        return template.query(sql, new MemberMapper());
+    public void updateMember(Member member) 
+    {
+        String sql = "UPDATE t_member SET pw = ?, region = ?, phone1 = ?, phone2 = ?, phone3 = ? WHERE id = ?";
+        template.update(sql, member.getPw(), member.getRegion(), member.getPhone1(), member.getPhone2(), member.getPhone3(), member.getId());
     }
 
-
+    //Delete
     
-    
-    
+    @Override
+    public void deleteMember(Member member) 
+    {
+        String sql = "DELETE FROM t_member WHERE id = ?";
+        template.update(sql, member.getId());
+    }
 }

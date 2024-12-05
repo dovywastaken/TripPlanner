@@ -12,5 +12,4 @@ public interface MemberRepository
 	void updateMember(Member member);
 	void deleteMember(Member member);
 	List<Member> searchMember(String name);
-	List<Member> getAllMembersSorted();
 }

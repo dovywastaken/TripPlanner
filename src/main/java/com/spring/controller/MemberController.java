@@ -113,18 +113,11 @@ public class MemberController {
     //===================================================================================================================
 
     @GetMapping("/admin")
-    public String toAdminPage(Model model, @RequestParam(value = "sorted", defaultValue = "true") boolean sorted) {
+    public String toAdminPage(Model model) {
         List<Member> memberList;
-
-        if (sorted) {
-            // 정렬된 회원 목록 가져오기
-            memberList = memberService.getAllMembersSorted();
-        } else {
-            // 정렬되지 않은 전체 회원 목록 가져오기
-            memberList = memberService.readAllMember();
-        }
-
+        memberList = memberService.readAllMember();
         model.addAttribute("memberList", memberList);
+        
         return "admin";  // admin.jsp 페이지로 이동
     }
 
@@ -136,7 +129,7 @@ public class MemberController {
 
         // 검색 결과가 없으면 전체 멤버 리스트 반환
         if (searchResults.isEmpty()) {
-            return memberService.getAllMembersSorted();  // 전체 회원 목록을 반환
+            return memberService.readAllMember();  // 전체 회원 목록을 반환
         }
 
         return searchResults;
