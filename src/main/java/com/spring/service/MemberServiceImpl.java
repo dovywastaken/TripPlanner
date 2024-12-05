@@ -43,13 +43,19 @@ public class MemberServiceImpl implements MemberService
 	{
 		return memberRepository.readAllMember();
 	}
-
+	
 	@Override
-	public List<Member> readAllMemberSorted(String sortBy) 
+	public List<Member> searchMember(String name) 
 	{
-		
-		return memberRepository.readAllMemberSorted(sortBy);
+	    return memberRepository.searchMember(name);
 	}
 
+	@Override
+	public List<Member> getAllMembersSorted() 
+	{
+		return memberRepository.getAllMembersSorted();
+	}
+
+	
 	
 }
