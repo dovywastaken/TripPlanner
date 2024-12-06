@@ -7,6 +7,8 @@
 <title>TripPlanner</title>
 <script>var contextPath = '${pageContext.request.contextPath}';</script>
 <script src="${pageContext.request.contextPath}/resources/js/signUp.js"></script>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<link href="/TripPlanner/resources/css/signUp.css" rel="stylesheet">
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -81,17 +83,15 @@
         <a href="${pageContext.request.contextPath}">Home</a>
 
         <form:form modelAttribute="member" method="POST" action="${pageContext.request.contextPath}/members/signUp" id="signUp_form" onsubmit="combineEmail()">
-            <div class="form-group">
-                <label for="id">아이디 : </label>
-                <form:input path="id" id="id" placeholder="아이디" required="required"/>
-                <input type="button" id="confirmId" class="checkSome" value="중복체크">
-                <div id="message_id"></div>
-                <form:errors path="id" class="error-color"/>
-            </div>
-            
+            <div class="form-group"> <label for="id">아이디 : </label> 
+            <form:input path="id" id="id" placeholder="아이디" required="required" title="알파벳 소문자 1개 이상, 숫자 1개 이상을 포함한 최소 2자, 최대 15자"/>
+            <input type="button" id="confirmId" class="checkSome" value="중복체크"> 
+            <div id="message_id"></div> 
+            <form:errors path="id" class="error-color"/> </div>
+
             <div class="form-group">
                 <label for="name">이름 : </label>
-                <form:input path="name" id="name" placeholder="이름" required="required"/>
+                <form:input path="name" id="name" placeholder="이름" required="required" min="5"/>
             </div>
             
             <div class="form-group">
@@ -115,7 +115,7 @@
                     <option value="hanmail.net">hanmail.net</option>
                     <option value="daum.net">daum.net</option>
                     <option value="icloud.com">icloud.com</option>
-                </select>
+                </select>         
             </div>
             
             <form:input type="hidden" id="email" path="email"/>
@@ -154,9 +154,9 @@
             
             <div class="form-group">
                 <label for="phone1">전화번호 : </label>
-                <form:input path="phone1" id="phone1" placeholder="전화번호(앞자리)"/>
-                <form:input path="phone2" placeholder="전화번호(중간자리)"/>
-                <form:input path="phone3" placeholder="전화번호(끝자리)"/>
+                <form:input path="phone1" id="phone1" placeholder="전화번호"/>
+                <!-- <form:input path="phone2" placeholder="전화번호(중간자리)"/>-->
+                <!--<form:input path="phone3" placeholder="전화번호(끝자리)"/>-->
             </div>
             
             <div class="form-group">

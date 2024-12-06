@@ -1,5 +1,9 @@
 package com.spring.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Pattern;
+
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.spring.domain.Member;
 import com.spring.service.MemberService;
@@ -19,7 +25,7 @@ public class MemberController {
     @Autowired
     private MemberService memberService;
 
-    @GetMapping("/signUp")
+    @GetMapping("/signUp") //회원가입 창 이동
     public String toSignUp(Model model) {
         // 회원 가입 폼 페이지로 이동
         System.out.println("===========================================================================================");
@@ -28,17 +34,27 @@ public class MemberController {
         return "signUp";
     }
 
-    @PostMapping("/signUp")
+    @PostMapping("/signUp") //회원가입 폼전송
     public String fromSignUp(@ModelAttribute("member") Member member) {
         // 회원 가입 요청 처리
         System.out.println("===========================================================================================");
         System.out.println("MemberController : members/signUp(POST)으로 매핑");
+        String phone = member.getPhone1();
+        String[] phoneList = phone.split("-");
+        
+        for(int i=1; i<=phoneList.length; i++) 
+        {
+        	member.setPhone1(phoneList[0]);
+            member.setPhone2(phoneList[1]);
+            member.setPhone3(phoneList[2]);
+        }
+        
         memberService.createMember(member);
         System.out.println("메인페이지로 리다렉션");
         return "redirect:/";
     }
 
-    @GetMapping("/signIn")
+    @GetMapping("/signIn") //로그인 창 이동
     public String toLoginPage(Model model) {
         // 로그인 페이지로 이동
         System.out.println("===========================================================================================");
@@ -47,7 +63,7 @@ public class MemberController {
         return "signIn";
     }
 
-    @PostMapping("/signIn")
+    @PostMapping("/signIn") //로그인 폼 전송
     public String fromLoginPage(@ModelAttribute("member") Member member, HttpSession session, Model model) {
         System.out.println("===========================================================================================");
         System.out.println("MemberController : members/signIn(POST)으로 매핑되었습니다");
@@ -113,4 +129,22 @@ public class MemberController {
         System.out.println("deleteMemberSuccess.jsp로 이동합니다");
         return "deleteMemberSuccess";
     }
+    
+    
+    @GetMapping("/checkDuplicate")
+    @ResponseBody
+    public Map<String, Boolean> checkDuplicate(@RequestParam String field, @RequestParam String value) {
+        System.out.println("===========================================================================================");
+        System.out.println("MemberController : /members/checkDuplicate(GET)으로 매핑되었습니다");
+
+        boolean isAvailable = memberService.checkUp(field, value);
+
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("available", isAvailable);
+
+        return response; // JSON 반환
+    }
+
+
+    
 }

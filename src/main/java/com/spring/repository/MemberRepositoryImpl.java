@@ -111,4 +111,22 @@ public class MemberRepositoryImpl implements MemberRepository
         System.out.println("로그인한 사용자의 정보를 삭제합니다");
         System.out.println("[MemberRepository : deleteMember 메서드 종료]");
     }
+
+    //중복 검사
+    
+	@Override
+	public boolean checkUp(String field, String value) 
+	{
+		String sql = "select count(*) from t_member where " + field + " = ?";
+		int count = template.queryForObject(sql, Integer.class, value);
+		if(count == 0) {
+			return true;
+		}else 
+		{
+			return false;
+		}
+	}
+    
+    
+    
 }

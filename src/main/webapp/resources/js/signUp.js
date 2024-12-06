@@ -1,7 +1,13 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
     const emailSelect = document.getElementById("emailSelect");
     emailSelect.value = "custom";
     updateDomainInput(emailSelect);
+
+    const confirmIdButton = document.getElementById("confirmId");
+    confirmIdButton.addEventListener("click", function() {
+        const idField = document.getElementById("id");
+        checkDuplicate("id", idField.value);
+    });
 });
 
 function updateDomainInput(selectElement) {
@@ -31,14 +37,22 @@ function combineEmail(event) {
     }
 }
 
-$(function(){
-	let checkId = 0;
-	
-})
-
-$('#confirmId').click(function(){
-       if($('#id').val().trim()==''){
-           $('#message_id').css('color','#fba082').text('아이디를 입력하세요');
-           $('#id').val('').focus();
-           return;
-       }
+// 중복 체크 함수
+function checkDuplicate(field, value) {
+    $.ajax({
+        url: contextPath + '/members/checkDuplicate',
+        type: 'GET',
+        data: { field: field, value: value },
+        success: function(response) {
+            const messageElement = document.getElementById(`message_${field}`);
+            if (response.available) {
+                messageElement.innerHTML = `<span style="color:green;">사용 가능한 ${field}입니다.</span>`;
+            } else {
+                messageElement.innerHTML = `<span style="color:red;">이미 사용 중인 ${field}입니다.</span>`;
+            }
+        },
+        error: function() {
+            console.error(`${field} 중복 확인 중 오류 발생`);
+        }
+    });
+}

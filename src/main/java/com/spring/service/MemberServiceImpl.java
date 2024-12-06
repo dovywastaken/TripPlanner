@@ -49,4 +49,14 @@ public class MemberServiceImpl implements MemberService
 	{
 	    return memberRepository.searchMember(name);
 	}
+
+	
+	@Override
+	public boolean checkUp(String field, String value) 
+	{
+		if (!List.of("id", "password", "email", "phone").contains(field)) { // 허용된 필드만 확인 (SQL Injection 방지)
+            throw new IllegalArgumentException("Invalid field: " + field);
+        }
+        return memberRepository.checkUp(field, value);
+	}
 }
