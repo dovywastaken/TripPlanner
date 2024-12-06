@@ -24,16 +24,16 @@
         if (member != null) {
     %>
         <p>어서오세요, <%= member.getName() %>님!</p> <!-- 로그인된 사용자의 이름을 표시 -->
-        <a href="logout">로그아웃</a> <!-- 로그아웃 링크 --> |
-        <a href="updateMember">마이 페이지</a> 
-        <a href="admin"> | 회원 목록</a>
+        <a href="members/signOut">로그아웃</a> <!-- 로그아웃 링크 --> |
+        <a href="members/updateMember">마이 페이지</a> 
+        <a href="admin/dashboard"> | 회원 목록</a>
     <% 
         } else {
     %>
         <p>환영합니다! 로그인을 해주세요.</p>
-        <a href="signIn">로그인</a>
-        <a href="signUp">회원가입</a>
-        <a href="admin"> | 회원 목록</a>
+        <a href="members/signIn">로그인</a>
+        <a href="members/signUp">회원가입</a>
+        <a href="admin/dashboard"> | 회원 목록</a>
     <% 
         }
     %>

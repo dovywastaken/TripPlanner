@@ -7,9 +7,10 @@
 </head>
 <body>
     <h1>회원가입 성공</h1>
+    <p>이름: ${member.getName()}</p>
     <p>아이디: ${member.getId()}</p>
     <p>비밀번호 : ${member.getPw()}</p>
-    <p>이름: ${member.getName()}</p>
+    <p>이메일: ${member.getEmail()}</p>
     <p>지역: ${member.getRegion()}</p>
     <p>성별 : ${member.getSex()}</p>
     <p>전화번호 : ${member.getPhone1()} - ${member.getPhone2()} - ${member.getPhone3()}</p>
