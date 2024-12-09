@@ -84,30 +84,32 @@
 
         <form:form modelAttribute="member" method="POST" action="${pageContext.request.contextPath}/members/signUp" id="signUp_form" onsubmit="combineEmail()">
             <div class="form-group"> <label for="id">아이디 : </label> 
-            <form:input path="id" id="id" placeholder="아이디" required="required" title="알파벳 소문자 1개 이상, 숫자 1개 이상을 포함한 최소 2자, 최대 15자"/>
+            <form:input path="id" id="id" placeholder="아이디" required="required"/>
             <input type="button" id="confirmId" class="checkSome" value="중복체크"> 
             <div id="message_id"></div> 
             <form:errors path="id" class="error-color"/> </div>
 
             <div class="form-group">
                 <label for="name">이름 : </label>
-                <form:input path="name" id="name" placeholder="이름" required="required" min="5"/>
+                <form:input path="name" id="name" placeholder="이름" required="required"/>
             </div>
             
             <div class="form-group">
                 <label for="pw">비밀번호 : </label>
-                <form:input path="pw" id="pw" placeholder="비밀번호" required="required" type="password"/>
+                <form:input id="pw1" name="pw1" path="pw" placeholder="비밀번호" required="required" type="password"/>
+                <input type="hidden" id="memPassword" name="memPassword" value=""/>
             </div>
             
             <div class="form-group">
                 <label for="pwck">비밀번호 확인 : </label>
-                <form:input path="pw" id="pwck" placeholder="비밀번호 확인" required="required" type="password"/>
+                <input id="pw2" placeholder="비밀번호 확인" onchange = "passwordCheck()" required="required" type="password"/>
+                <div id="passMessage"></div>
             </div>
             
             <div class="form-group">
                 <label for="emailId">Email : </label>
-                <input type="text" id="emailId" placeholder="이메일" required="required"/>@
-                <input type="text" id="emailDomain" placeholder="sample.com" readonly="readonly"/>
+                <input type="text" id="emailId" name="emailId" placeholder="이메일" required="required"/>@
+                <input type="text" id="emailDomain" name="emailDomain" placeholder="sample.com" readonly="readonly"/>
                 <select id="emailSelect" required="required" onchange="updateDomainInput(this)">
                     <option value="custom">직접입력</option>
                     <option value="naver.com">naver.com</option>
@@ -155,8 +157,6 @@
             <div class="form-group">
                 <label for="phone1">전화번호 : </label>
                 <form:input path="phone1" id="phone1" placeholder="전화번호"/>
-                <!-- <form:input path="phone2" placeholder="전화번호(중간자리)"/>-->
-                <!--<form:input path="phone3" placeholder="전화번호(끝자리)"/>-->
             </div>
             
             <div class="form-group">
@@ -166,6 +166,7 @@
             
             <div class="form-group">
                 <input type="submit" class="submit-button" value="회원가입"/>
+                <div id="resultMessage"></div>
             </div>
         </form:form>
     </div>

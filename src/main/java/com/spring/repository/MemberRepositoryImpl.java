@@ -119,9 +119,11 @@ public class MemberRepositoryImpl implements MemberRepository
 	{
 		String sql = "select count(*) from t_member where " + field + " = ?";
 		int count = template.queryForObject(sql, Integer.class, value);
-		if(count == 0) {
+		if(count == 0) 
+		{
 			return true;
-		}else 
+		}
+		else 
 		{
 			return false;
 		}

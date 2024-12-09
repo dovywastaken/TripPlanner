@@ -75,4 +75,9 @@ public class Member
     public void setEmail(String email) {
         this.email = email;
     }
+    
+    public void setEmail(String email, String domain) 
+    {
+    	this.email = email + "@" + domain;
+    }
 }

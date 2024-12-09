@@ -2,7 +2,6 @@ package com.spring.controller;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,10 +34,13 @@ public class MemberController {
     }
 
     @PostMapping("/signUp") //회원가입 폼전송
-    public String fromSignUp(@ModelAttribute("member") Member member) {
+    public String fromSignUp(@ModelAttribute("member") Member member, @RequestParam String emailId, @RequestParam String emailDomain) {
         // 회원 가입 요청 처리
         System.out.println("===========================================================================================");
         System.out.println("MemberController : members/signUp(POST)으로 매핑");
+        member.setEmail(emailId, emailDomain);
+        
+        System.out.println("컨트롤러까지 결합된 이메일이 들어옴 "+member.getEmail());
         String phone = member.getPhone1();
         String[] phoneList = phone.split("-");
         
@@ -144,7 +146,4 @@ public class MemberController {
 
         return response; // JSON 반환
     }
-
-
-    
 }
