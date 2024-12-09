@@ -1,14 +1,18 @@
 document.addEventListener('DOMContentLoaded', initForm);
-document.addEventListener('DOMContentLoaded', initForm);
 var isDuplicateCheck = 0;
+
 
 function initForm() 
 {
     const emailSelect = document.getElementById("emailSelect");
     emailSelect.value = "custom";
     updateDomainInput(emailSelect); //이메일 직접 입력시 입력창 활성화 시켜주는 코드
-
+	
+	var submitButton = document.querySelector('#signUp_form input[type="submit"]');
+	submitButton.distabled = true;
+	
     const confirmIdButton = document.getElementById("confirmId"); //아이디 중복체크 이벤트 매핑
+	confirmIdButton.disabled = true;
     confirmIdButton.addEventListener("click", function() 
 		{
 	        const idField = document.getElementById("id");
@@ -17,15 +21,20 @@ function initForm()
 	);
 
     // 폼 제출 이벤트 리스너 추가
-    const signUpForm = document.getElementById("signUp_form");
-    signUpForm.addEventListener("submit", handleFormSubmit);
+	const signUpForm = document.getElementById("signUp_form");
+	    signUpForm.addEventListener("submit", function(event) {
+	        if (!combineEmail(event)) {
+	            event.preventDefault(); // 폼 제출 중단
+	        }
+	    });
+
 }
 
 function handleFormSubmit(event) 
 {
 	if(isDuplicateCheck === 0)
 	{
-		alert("아이디 중복 체크를 해주세요!");
+		//alert("아이디 중복 체크를 해주세요!");
 		event.preventDefault(); // 제출 방지
 	}
 }
@@ -44,27 +53,22 @@ function updateDomainInput(selectElement)
 	{
         domainInput.readOnly = true;
         domainInput.value = selectElement.value;
-        domainInput.placeholder = "sample.com";
     }
 }
 
 //이메일 아이디랑 도메인이랑 합쳐주는 함수
-function combineEmail(event) 
-{
+function combineEmail() {
     const emailId = document.getElementById("emailId").value.trim();
     const emailDomain = document.getElementById("emailDomain").value.trim();
     const emailField = document.getElementById("email");
 
-    if (emailId && emailDomain) 
-	{
-        //emailField.value = `${emailId}@${emailDomain}`;
-		emailField.value = emailId + "@" + emailDomain;
-        console.log("결합된 이메일:", emailField.value); // 로그로 결합 값 확인
-    } 
-	else 
-	{
-        alert("이메일을 정확히 입력하세요.");
-        event.preventDefault(); // 폼 전송 중단
+    if (emailId && emailDomain) {
+        emailField.value = emailId + "@" + emailDomain;
+        console.log("결합된 이메일:", emailField.value);
+        
+    } else {
+        //alert("이메일을 정확히 입력하세요.");
+        return false; // 폼 제출 중단
     }
 }
 
@@ -83,7 +87,6 @@ function passwordCheck()
 		
         return false;
 	}
-
     if (pw1 !== pw2) 
 	{
         passMessage.innerHTML = "비밀번호가 서로 일치하지 않습니다.";
@@ -93,10 +96,12 @@ function passwordCheck()
 		
         return false; // 폼 제출 방지
     } 
-	else 
+	if(pw1 == pw2)
 	{
         passMessage.innerHTML = "";
         document.getElementById("memPassword").value = pw1;
+		resultMessage.innerHTML = "";
+		
         return true; // 폼 제출 허용
     }
 }
@@ -112,16 +117,16 @@ function idCheck(field, value)
         data: { field: field, value: value},
         success: function(response) 
 		{
-	        var messageElement = document.getElementById('message_' + field); 
-	        var submitButton = document.querySelector('#signUp_form input[type="submit"]');
+			var messageElement = document.getElementById('message_' + field);
+			//var submitButton = document.querySelector('#signUp_form input[type="submit"]');
 			var resultMessage = document.getElementById("resultMessage");
-            
+			
             if (response.available) 
 			{
                 messageElement.innerHTML = '<span style="color:green;">사용 가능한 ' + field + '입니다.</span>';
 				resultMessage.innerHTML = '';
 				alert("사용 가능한 ID 입니다");
-                submitButton.disabled = false; // 제출 버튼 활성화
+                //submitButton.disabled = false; // 제출 버튼 활성화
 				isDuplicateCheck = 1;
 				
 				return true;
@@ -132,7 +137,7 @@ function idCheck(field, value)
 				resultMessage.innerHTML = field + '아이디 입력란을 다시 확인해주세요!';
 				resultMessage.style.color = "red";
 				alert("이미 사용 중인 ID 입니다");
-                submitButton.disabled = true; // 제출 버튼 비활성화
+                //submitButton.disabled = true; // 제출 버튼 비활성화
 				
 				return false;
             }

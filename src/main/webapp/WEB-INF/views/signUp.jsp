@@ -7,8 +7,9 @@
 <title>TripPlanner</title>
 <script>var contextPath = '${pageContext.request.contextPath}';</script>
 <script src="${pageContext.request.contextPath}/resources/js/signUp.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/validator.js"></script>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-<link href="/TripPlanner/resources/css/signUp.css" rel="stylesheet">
+<!--  <link href="/TripPlanner/resources/css/signUp.css" rel="stylesheet">-->
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -84,32 +85,33 @@
 
         <form:form modelAttribute="member" method="POST" action="${pageContext.request.contextPath}/members/signUp" id="signUp_form" onsubmit="combineEmail()">
             <div class="form-group"> <label for="id">아이디 : </label> 
-            <form:input path="id" id="id" placeholder="아이디" required="required"/>
+            <form:input path="id" id="id" placeholder="아이디" onchange="IDValidator()" />
             <input type="button" id="confirmId" class="checkSome" value="중복체크"> 
             <div id="message_id"></div> 
             <form:errors path="id" class="error-color"/> </div>
 
             <div class="form-group">
                 <label for="name">이름 : </label>
-                <form:input path="name" id="name" placeholder="이름" required="required"/>
+                <form:input path="name" id="name" onchange="NameValidator()" placeholder="이름"/>
+                <div id="message_name"></div> 
             </div>
             
             <div class="form-group">
                 <label for="pw">비밀번호 : </label>
-                <form:input id="pw1" name="pw1" path="pw" placeholder="비밀번호" required="required" type="password"/>
+                <form:input id="pw1" name="pw1" path="pw" placeholder="비밀번호"  type="password"/>
                 <input type="hidden" id="memPassword" name="memPassword" value=""/>
             </div>
             
             <div class="form-group">
                 <label for="pwck">비밀번호 확인 : </label>
-                <input id="pw2" placeholder="비밀번호 확인" onchange = "passwordCheck()" required="required" type="password"/>
+                <input id="pw2" placeholder="비밀번호 확인" onchange = "passwordCheck()"  type="password"/>
                 <div id="passMessage"></div>
             </div>
             
             <div class="form-group">
                 <label for="emailId">Email : </label>
-                <input type="text" id="emailId" name="emailId" placeholder="이메일" required="required"/>@
-                <input type="text" id="emailDomain" name="emailDomain" placeholder="sample.com" readonly="readonly"/>
+                <input type="text" id="emailId" name="emailId" placeholder="이메일" />@
+                <input type="text" id="emailDomain" name="emailDomain"  placeholder="sample.com" readonly="readonly"/>
                 <select id="emailSelect" required="required" onchange="updateDomainInput(this)">
                     <option value="custom">직접입력</option>
                     <option value="naver.com">naver.com</option>
@@ -118,13 +120,14 @@
                     <option value="daum.net">daum.net</option>
                     <option value="icloud.com">icloud.com</option>
                 </select>         
+                <div id="message_email"></div> 
             </div>
             
             <form:input type="hidden" id="email" path="email"/>
 
             <div class="form-group">
                 <label for="region">지역 : </label>
-                <form:select path="region" id="region" required="required">
+                <form:select path="region" id="region">
                     <form:option value="" label="지역 선택"/>
                     <form:option value="서울" label="서울"/>
                     <form:option value="부산" label="부산"/>
@@ -149,23 +152,25 @@
             <div class="form-group">
                 <label>성별 : </label>
                 <label class="gender-label" for="male">남</label>
-                <form:radiobutton path="sex" value="남" id="male" required="required" class="gender-input"/>
+                <form:radiobutton path="sex" value="남" id="male" class="gender-input"/>
                 <label class="gender-label" for="female">여</label>
-                <form:radiobutton path="sex" value="여" id="female" required="required" class="gender-input"/>
+                <form:radiobutton path="sex" value="여" id="female" class="gender-input"/>
             </div>
             
             <div class="form-group">
                 <label for="phone1">전화번호 : </label>
                 <form:input path="phone1" id="phone1" placeholder="전화번호"/>
+                <div id="message_phone"></div> 
             </div>
             
             <div class="form-group">
                 <label for="birthday">생년월일 : </label>
                 <form:input path="birthday" id="birthday" placeholder="생년월일" type="date"/>
+                <div id="message_birthday"></div> 
             </div>
             
             <div class="form-group">
-                <input type="submit" class="submit-button" value="회원가입"/>
+                <input type="submit" class="submit-button" onclick="checkFormValidity()"  value="회원가입"/>
                 <div id="resultMessage"></div>
             </div>
         </form:form>
