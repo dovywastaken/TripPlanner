@@ -45,7 +45,7 @@ public class MemberRepositoryImpl implements MemberRepository
     
     @SuppressWarnings("deprecation")
     @Override
-    public Member findById(String id) 
+    public Member findById(String id)  //로그인 시 사용
     {
     	System.out.println("+++++++++++++++++++++++++++++++++++++++");
     	System.out.println("[MemberRepository : findById 메서드 호출]");
@@ -61,33 +61,49 @@ public class MemberRepositoryImpl implements MemberRepository
     }
     
     @Override
-    public List<Member> readAllMember() 
-    {
-    	System.out.println("+++++++++++++++++++++++++++++++++++++++");
-    	System.out.println("[MemberRepository : readAllMember 메서드 호출]");
-        String sql = "SELECT * FROM t_member order by name";
-        
-        System.out.println("모든 Member를 dto 가져옵니다");
-        System.out.println("[MemberRepository : readAllMember 메서드 종료]");
-        return template.query(sql, new MemberMapper());
-    }
-
-    @Override
-    public List<Member> searchMember(String name) 
+    public List<Member> searchMember(String name, int limit, int offset)  //검색으로 조회
     {
     	System.out.println("+++++++++++++++++++++++++++++++++++++++");
     	System.out.println("[MemberRepository : searchMember 메서드 호출]");
-        String sql = "SELECT * FROM t_member WHERE name LIKE ? order by name";
+    	String sql = "SELECT * FROM t_member WHERE name LIKE ? ORDER BY name LIMIT ? OFFSET ?";
         String searchName = "%" + name + "%";
         System.out.println("입력한 이름에 맞는 dto 가져옵니다");
         
         System.out.println("[MemberRepository : searchMember 메서드 종료]");
-        return template.query(sql, new Object[]{searchName}, new MemberMapper());
+        return template.query(sql, new Object[]{searchName, limit, offset}, new MemberMapper());
     }
+    
+    @Override
+	public List<Member> readAllMemberPaging(int limit, int offset) //페이징 적용 전부 조회
+    {
+    	System.out.println("+++++++++++++++++++++++++++++++++++++++");
+    	System.out.println("[MemberRepository : readAllMemberPaging 메서드 호출]");
+    	String sql = "select * from t_member order by name limit ? offset ?";
+    	
+    	System.out.println("[MemberRepository : readAllMemberPaging 메서드 종료]");
+		return template.query(sql, new Object[] {limit,offset}, new MemberMapper());
+	}
+
+	@Override
+	public int getTotalMemberCount(String value)  //페이징 내비게이션 숫자 처리
+	{
+		String sql = "select count(*) from t_member";
+		String sql2 = "select count(*) from t_member where name like ?";
+		
+		if(value == null || value.isEmpty()) 
+		{
+			return template.queryForObject(sql, Integer.class);
+		}else 
+		{
+			String searchKeyword = "%" + value + "%";
+			return template.queryForObject(sql2, new Object[] {searchKeyword},Integer.class);
+		}
+	}
 
     //Update
     
-    @Override
+
+	@Override
     public void updateMember(Member member) 
     {
     	System.out.println("+++++++++++++++++++++++++++++++++++++++");

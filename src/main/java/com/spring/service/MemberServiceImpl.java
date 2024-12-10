@@ -37,17 +37,11 @@ public class MemberServiceImpl implements MemberService
 	{
 		memberRepository.deleteMember(member);
 	}
-
-	@Override
-	public List<Member> readAllMember() 
-	{
-		return memberRepository.readAllMember();
-	}
 	
 	@Override
-	public List<Member> searchMember(String name) 
+	public List<Member> searchMember(String name,int limit, int offset)
 	{
-	    return memberRepository.searchMember(name);
+	    return memberRepository.searchMember(name, limit, offset);
 	}
 
 	
@@ -59,4 +53,19 @@ public class MemberServiceImpl implements MemberService
         }
         return memberRepository.checkUp(field, value);
 	}
+
+	@Override
+	public List<Member> readAllMemberPaging(int limit, int offset) 
+	{
+		return memberRepository.readAllMemberPaging(limit, offset);
+	}
+
+	@Override
+	public int getTotalMemberCount(String value) 
+	{
+		return memberRepository.getTotalMemberCount(value);
+	}
+
+	
+	
 }

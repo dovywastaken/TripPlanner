@@ -7,7 +7,6 @@
 <title>TripPlanner</title>
 <script>var contextPath = '${pageContext.request.contextPath}';</script>
 <script src="${pageContext.request.contextPath}/resources/js/signUp.js"></script>
-<!--  <script src="${pageContext.request.contextPath}/resources/js/validator.js"></script>-->
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <!--  <link href="/TripPlanner/resources/css/signUp.css" rel="stylesheet">-->
 <style>

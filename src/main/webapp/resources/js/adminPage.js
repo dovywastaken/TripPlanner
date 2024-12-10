@@ -9,13 +9,25 @@ document.addEventListener('DOMContentLoaded', function()
 	{
         tableHeaders.addEventListener('click', function() 
 		{
+			let testChamber = document.getElementById("test")
+			console.log(testChamber);
             sortTable(index);
+			
         });
     });
+	
+	let testChamber = document.getElementById("test")
+	testChamber.addEventListener('click', () =>
+		{
+			console.log("hi");
+		})
 });
 
 
 function sortTable(columnIndex) {
+	
+	let testChamber = document.getElementById("test")
+	console.log(testChamber);
     var table = document.getElementById("member");  // 테이블 가져오기
     var rows = table.getElementsByTagName("TR");    // 테이블의 행들 가져오기 (첫 번째 행은 제외)
     var isAscending = table.getAttribute("data-sort-asc") !== "true";// 현재 정렬 방향 확인 (오름차순인지 내림차순인지)
@@ -90,20 +102,8 @@ function searchButton() {
 
 //===================================================================================================================
 
-
-// 문자열과 숫자를 분리하여 비교하는 함수
-function parseMixedValue(value) {
-    const result = value.match(/^([a-zA-Z]+)(\d+)$/);  // 문자열과 숫자를 분리하는 정규식
-    if (result) {
-        return [result[1], parseInt(result[2], 10)];  // 문자열과 숫자 반환
-    }
-    return [value, 0];  // 기본적으로 숫자나 문자열이 아닌 경우, 그대로 반환
-}
-
-//===================================================================================================================
-
 function keywordSearch() {
-    const keyword = $('#keyword').val().trim();  // jQuery로 input 값 가져오기
+	const keyword = document.getElementById("keyword").value.trim();
     let url = contextPath + '/admin/search?keyword=';
 
     if (keyword !== '') {

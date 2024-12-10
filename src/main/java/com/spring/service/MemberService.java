@@ -8,10 +8,10 @@ public interface MemberService
 {
 	void createMember(Member member);
 	Member findById(String id);
-	List<Member> readAllMember();
+	List<Member> searchMember(String name,int limit, int offset);
+	List<Member> readAllMemberPaging(int limit, int offset);
+	int getTotalMemberCount(String value);
 	void updateMember(Member member);
 	void deleteMember(Member member);
-	List<Member> searchMember(String name);
 	boolean checkUp(String field, String value);
-	
 }
