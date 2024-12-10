@@ -7,7 +7,7 @@
 <title>TripPlanner</title>
 <script>var contextPath = '${pageContext.request.contextPath}';</script>
 <script src="${pageContext.request.contextPath}/resources/js/signUp.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/validator.js"></script>
+<!--  <script src="${pageContext.request.contextPath}/resources/js/validator.js"></script>-->
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <!--  <link href="/TripPlanner/resources/css/signUp.css" rel="stylesheet">-->
 <style>
@@ -82,6 +82,7 @@
     <div class="form-container">
         <h2>회원가입</h2>
         <a href="${pageContext.request.contextPath}">Home</a>
+        <button id="testButton">Test</button>
 
         <form:form modelAttribute="member" method="POST" action="${pageContext.request.contextPath}/members/signUp" id="signUp_form" onsubmit="combineEmail()">
             <div class="form-group"> <label for="id">아이디 : </label> 
@@ -97,17 +98,18 @@
             </div>
             
             <div class="form-group">
-                <label for="pw">비밀번호 : </label>
-                <form:input id="pw1" name="pw1" path="pw" placeholder="비밀번호"  type="password"/>
-                <input type="hidden" id="memPassword" name="memPassword" value=""/>
-            </div>
-            
-            <div class="form-group">
-                <label for="pwck">비밀번호 확인 : </label>
-                <input id="pw2" placeholder="비밀번호 확인" onchange = "passwordCheck()"  type="password"/>
-                <div id="passMessage"></div>
-            </div>
-            
+			    <label for="pw1">비밀번호 : </label>
+			    <form:input id="pw1" name="pw1" path="pw" placeholder="비밀번호" type="password"/>
+			    <input type="hidden" id="memPassword" name="memPassword" value=""/>
+			    <div id="pwValidationMessage"></div> <!-- 유효성 검사 메시지 -->
+			</div>
+			
+			<div class="form-group">
+			    <label for="pw2">비밀번호 확인 : </label>
+			    <input id="pw2" placeholder="비밀번호 확인" type="password"/>
+			    <div id="pwCheck"></div> <!-- 비밀번호 확인시 메시지 -->
+			</div> 
+			
             <div class="form-group">
                 <label for="emailId">Email : </label>
                 <input type="text" id="emailId" name="emailId" placeholder="이메일" />@
@@ -170,7 +172,7 @@
             </div>
             
             <div class="form-group">
-                <input type="submit" class="submit-button" onclick="checkFormValidity()"  value="회원가입"/>
+                <input type="submit" class="submit-button" id="submit" value="회원가입"/>
                 <div id="resultMessage"></div>
             </div>
         </form:form>
