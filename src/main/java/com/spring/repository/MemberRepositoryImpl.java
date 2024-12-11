@@ -74,12 +74,12 @@ public class MemberRepositoryImpl implements MemberRepository
     }
     
     @Override
-	public List<Member> readAllMemberPaging(int limit, int offset) //페이징 적용 전부 조회
+	public List<Member> readAllMemberPaging(int limit, int offset, String keyword) //페이징 적용 전부 조회
     {
     	System.out.println("+++++++++++++++++++++++++++++++++++++++");
     	System.out.println("[MemberRepository : readAllMemberPaging 메서드 호출]");
     	String sql = "select * from t_member order by name limit ? offset ?";
-    	
+
     	System.out.println("[MemberRepository : readAllMemberPaging 메서드 종료]");
 		return template.query(sql, new Object[] {limit,offset}, new MemberMapper());
 	}
@@ -87,14 +87,20 @@ public class MemberRepositoryImpl implements MemberRepository
 	@Override
 	public int getTotalMemberCount(String value)  //페이징 내비게이션 숫자 처리
 	{
+		System.out.println("+++++++++++++++++++++++++++++++++++++++");
+    	System.out.println("[MemberRepository : getTotalMemberCount 메서드 호출]");
 		String sql = "select count(*) from t_member";
 		String sql2 = "select count(*) from t_member where name like ?";
 		
 		if(value == null || value.isEmpty()) 
 		{
+			System.out.println("검색어가 없습니다");
+			System.out.println("[MemberRepository : readAllMemberPaging 메서드 종료]");
 			return template.queryForObject(sql, Integer.class);
 		}else 
 		{
+			System.out.println(value + "로 목록을 띄웁니다");
+			System.out.println("[MemberRepository : readAllMemberPaging 메서드 종료]");
 			String searchKeyword = "%" + value + "%";
 			return template.queryForObject(sql2, new Object[] {searchKeyword},Integer.class);
 		}

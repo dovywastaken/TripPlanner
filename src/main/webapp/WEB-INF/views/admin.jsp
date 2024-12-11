@@ -20,10 +20,10 @@
 
     <h2>회원 목록</h2>
     
-    <form name="search" id="search" onsubmit="return false;">
-        <input type="text" name="keyword" id="keyword" placeholder="회원 검색하기" />
-        <input type="button" value="검색" />
-    </form>
+    <form name="search" id="search" method="get" action="search">
+	    <input type="text" name="keyword" id="keyword" placeholder="회원 검색하기" />
+	    <input type="submit" id="searchButton" value="검색" />
+	</form>
     
     <button id="test">Test</button>
 
@@ -72,15 +72,15 @@
     
     <% 
 	    int totalPages = (Integer) request.getAttribute("totalPages");
-	    int currentPage = (Integer) request.getAttribute("currentPage");
 	    String keyword = (String) request.getAttribute("keyword");
 	%>
     
     <div>
-	       <% for (int i = 1; i <= totalPages; i++) { %>
-	           <a href="${pageContext.request.contextPath}/admin/dashboard?page=<%= i %>&keyword=<%= keyword == null ? "" : keyword %>"><%= i %></a>
-	       <% } %>
+	    <% for (int i = 1; i <= totalPages; i++) { %>
+	        <a href="${pageContext.request.contextPath}/admin/dashboard?page=<%= i %>&keyword=<%= keyword == null ? "" : keyword %>"><%= i %></a>
+	    <% } %>
 	</div>
+
     
 </body>
 </html>

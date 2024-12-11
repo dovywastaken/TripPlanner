@@ -9,9 +9,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <link href="${pageContext.request.contextPath}/resources/css/style.css" rel="stylesheet">
 </head>
-
-
-
 <body>
 
   <header class="header">

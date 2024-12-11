@@ -55,9 +55,14 @@ public class MemberServiceImpl implements MemberService
 	}
 
 	@Override
-	public List<Member> readAllMemberPaging(int limit, int offset) 
+	public List<Member> readAllMemberPaging(int limit, int offset, String keyword) 
 	{
-		return memberRepository.readAllMemberPaging(limit, offset);
+		if(keyword != null && !keyword.isEmpty()) 
+    	{
+    		return memberRepository.searchMember(keyword, limit, offset);
+    	}
+		
+		return memberRepository.readAllMemberPaging(limit, offset, keyword);
 	}
 
 	@Override
