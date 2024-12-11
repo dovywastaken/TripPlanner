@@ -30,9 +30,14 @@ public class MemberRepositoryImpl implements MemberRepository
     {
     	System.out.println("+++++++++++++++++++++++++++++++++++++++");
     	System.out.println("[MemberRepository : createMember 메서드 호출]");
-        String sql = "INSERT INTO t_member (name, id, pw, email, region, sex, phone1, phone2, phone3, birthday) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO t_member (name, id, pw, email, region, sex, phone1, phone2, phone3, birthday, emailCheck) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)";
        
+        
+        
+
+        
+        
         template.update(sql, 
         			member.getName(), member.getId(), member.getPw(), member.getEmail(),
         			member.getRegion(), member.getSex(), 

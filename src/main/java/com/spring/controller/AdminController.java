@@ -21,45 +21,36 @@ public class AdminController
 {
     @Autowired
     private MemberService memberService;
+    
+    
+ // 공통된 메서드를 추출하여 페이징 처리 로직을 재사용
+    private void setPagingData(Model model, int page, String keyword, int limit) {
+        int offset = (page - 1) * limit;
+        List<Member> memberList = keyword == null ? memberService.readAllMemberPaging(limit, offset, keyword) :
+                                                    memberService.searchMember(keyword, limit, offset);
+        
+        int totalMemberCount = memberService.getTotalMemberCount(keyword);
+        int totalPages = (int) Math.ceil((double) totalMemberCount / limit);
+        
+        model.addAttribute("memberList", memberList);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("keyword", keyword);
+    }
 
     @GetMapping("/dashboard")
     public String allMember(@RequestParam(value = "page", defaultValue = "1") int page,
-    							@RequestParam(value="keyword", required = false) String keyword, Model model) 
-    {
-    	System.out.println("===========================================================================================");
-    	System.out.println("AdminController : admin/dashboard(GET)으로 매핑되었습니다");
+                             @RequestParam(value = "keyword", required = false) String keyword, Model model) {
         int limit = 20; // 한 페이지에 표시할 회원 수
-        int offset = (page - 1) * limit;
-        List<Member> memberList = memberService.readAllMemberPaging(limit, offset, keyword);
-        
-        int totalMemberCount = memberService.getTotalMemberCount(keyword);
-        int totalPages = (int) Math.ceil((double) totalMemberCount / limit);
+        setPagingData(model, page, keyword, limit);
+        return "admin";
+    }
 
-        model.addAttribute("memberList", memberList);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("keyword", keyword);
-        
-        System.out.println("admin.jsp로 이동합니다");
-        return "admin";
-    }
-    
     @GetMapping("/search")
-    public String searchMember(@RequestParam String keyword, @RequestParam(value = "page", defaultValue = "1") int page, Model model) 
-    {
-        System.out.println("===========================================================================================");
-        System.out.println("AdminController : admin/search(POST)으로 매핑되었습니다");
+    public String searchMember(@RequestParam String keyword, @RequestParam(value = "page", defaultValue = "1") int page, Model model) {
         int limit = 20; // 한 페이지에 표시할 회원 수
-        int offset = (page - 1) * limit;
-        List<Member> memberList = memberService.searchMember(keyword, limit, offset);
-        
-        int totalMemberCount = memberService.getTotalMemberCount(keyword);
-        int totalPages = (int) Math.ceil((double) totalMemberCount / limit);
-        
-        model.addAttribute("memberList", memberList);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("keyword", keyword);
-        
+        setPagingData(model, page, keyword, limit);
         return "admin";
     }
+
 }
 
