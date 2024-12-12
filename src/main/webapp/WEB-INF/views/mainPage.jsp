@@ -32,7 +32,7 @@
       %>
           <p class="welcome-message">어서오세요, <%= member.getName() %>님!</p>
           <a href="members/signOut" class="nav-link">로그아웃</a>
-          <a href="members/updateMember" class="nav-link">마이 페이지</a> 
+          <a href="members/myPage" class="nav-link">마이 페이지</a> 
           <a href="admin/dashboard" class="nav-link">회원 목록</a>
       <% 
           } else {

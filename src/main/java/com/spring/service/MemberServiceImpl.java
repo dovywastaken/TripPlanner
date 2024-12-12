@@ -71,6 +71,15 @@ public class MemberServiceImpl implements MemberService
 		return memberRepository.getTotalMemberCount(value);
 	}
 
-	
-	
+	@Override
+	public String getPasswordById(String id) 
+	{
+		return memberRepository.getPasswordById(id);
+	}
+
+	@Override
+	public void updatePw(String pw, String id)
+	{
+		memberRepository.updatePw(pw,id);
+	}
 }

@@ -31,13 +31,7 @@ public class MemberRepositoryImpl implements MemberRepository
     	System.out.println("+++++++++++++++++++++++++++++++++++++++");
     	System.out.println("[MemberRepository : createMember 메서드 호출]");
         String sql = "INSERT INTO t_member (name, id, pw, email, region, sex, phone1, phone2, phone3, birthday, emailCheck) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)";
-       
-        
-        
-
-        
-        
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)";  
         template.update(sql, 
         			member.getName(), member.getId(), member.getPw(), member.getEmail(),
         			member.getRegion(), member.getSex(), 
@@ -47,8 +41,7 @@ public class MemberRepositoryImpl implements MemberRepository
     }
 
     //Read
-    
-    @SuppressWarnings("deprecation")
+
     @Override
     public Member findById(String id)  //로그인 시 사용
     {
@@ -58,7 +51,7 @@ public class MemberRepositoryImpl implements MemberRepository
         try {
         	System.out.println("입력한 id에 맞는 dto를 가져옵니다");
         	System.out.println("[MemberRepository : findById 메서드 종료]");
-            return template.queryForObject(sql, new Object[]{id}, new MemberMapper());
+            return template.queryForObject(sql, new MemberMapper(), new Object[]{id});
         } catch (Exception e) {
         	System.out.println("[MemberRepository : findById 메서드 예외발생]");
             return null; // 예외가 발생하면 null 반환
@@ -75,7 +68,7 @@ public class MemberRepositoryImpl implements MemberRepository
         System.out.println("입력한 이름에 맞는 dto 가져옵니다");
         
         System.out.println("[MemberRepository : searchMember 메서드 종료]");
-        return template.query(sql, new Object[]{searchName, limit, offset}, new MemberMapper());
+        return template.query(sql, new MemberMapper(), new Object[]{searchName, limit, offset} );
     }
     
     @Override
@@ -86,7 +79,7 @@ public class MemberRepositoryImpl implements MemberRepository
     	String sql = "select * from t_member order by name limit ? offset ?";
 
     	System.out.println("[MemberRepository : readAllMemberPaging 메서드 종료]");
-		return template.query(sql, new Object[] {limit,offset}, new MemberMapper());
+		return template.query(sql, new MemberMapper(), new Object[] {limit,offset});
 	}
 
 	@Override
@@ -101,30 +94,42 @@ public class MemberRepositoryImpl implements MemberRepository
 		{
 			System.out.println("검색어가 없습니다");
 			System.out.println("[MemberRepository : readAllMemberPaging 메서드 종료]");
-			return template.queryForObject(sql, Integer.class);
+			return template.queryForObject(sql, Integer.class); 
+			//Integer.class는 queryForObject로 들고온 데이터 값을 Integer 클래스로 바꿔주고 자동으로 나중에 데이터 타입을 int로 형변환 시켜주는 역할을 한다
+			//이게 없으면 리턴값이 int 타입이 아니라 Object가 되기 때문에 또 캐스팅하거나 에러가 날 수 있다
 		}else 
 		{
 			System.out.println(value + "로 목록을 띄웁니다");
 			System.out.println("[MemberRepository : readAllMemberPaging 메서드 종료]");
 			String searchKeyword = "%" + value + "%";
-			return template.queryForObject(sql2, new Object[] {searchKeyword},Integer.class);
+			return template.queryForObject(sql2, Integer.class, searchKeyword);
 		}
 	}
 
     //Update
-    
-
+   
 	@Override
     public void updateMember(Member member) 
     {
     	System.out.println("+++++++++++++++++++++++++++++++++++++++");
     	System.out.println("[MemberRepository : updateMember 메서드 호출]");
-        String sql = "UPDATE t_member SET pw = ?, region = ?, phone1 = ?, phone2 = ?, phone3 = ? WHERE id = ?";    
-        template.update(sql, member.getPw(), member.getRegion(), member.getPhone1(), member.getPhone2(), member.getPhone3(), member.getId());
+        String sql = "UPDATE t_member SET region = ?, phone1 = ?, phone2 = ?, phone3 = ? WHERE id = ?";    
+        template.update(sql, member.getRegion(), member.getPhone1(), member.getPhone2(), member.getPhone3(), member.getId());
         System.out.println("로그인한 사용자의 정보를 수정하도록 dto에서 변수값을 가져옵니다");
         
         System.out.println("[MemberRepository : updateMember 메서드 종료]");
     }
+	
+	public void updatePw(String pw, String id) 
+	{
+		System.out.println("+++++++++++++++++++++++++++++++++++++++");
+    	System.out.println("[MemberRepository : updatePw 메서드 호출]");
+    	String sql = "UPDATE t_member SET pw = ? WHERE id = ?";    
+        template.update(sql, pw, id); //아이디에 맞는 비밀번호만 수정
+        
+        System.out.println("[MemberRepository : updatePw 메서드 종료]");
+	}
+	
 
     //Delete
     
@@ -155,7 +160,16 @@ public class MemberRepositoryImpl implements MemberRepository
 			return false;
 		}
 	}
-    
-    
+	
+	@Override
+	public String getPasswordById(String id) {
+	    String sql = "select pw from t_member where id = ?";
+	    try {
+	        return template.queryForObject(sql, String.class,new Object[]{id});
+	    } catch (Exception e) {
+	        return null; // 해당 id가 없을 경우 null 반환
+	    }
+	}
+
     
 }

@@ -93,6 +93,15 @@ public class MemberController {
         return "redirect:/";
     }
 
+    @GetMapping("/myPage")
+    public String toMemberInfo(Model model) {
+        // 회원 정보 수정 페이지로 이동
+        System.out.println("===========================================================================================");
+        System.out.println("MemberController : members/myInfo(GET)으로 매핑되어 memberInfo.jsp로 이동합니다");
+        model.addAttribute("member", new Member());
+        return "myPage";
+    }
+
     @GetMapping("/updateMember")
     public String toUpdateMember(Model model) {
         // 회원 정보 수정 페이지로 이동
@@ -101,7 +110,8 @@ public class MemberController {
         model.addAttribute("member", new Member());
         return "updateMember";
     }
-
+    
+    
     @PostMapping("/updateMember")
     public String fromUpdateMember(@ModelAttribute("member") Member member) {
         // 회원 정보 수정 요청 처리
@@ -146,4 +156,36 @@ public class MemberController {
 
         return response; // JSON 반환
     }
+    
+    
+    
+    @GetMapping("/pwChange")
+    public String toPwChange(Model model) 
+    {
+    	System.out.println("===========================================================================================");
+        System.out.println("MemberController : /members/toPwChange(GET)으로 매핑되었습니다");
+    	model.addAttribute("member", new Member());
+    	
+    	
+    	System.out.println("pwChange.jsp로 이동합니다");
+    	return "pwChange";
+    }
+    
+    
+    @PostMapping("/pwChange")
+    public String fromPwChange(@ModelAttribute("member") Member member, Model model) 
+    {
+    	System.out.println("===========================================================================================");
+        System.out.println("MemberController : /members/toPwChange(POST)으로 매핑되었습니다");
+        System.out.println("현재 멤버의 비밀번호는 " + member.getPw()); 
+        String id = member.getId();
+        String pw = member.getPw();
+        
+        System.out.println("id와 Pw : " + id + pw);
+    	memberService.updatePw(pw,id);
+        
+        System.out.println("메인페이지로 리다렉션합니다");
+    	return "redirect:/";
+    }
+    
 }
