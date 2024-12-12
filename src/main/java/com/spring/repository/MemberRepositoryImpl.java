@@ -113,8 +113,8 @@ public class MemberRepositoryImpl implements MemberRepository
     {
     	System.out.println("+++++++++++++++++++++++++++++++++++++++");
     	System.out.println("[MemberRepository : updateMember 메서드 호출]");
-        String sql = "UPDATE t_member SET region = ?, phone1 = ?, phone2 = ?, phone3 = ? WHERE id = ?";    
-        template.update(sql, member.getRegion(), member.getPhone1(), member.getPhone2(), member.getPhone3(), member.getId());
+        String sql = "UPDATE t_member SET email = ?, region = ?, phone1 = ?, phone2 = ?, phone3 = ? WHERE id = ?";    
+        template.update(sql, member.getEmail(), member.getRegion(), member.getPhone1(), member.getPhone2(), member.getPhone3(), member.getId());
         System.out.println("로그인한 사용자의 정보를 수정하도록 dto에서 변수값을 가져옵니다");
         
         System.out.println("[MemberRepository : updateMember 메서드 종료]");

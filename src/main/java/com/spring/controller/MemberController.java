@@ -113,15 +113,36 @@ public class MemberController {
     
     
     @PostMapping("/updateMember")
-    public String fromUpdateMember(@ModelAttribute("member") Member member) {
+    public String fromUpdateMember(@ModelAttribute("member") Member member,@RequestParam String emailId, 
+    								@RequestParam String emailDomain, HttpSession session, Model model) 
+    {
         // 회원 정보 수정 요청 처리
         System.out.println("===========================================================================================");
         System.out.println("MemberController : members/updateMember(POST)으로 매핑되었습니다");
+        member.setEmail(emailId, emailDomain);
+        
+        System.out.println("컨트롤러까지 결합된 이메일이 들어옴 "+ member.getEmail());
+        String phone = member.getPhone1();
+        String[] phoneList = phone.split("-");
+        
+        for(int i=1; i<=phoneList.length; i++) 
+        {
+        	member.setPhone1(phoneList[0]);
+            member.setPhone2(phoneList[1]);
+            member.setPhone3(phoneList[2]);
+        }
+        
         memberService.updateMember(member);
-        System.out.println("메인페이지로 리다렉션");
+        String id = (String) member.getId();
+        Member mb = memberService.findById(id);
+        System.out.println(mb);
+        
+        session.setAttribute("user", mb);
+
+        System.out.println("updateMemberComplete 메서드로 리다렉션");
         return "redirect:/";
     }
-
+ 
     @GetMapping("/deleteMember")
     public String toDeleteMember() {
         // 회원 탈퇴 페이지로 이동
