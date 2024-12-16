@@ -12,6 +12,7 @@ public class Member
     private String phone3;   // 전화번호 뒷부분
     private String birthday; // 생년월일
     private String email;    // 이메일
+    private int emailCheck; //이메일 인증 여부
     
     // 생성자, 게터, 세터들
 
@@ -80,4 +81,14 @@ public class Member
     {
     	this.email = email + "@" + domain;
     }
+    
+	public int getEmailCheck() 
+	{
+		return emailCheck;
+	}
+	
+	public void setEmailCheck(int emailCheck) 
+	{
+		this.emailCheck = emailCheck;
+	}
 }

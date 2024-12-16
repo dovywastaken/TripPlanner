@@ -82,4 +82,15 @@ public class MemberServiceImpl implements MemberService
 	{
 		memberRepository.updatePw(pw,id);
 	}
+
+	@Override
+	public void updateEmail(String id) 
+	{
+		memberRepository.updateEmail(id);
+	}
+	
+	
+	
+	
+	
 }

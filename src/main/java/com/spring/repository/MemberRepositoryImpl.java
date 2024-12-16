@@ -18,6 +18,7 @@ public class MemberRepositoryImpl implements MemberRepository
     @Autowired
     public void setJdbcTemplate(DataSource dataSource) 
     {
+    	System.out.println("+++++++++++++++++++++++++++++++++++++++");
     	System.out.println("[MemberRepository : setJdbcTemplate 메서드 호출]");
     	System.out.println("db연결");
         this.template = new JdbcTemplate(dataSource);
@@ -162,14 +163,26 @@ public class MemberRepositoryImpl implements MemberRepository
 	}
 	
 	@Override
-	public String getPasswordById(String id) {
+	public String getPasswordById(String id) 
+	{
 	    String sql = "select pw from t_member where id = ?";
-	    try {
+	    try 
+	    {
 	        return template.queryForObject(sql, String.class,new Object[]{id});
-	    } catch (Exception e) {
+	    } 
+	    catch (Exception e) 
+	    {
 	        return null; // 해당 id가 없을 경우 null 반환
 	    }
 	}
 
-    
+	@Override
+	public void updateEmail(String id) 
+	{
+		String sql = "UPDATE t_member SET emailCheck = 1 WHERE id = ?"; 
+		System.out.println("이메일 update sql문"+sql + id);
+        template.update(sql,id);
+        System.out.println("update sql문 실행");
+	}
+
 }

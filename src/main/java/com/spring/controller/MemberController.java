@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +25,9 @@ public class MemberController {
 
     @Autowired
     private MemberService memberService;
+    
+    @Autowired
+	MailSender sender;
 
     @GetMapping("/signUp") //회원가입 창 이동
     public String toSignUp(Model model) {
@@ -97,7 +102,7 @@ public class MemberController {
     public String toMemberInfo(Model model) {
         // 회원 정보 수정 페이지로 이동
         System.out.println("===========================================================================================");
-        System.out.println("MemberController : members/myInfo(GET)으로 매핑되어 memberInfo.jsp로 이동합니다");
+        System.out.println("MemberController : members/myPage(GET)으로 매핑되어 memberInfo.jsp로 이동합니다");
         model.addAttribute("member", new Member());
         return "myPage";
     }
@@ -207,6 +212,66 @@ public class MemberController {
         
         System.out.println("메인페이지로 리다렉션합니다");
     	return "redirect:/";
+    }
+    
+    @GetMapping("/email")
+    @ResponseBody
+    public Map<String, String> emailSend(HttpSession session) 
+    {
+    	Map<String, String> response = new HashMap<>();
+    	
+    	Member member = (Member)session.getAttribute("user");
+    	
+    	try 
+    	{
+    		String host = "http://localhost:8080/TripPlanner/members/emailCheck";
+    		String from = "larrydaniels751@gmail.com";
+    		String to = member.getEmail();
+    		String who = member.getId();
+    		String content = "클릭하여 이메일 인증을 완료해주십시요\n" + host + "?userID=" + who;
+    		
+    		SimpleMailMessage message = new SimpleMailMessage();
+    		message.setTo(to);
+    		message.setText(content);
+    		message.setFrom(from);
+    		sender.send(message);
+    		
+    		response.put("status", "success");
+            response.put("message", "이메일이 성공적으로 전송되었습니다.");
+    	}
+    	catch(Exception e) 
+    	{
+    		response.put("status", "fail");
+    		response.put("message", "이메일 전송에 실패했습니다.");
+    	}
+    	
+		
+		return response;
+    }
+    
+    @GetMapping("/emailCheck")
+    public String emailVerify(@RequestParam("userID")String userId, HttpSession session)
+    {
+    	System.out.println("===========================================================================================");
+        System.out.println("AdminController : members/myPage 로 매핑");
+    	Member member = (Member)session.getAttribute("user"); //현재 로그인된 계정 정보
+    	String idCheck = userId; //이메일 링크 끝에 있는 아이디
+    	String id = member.getId(); //현재 로그인된 계정의 아이디
+    	
+    	if(idCheck.equals(id)) 
+    	{
+    		memberService.updateEmail(id);
+            Member mb = memberService.findById(id);
+            System.out.println(mb.getEmailCheck());
+            
+            session.setAttribute("user", mb);
+    	}
+    	else 
+    	{
+    		System.out.println("아이디와 요청한 이메일의 아이디가 일치하지 않습니다");
+    	}
+    	
+    	return "redirect:/members/myPage";
     }
     
 }

@@ -17,6 +17,7 @@ public interface MemberRepository
 	//Update
 	void updateMember(Member member);
 	void updatePw(String pw, String id);
+	void updateEmail(String id);
 	//Delete
 	void deleteMember(Member member);
 	//Validation
