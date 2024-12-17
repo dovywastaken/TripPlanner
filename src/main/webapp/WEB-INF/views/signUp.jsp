@@ -159,13 +159,13 @@
             
             <div class="form-group">
                 <label for="phone1">전화번호 : </label>
-                <form:input path="phone1" id="phone1" placeholder="전화번호"/>
+                <form:input path="phone1" id="phone1" placeholder="010-1234-5678"/>
                 <div id="message_phone"></div> 
             </div>
             
             <div class="form-group">
                 <label for="birthday">생년월일 : </label>
-                <form:input path="birthday" id="birthday" placeholder="생년월일" type="date"/>
+                <form:input path="birthday" id="birthday" placeholder="생년월일 8자리" type="text"/>
                 <div id="message_birthday"></div> 
             </div>
             

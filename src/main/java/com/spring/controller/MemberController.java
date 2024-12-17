@@ -245,7 +245,6 @@ public class MemberController {
     		response.put("message", "이메일 전송에 실패했습니다.");
     	}
     	
-		
 		return response;
     }
     
@@ -253,7 +252,7 @@ public class MemberController {
     public String emailVerify(@RequestParam("userID")String userId, HttpSession session)
     {
     	System.out.println("===========================================================================================");
-        System.out.println("AdminController : members/myPage 로 매핑");
+        System.out.println("MemberController : members/emailCheck 로 매핑");
     	Member member = (Member)session.getAttribute("user"); //현재 로그인된 계정 정보
     	String idCheck = userId; //이메일 링크 끝에 있는 아이디
     	String id = member.getId(); //현재 로그인된 계정의 아이디
@@ -273,5 +272,24 @@ public class MemberController {
     	
     	return "redirect:/members/myPage";
     }
+    
+    @ResponseBody
+    @GetMapping("/checkCurrentId")
+    public Map<String, String> checkCurrentId(@RequestParam("value") String value, HttpSession session)
+    {
+    	System.out.println("===========================================================================================");
+        System.out.println("MemberController : members/checkCurrentId 로 매핑");
+    	System.out.println("value의 값은" + value);
+    	Map<String, String> response = new HashMap<>();
+    	Member member = (Member)session.getAttribute("user");
+    	String pw = member.getPw();
+    	response.put("pw", pw);
+    	System.out.println(response);
+    	
+    	return response;
+    }
+    
+    
+    
     
 }

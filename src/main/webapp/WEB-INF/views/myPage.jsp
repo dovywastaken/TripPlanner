@@ -31,7 +31,8 @@
 
     <% if(emailCheck == 0) { %>
         <button id="email">인증번호 보내기</button>
-        <span id="remainingTime">남은시간</span>
+        <span id="remainingTime"></span>
+        <span id="loading" style="display: none;">이메일을 전송 중입니다...</span>
         <br>
     <% } %>
 
