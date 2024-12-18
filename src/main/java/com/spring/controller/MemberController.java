@@ -199,20 +199,39 @@ public class MemberController {
     
     
     @PostMapping("/pwChange")
-    public String fromPwChange(@ModelAttribute("member") Member member, Model model) 
+    public String fromPwChange(@ModelAttribute("member") Member member, Model model, HttpSession session) 
     {
     	System.out.println("===========================================================================================");
         System.out.println("MemberController : /members/toPwChange(POST)으로 매핑되었습니다");
-        System.out.println("현재 멤버의 비밀번호는 " + member.getPw()); 
-        String id = member.getId();
+        Member mb = (Member)session.getAttribute("user");
+        String id = mb.getId();
         String pw = member.getPw();
         
-        System.out.println("id와 Pw : " + id + pw);
+        System.out.println("기존 비밀번호 " + mb.getPw() + "에서 "+ member.getPw() + "로 수정합니다");
     	memberService.updatePw(pw,id);
         
         System.out.println("메인페이지로 리다렉션합니다");
     	return "redirect:/";
     }
+    
+    @ResponseBody
+    @GetMapping("/checkCurrentPw")
+    public Map<String, String> checkCurrentPw(@RequestParam(value = "value", required = false, defaultValue = "") String value, HttpSession session)
+    {
+    	System.out.println("===========================================================================================");
+        System.out.println("MemberController : members/checkCurrentPw 로 AJAX 매핑");
+        System.out.println(value);
+    	Map<String, String> response = new HashMap<>();
+    	Member member = (Member)session.getAttribute("user");
+    	String pw = member.getPw();
+    	System.out.println(pw);
+    	if(pw.equals(value)) {response.put("true", "true");}else if(value.equals("")) {response.put("none", "none");}else {response.put("false", "false");}
+    	System.out.println(response);
+    	
+    	return response;
+    }
+    
+    
     
     @GetMapping("/email")
     @ResponseBody
@@ -273,21 +292,7 @@ public class MemberController {
     	return "redirect:/members/myPage";
     }
     
-    @ResponseBody
-    @GetMapping("/checkCurrentId")
-    public Map<String, String> checkCurrentId(@RequestParam("value") String value, HttpSession session)
-    {
-    	System.out.println("===========================================================================================");
-        System.out.println("MemberController : members/checkCurrentId 로 매핑");
-    	System.out.println("value의 값은" + value);
-    	Map<String, String> response = new HashMap<>();
-    	Member member = (Member)session.getAttribute("user");
-    	String pw = member.getPw();
-    	response.put("pw", pw);
-    	System.out.println(response);
-    	
-    	return response;
-    }
+    
     
     
     

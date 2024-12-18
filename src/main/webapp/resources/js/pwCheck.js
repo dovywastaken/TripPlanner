@@ -1,7 +1,8 @@
 let cpw;
 let pw1;
 let pw2;
-let submitButton
+let submitButton;
+let pwcheck = 0;
 
 document.addEventListener('DOMContentLoaded', function() {
     cpw = document.getElementById("pw");
@@ -28,36 +29,31 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-function pwCheck(value) //현재 비밀번호 확인
+function pwCheck(value) 
 {
     $.ajax({
-        url: contextPath + '/members/checkCurrentId',
+        url: contextPath + '/members/checkCurrentPw',  // 올바른 URL인지 확인
         method: 'GET',
-        data: {value: value},
-        success: function(response) 
-		{
-			console.log("컨트롤러에서 받아온 비밀번호는" + response.pw);
-			let cpw = document.getElementById("pw").value.trim();
-			console.log("폼에서 받아온 비밀번호는" + cpw);
-			let message = document.getElementById("currentPwMessage");
-            if (response.pw === cpw) 
-			{
+        data: { value: value },  // 'value' 파라미터가 제대로 전달되는지 확인
+        success: function(response) {
+            console.log("컨트롤러에서 받아온 비밀번호는", response.pw);
+            let cpw = document.getElementById("pw").value.trim();
+            console.log("폼에서 받아온 비밀번호는", cpw);
+            let message = document.getElementById("currentPwMessage");
+            if (response.true) {
                 message.innerHTML = '<span style="color:green;">비밀번호가 확인됐습니다.</span>';
+				pwcheck = 1;
                 return true;
-            } else if(!pw.value)
-			{
-				message.innerHTML = "";
-				return false;
-			}
-			else 
-			{
-				message.innerHTML = '<span style="color:red;">비밀번호가 틀렸습니다.</span>';
+            } else if (response.none) {
+                message.innerHTML = "value가 없습니다"
+                return false;
+            } else {
+                message.innerHTML = '<span style="color:red;">비밀번호가 틀렸습니다.</span>';
                 return false;
             }
         },
-        error: function() 
-		{
-            console.error(' 비밀번호 확인 중 오류 발생');
+        error: function(error) {
+            console.error('비밀번호 확인 중 오류 발생:', error);
         }
     });
 }
@@ -100,11 +96,13 @@ function passwordCheck() {
 }
 function submit(event)
 {
-	if(passwordCheck == true && pwValidator == true && pwCheck == true)
+	if(passwordCheck() == true && pwValidator() == true && pwcheck === 1)
 	{
-		
-		
 		return true;
+	}else
+	{
+		console.log("bye");
+		event.preventDefault();
 	}
 };
 
