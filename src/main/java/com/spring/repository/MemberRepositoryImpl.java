@@ -15,6 +15,7 @@ public class MemberRepositoryImpl implements MemberRepository
 {
     private JdbcTemplate template;
 
+    //db연결
     @Autowired
     public void setJdbcTemplate(DataSource dataSource) 
     {
@@ -26,6 +27,7 @@ public class MemberRepositoryImpl implements MemberRepository
 
     //Create
     
+    //회원가입
     @Override
     public void createMember(Member member) 
     {
@@ -43,8 +45,9 @@ public class MemberRepositoryImpl implements MemberRepository
 
     //Read
 
+    //로그인 시 입력한 아이디에 맞는 아이디를 db에서 가져오기
     @Override
-    public Member findById(String id)  //로그인 시 사용
+    public Member findById(String id)  
     {
     	System.out.println("+++++++++++++++++++++++++++++++++++++++");
     	System.out.println("[MemberRepository : findById 메서드 호출]");
@@ -59,56 +62,76 @@ public class MemberRepositoryImpl implements MemberRepository
         }
     }
     
+    //어드민 페이지에서 검색한 멤버 찾아오기
     @Override
-    public List<Member> searchMember(String name, int limit, int offset)  //검색으로 조회
+    public List<Member> searchMember(int limit, int offset, String name) // 검색으로 조회
     {
-    	System.out.println("+++++++++++++++++++++++++++++++++++++++");
-    	System.out.println("[MemberRepository : searchMember 메서드 호출]");
-    	String sql = "SELECT * FROM t_member WHERE name LIKE ? ORDER BY name LIMIT ? OFFSET ?";
+        System.out.println("+++++++++++++++++++++++++++++++++++++++");
+        System.out.println("[MemberRepository : searchMember 메서드 호출]");
+        String sql = "SELECT * FROM t_member WHERE name LIKE ? ORDER BY name LIMIT ? OFFSET ?";
         String searchName = "%" + name + "%";
         System.out.println("입력한 이름에 맞는 dto 가져옵니다");
-        
+
         System.out.println("[MemberRepository : searchMember 메서드 종료]");
-        return template.query(sql, new MemberMapper(), new Object[]{searchName, limit, offset} );
+        return template.query(sql, new MemberMapper(), searchName, limit, offset);
     }
-    
+
+    //어드민 페이지 내 모든 회원 목록 가져오기
     @Override
-	public List<Member> readAllMemberPaging(int limit, int offset, String keyword) //페이징 적용 전부 조회
+    public List<Member> readAllMemberPaging(int limit, int offset) // 페이징 적용 전부 조회
     {
-    	System.out.println("+++++++++++++++++++++++++++++++++++++++");
-    	System.out.println("[MemberRepository : readAllMemberPaging 메서드 호출]");
-    	String sql = "select * from t_member order by name limit ? offset ?";
+        System.out.println("+++++++++++++++++++++++++++++++++++++++");
+        System.out.println("[MemberRepository : readAllMemberPaging 메서드 호출]");
+        String sql = "SELECT * FROM t_member ORDER BY name LIMIT ? OFFSET ?";
 
-    	System.out.println("[MemberRepository : readAllMemberPaging 메서드 종료]");
-		return template.query(sql, new MemberMapper(), new Object[] {limit,offset});
-	}
+        System.out.println("[MemberRepository : readAllMemberPaging 메서드 종료]");
+        return template.query(sql, new MemberMapper(), limit, offset);
+    }
 
+    //어드민 페이지 페이징을 위해 검색어 여부에 따른 회원 숫자 가져오기
 	@Override
-	public int getTotalMemberCount(String value)  //페이징 내비게이션 숫자 처리
+	public int getTotalMemberCount(String keyword)  //페이징 내비게이션 숫자 처리
 	{
 		System.out.println("+++++++++++++++++++++++++++++++++++++++");
     	System.out.println("[MemberRepository : getTotalMemberCount 메서드 호출]");
 		String sql = "select count(*) from t_member";
 		String sql2 = "select count(*) from t_member where name like ?";
 		
-		if(value == null || value.isEmpty()) 
+		if(keyword == null || keyword.isEmpty()) //검색어 입력 안했으면 테이블 내 모든 회원의 수 계산해서 리턴
 		{
 			System.out.println("검색어가 없습니다");
-			System.out.println("[MemberRepository : readAllMemberPaging 메서드 종료]");
+			System.out.println("[MemberRepository : getTotalMemberCount 메서드 종료]");
 			return template.queryForObject(sql, Integer.class); 
 			//Integer.class는 queryForObject로 들고온 데이터 값을 Integer 클래스로 바꿔주고 자동으로 나중에 데이터 타입을 int로 형변환 시켜주는 역할을 한다
 			//이게 없으면 리턴값이 int 타입이 아니라 Object가 되기 때문에 또 캐스팅하거나 에러가 날 수 있다
-		}else 
+		}else //검색어 입력했으면 테이블 내 keyword가 이름인 목록 전부 계산해서 리턴
 		{
-			System.out.println(value + "로 목록을 띄웁니다");
-			System.out.println("[MemberRepository : readAllMemberPaging 메서드 종료]");
-			String searchKeyword = "%" + value + "%";
+			System.out.println(keyword + "로 목록을 띄웁니다");
+			String searchKeyword = "%" + keyword + "%";
+			System.out.println("[MemberRepository : getTotalMemberCount 메서드 종료]");
 			return template.queryForObject(sql2, Integer.class, searchKeyword);
 		}
 	}
 
+	//비밀번호 변경 페이지에서 현재 비밀번호 확인 할 때 쓰는 메서드
+	@Override
+	public String getPasswordById(String id) 
+	{
+	    String sql = "select pw from t_member where id = ?";
+	    try 
+	    {
+	        return template.queryForObject(sql, String.class,new Object[]{id});
+	    } 
+	    catch (Exception e) 
+	    {
+	        return null; // 해당 id가 없을 경우 null 반환
+	    }
+	}
+	
+	
     //Update
    
+	//회원 개인정보 변경
 	@Override
     public void updateMember(Member member) 
     {
@@ -121,6 +144,7 @@ public class MemberRepositoryImpl implements MemberRepository
         System.out.println("[MemberRepository : updateMember 메서드 종료]");
     }
 	
+	//회원 비밀번호 변경
 	public void updatePw(String pw, String id) 
 	{
 		System.out.println("+++++++++++++++++++++++++++++++++++++++");
@@ -130,10 +154,20 @@ public class MemberRepositoryImpl implements MemberRepository
         
         System.out.println("[MemberRepository : updatePw 메서드 종료]");
 	}
-	
 
+	//회원 이메일 인증
+	@Override
+	public void updateEmail(String id) 
+	{
+		String sql = "UPDATE t_member SET emailCheck = 1 WHERE id = ?"; 
+		System.out.println("이메일 update sql문"+sql + id);
+        template.update(sql,id);
+        System.out.println("update sql문 실행");
+	}
+	
     //Delete
     
+	//회원 탈퇴
     @Override
     public void deleteMember(Member member) 
     {
@@ -145,8 +179,7 @@ public class MemberRepositoryImpl implements MemberRepository
         System.out.println("[MemberRepository : deleteMember 메서드 종료]");
     }
 
-    //중복 검사
-    
+    //회원가입 시 입력한 아이디가 db에 존재해서 리턴이 false가 된다면 중복된 아이디를 표시
 	@Override
 	public boolean checkUp(String field, String value) 
 	{
@@ -161,28 +194,4 @@ public class MemberRepositoryImpl implements MemberRepository
 			return false;
 		}
 	}
-	
-	@Override
-	public String getPasswordById(String id) 
-	{
-	    String sql = "select pw from t_member where id = ?";
-	    try 
-	    {
-	        return template.queryForObject(sql, String.class,new Object[]{id});
-	    } 
-	    catch (Exception e) 
-	    {
-	        return null; // 해당 id가 없을 경우 null 반환
-	    }
-	}
-
-	@Override
-	public void updateEmail(String id) 
-	{
-		String sql = "UPDATE t_member SET emailCheck = 1 WHERE id = ?"; 
-		System.out.println("이메일 update sql문"+sql + id);
-        template.update(sql,id);
-        System.out.println("update sql문 실행");
-	}
-
 }

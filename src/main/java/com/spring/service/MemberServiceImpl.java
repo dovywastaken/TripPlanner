@@ -39,9 +39,9 @@ public class MemberServiceImpl implements MemberService
 	}
 	
 	@Override
-	public List<Member> searchMember(String name,int limit, int offset)
+	public List<Member> searchMember(int limit, int offset,String name)
 	{
-	    return memberRepository.searchMember(name, limit, offset);
+	    return memberRepository.searchMember(limit, offset,name);
 	}
 
 	
@@ -55,20 +55,15 @@ public class MemberServiceImpl implements MemberService
 	}
 
 	@Override
-	public List<Member> readAllMemberPaging(int limit, int offset, String keyword) 
-	{
-		if(keyword != null && !keyword.isEmpty()) 
-    	{
-    		return memberRepository.searchMember(keyword, limit, offset);
-    	}
-		
-		return memberRepository.readAllMemberPaging(limit, offset, keyword);
+	public List<Member> readAllMemberPaging(int limit, int offset) 
+	{	
+		return memberRepository.readAllMemberPaging(limit, offset);
 	}
 
 	@Override
-	public int getTotalMemberCount(String value) 
+	public int getTotalMemberCount(String keyword) 
 	{
-		return memberRepository.getTotalMemberCount(value);
+		return memberRepository.getTotalMemberCount(keyword);
 	}
 
 	@Override

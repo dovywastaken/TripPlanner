@@ -1,8 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.spring.domain.Member" %>
-<%@ page import="java.net.URLEncoder" %>
-<%@ page import="java.security.SecureRandom" %>
-<%@ page import="java.math.BigInteger" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -10,9 +7,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>트립플래너</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-  <link href="${pageContext.request.contextPath}/resources/css/style.css" rel="stylesheet">
-  <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
 </head>
 <body>
 
@@ -22,40 +16,35 @@
       <input type="text" placeholder="검색" class="search-input">
     </div>
   </header>
- 
+
   <main class="main-content">
     <section class="welcome-section">
-      <% 
-          Member member = (Member) session.getAttribute("user");
-
-          if (member != null) {
-      %>
-          <p class="welcome-message">어서오세요, <%= member.getName() %>님!</p>
+      <c:choose>
+        <c:when test="${not empty member}">
+          <p class="welcome-message">어서오세요, ${member.name}님!</p>
           <a href="members/signOut" class="nav-link">로그아웃</a>
-          <a href="members/myPage" class="nav-link">마이 페이지</a> 
+          <a href="members/myPage" class="nav-link">마이 페이지</a>
           <a href="admin/dashboard" class="nav-link">회원 목록</a>
-      <% 
-          } else {
-      %>
+        </c:when>
+        <c:otherwise>
           <p class="welcome-message">환영합니다! 로그인을 해주세요.</p>
           <a href="members/signIn" class="nav-link">로그인</a>
           <a href="members/signUp" class="nav-link">회원가입</a>
           <a href="admin/dashboard" class="nav-link">회원 목록</a>
-      <% 
-          }
-      %>
+        </c:otherwise>
+      </c:choose>
     </section>
 
-    <% if (member == null) { %>
-    <section class="intro-section">
-      <h2 class="section-title">트립플래너에 오신 것을 환영합니다!</h2>
-      <p class="sub-title">로그인 후 여행 계획을 세워보세요!</p>
-    </section>
-    <% } %>
+    <c:if test="${empty member}">
+      <section class="intro-section">
+        <h2 class="section-title">트립플래너에 오신 것을 환영합니다!</h2>
+        <p class="sub-title">로그인 후 여행 계획을 세워보세요!</p>
+      </section>
+    </c:if>
 
-    <% if (member != null) { %>
-    <section class="my-posts">
-        <h2 class="section-title"><%= member.getName() %> 님, 떠나보실까요?</h2>
+    <c:if test="${not empty member}">
+      <section class="my-posts">
+        <h2 class="section-title">${member.name} 님, 떠나보실까요?</h2>
         <p class="sub-title">여행 포스트 4</p>
         <div class="post-cards">
           <div class="card">내 포스트 1</div>
@@ -63,8 +52,8 @@
           <div class="card">내 포스트 3</div>
         </div>
         <button class="btn create-btn">새 일정 만들기</button>
-    </section>
-    <% } %>
+      </section>
+    </c:if>
 
     <section class="popular-plans">
       <h2 class="section-title">인기 여행 계획</h2>

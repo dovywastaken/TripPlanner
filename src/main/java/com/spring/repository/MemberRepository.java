@@ -10,9 +10,9 @@ public interface MemberRepository
 	void createMember(Member member);
 	//Read
 	Member findById(String id);
-	List<Member> searchMember(String name,int limit, int offset);
-	List<Member> readAllMemberPaging(int limit, int offset, String keyword);
-	int getTotalMemberCount(String value);
+	List<Member> searchMember(int limit, int offset, String name);
+	List<Member> readAllMemberPaging(int limit, int offset);
+	int getTotalMemberCount(String keyword);
 	String getPasswordById(String id);
 	//Update
 	void updateMember(Member member);

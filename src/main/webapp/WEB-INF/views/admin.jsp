@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
-<%@ page import="com.spring.domain.Member" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 
 <!DOCTYPE html>
 <html>
@@ -20,7 +21,7 @@
 
     <h2>회원 목록</h2>
     
-    <form name="search" id="search" method="get" action="search">
+    <form name="search" id="search" method="get" action="dashboard">
 	    <input type="text" name="keyword" id="keyword" placeholder="회원 검색하기" />
 	    <input type="submit" id="searchButton" value="검색" />
 	</form>
@@ -42,43 +43,34 @@
 	            </tr>
 	        </thead>
 	        <tbody>
-	            <% 
-	                List<Member> memberList = (List<Member>) request.getAttribute("memberList");
-	                if (memberList != null && !memberList.isEmpty()) {
-	                    for (Member member : memberList) {
-	            %>
-	                <tr>
-	                	<td data-column="name"><%= member.getName() %></td>
-	                    <td data-column="id"><%= member.getId() %></td>
-	                    <td data-column="email"><%= member.getEmail() %></td>
-	                    <td data-column="region"><%= member.getRegion() %></td>
-	                    <td data-column="sex"><%= member.getSex() %></td>
-	                    <td data-column="birthday"><%= member.getBirthday() %></td>
-	                    <td><%= member.getPhone1() %>-****-<%= member.getPhone3() %></td>
-	                </tr>
-	            <% 
-	                    }
-	                } else { 
-	            %>
-	                <tr>
-	                    <td colspan="6">회원 정보가 없습니다.</td>
-	                </tr>
-	            <% 
-	                } 
-	            %>
+	             	<c:choose>
+                    <c:when test="${not empty memberList}">
+                        <c:forEach var="member" items="${memberList}">
+                            <tr>
+                                <td>${member.name}</td>
+                                <td>${member.id}</td>
+                                <td>${member.email}</td>
+                                <td>${member.region}</td>
+                                <td>${member.sex}</td>
+                                <td>${member.birthday}</td>
+                                <td>${member.phone1}-${member.phone2}-${member.phone3}</td>
+                            </tr>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <tr>
+                            <td colspan="7">회원 정보가 없습니다.</td>
+                        </tr>
+                    </c:otherwise>
+                </c:choose>
 	        </tbody>
 	    </table>
     </div>
     
-    <% 
-	    int totalPages = (Integer) request.getAttribute("totalPages");
-	    String keyword = (String) request.getAttribute("keyword");
-	%>
-    
     <div>
-	    <% for (int i = 1; i <= totalPages; i++) { %>
-	        <a href="${pageContext.request.contextPath}/admin/dashboard?page=<%= i %>&keyword=<%= keyword == null ? "" : keyword %>"><%= i %></a>
-	    <% } %>
+	    <c:forEach var="i" begin="1" end="${totalPages}">
+            <a href="${pageContext.request.contextPath}/admin/dashboard?page=${i}&keyword=${keyword}">${i}</a>
+        </c:forEach>
 	</div>
 
     

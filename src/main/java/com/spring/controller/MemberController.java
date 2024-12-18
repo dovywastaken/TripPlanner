@@ -27,18 +27,35 @@ public class MemberController {
     private MemberService memberService;
     
     @Autowired
-	MailSender sender;
+	MailSender sender; //메일 서버에 접근해서 메일을 보내기 위해 사용하는 객체
 
-    @GetMapping("/signUp") //회원가입 창 이동
-    public String toSignUp(Model model) {
+    //회원가입 창 이동
+    @GetMapping("/signUp") 
+    public String toSignUp(Model model) { 
         // 회원 가입 폼 페이지로 이동
         System.out.println("===========================================================================================");
         System.out.println("MemberController : members/signUp(GET)으로 매핑되어 signUp.jsp로 이동합니다");
-        model.addAttribute("member", new Member());
+        model.addAttribute("member", new Member()); //폼 태그에서 modelAttribute="member"를 사용하고 있기 때문에 멤버 객체를 들고 가야한다
         return "signUp";
     }
 
-    @PostMapping("/signUp") //회원가입 폼전송
+    //AJAX 요청 아이디 중복 확인 함수
+    @GetMapping("/checkDuplicate") 
+    @ResponseBody
+    public Map<String, Boolean> checkDuplicate(@RequestParam String field, @RequestParam String value) {
+        System.out.println("===========================================================================================");
+        System.out.println("MemberController : /members/checkDuplicate(GET)으로 매핑되었습니다");
+
+        boolean isAvailable = memberService.checkUp(field, value);
+
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("available", isAvailable);
+
+        return response; // JSON 반환
+    }
+
+    //회원가입 폼전송
+    @PostMapping("/signUp") 
     public String fromSignUp(@ModelAttribute("member") Member member, @RequestParam String emailId, @RequestParam String emailDomain) {
         // 회원 가입 요청 처리
         System.out.println("===========================================================================================");
@@ -61,7 +78,8 @@ public class MemberController {
         return "redirect:/";
     }
 
-    @GetMapping("/signIn") //로그인 창 이동
+    //로그인 창 이동
+    @GetMapping("/signIn") 
     public String toLoginPage(Model model) {
         // 로그인 페이지로 이동
         System.out.println("===========================================================================================");
@@ -70,7 +88,8 @@ public class MemberController {
         return "signIn";
     }
 
-    @PostMapping("/signIn") //로그인 폼 전송
+    //로그인 폼 전송
+    @PostMapping("/signIn") 
     public String fromLoginPage(@ModelAttribute("member") Member member, HttpSession session, Model model) {
         System.out.println("===========================================================================================");
         System.out.println("MemberController : members/signIn(POST)으로 매핑되었습니다");
@@ -87,152 +106,27 @@ public class MemberController {
         }
     }
 
-
+    // 로그아웃 처리
     @GetMapping("/signOut")
     public String signOut(HttpSession session) {
-        // 로그아웃 처리
         System.out.println("===========================================================================================");
         System.out.println("MemberController : members/signOut(GET)으로 매핑되었습니다");
         session.invalidate();
         System.out.println("메인페이지로 리다렉션");
         return "redirect:/";
     }
-
+    
+    // 회원 정보 수정 페이지로 이동
     @GetMapping("/myPage")
     public String toMemberInfo(Model model) {
-        // 회원 정보 수정 페이지로 이동
+        
         System.out.println("===========================================================================================");
         System.out.println("MemberController : members/myPage(GET)으로 매핑되어 memberInfo.jsp로 이동합니다");
         model.addAttribute("member", new Member());
         return "myPage";
     }
 
-    @GetMapping("/updateMember")
-    public String toUpdateMember(Model model) {
-        // 회원 정보 수정 페이지로 이동
-        System.out.println("===========================================================================================");
-        System.out.println("MemberController : members/updateMember(GET)으로 매핑되어 updateMember.jsp로 이동합니다");
-        model.addAttribute("member", new Member());
-        return "updateMember";
-    }
-    
-    
-    @PostMapping("/updateMember")
-    public String fromUpdateMember(@ModelAttribute("member") Member member,@RequestParam String emailId, 
-    								@RequestParam String emailDomain, HttpSession session, Model model) 
-    {
-        // 회원 정보 수정 요청 처리
-        System.out.println("===========================================================================================");
-        System.out.println("MemberController : members/updateMember(POST)으로 매핑되었습니다");
-        member.setEmail(emailId, emailDomain);
-        
-        System.out.println("컨트롤러까지 결합된 이메일이 들어옴 "+ member.getEmail());
-        String phone = member.getPhone1();
-        String[] phoneList = phone.split("-");
-        
-        for(int i=1; i<=phoneList.length; i++) 
-        {
-        	member.setPhone1(phoneList[0]);
-            member.setPhone2(phoneList[1]);
-            member.setPhone3(phoneList[2]);
-        }
-        
-        memberService.updateMember(member);
-        String id = (String) member.getId();
-        Member mb = memberService.findById(id);
-        System.out.println(mb);
-        
-        session.setAttribute("user", mb);
-
-        System.out.println("updateMemberComplete 메서드로 리다렉션");
-        return "redirect:/";
-    }
- 
-    @GetMapping("/deleteMember")
-    public String toDeleteMember() {
-        // 회원 탈퇴 페이지로 이동
-        System.out.println("===========================================================================================");
-        System.out.println("MemberController : members/deleteMember(GET)으로 매핑되어 deleteMember.jsp로 이동합니다");
-        return "deleteMember";
-    }
-
-    @PostMapping("/deleteMember")
-    public String fromDeleteMember(HttpSession session) {
-        // 회원 탈퇴 요청 처리
-        System.out.println("===========================================================================================");
-        System.out.println("MemberController : members/deleteMember(POST)으로 매핑되었습니다");
-        Member member = (Member) session.getAttribute("user");
-        memberService.deleteMember(member);
-        session.invalidate();
-        System.out.println("deleteMemberSuccess.jsp로 이동합니다");
-        return "deleteMemberSuccess";
-    }
-    
-    
-    @GetMapping("/checkDuplicate")
-    @ResponseBody
-    public Map<String, Boolean> checkDuplicate(@RequestParam String field, @RequestParam String value) {
-        System.out.println("===========================================================================================");
-        System.out.println("MemberController : /members/checkDuplicate(GET)으로 매핑되었습니다");
-
-        boolean isAvailable = memberService.checkUp(field, value);
-
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("available", isAvailable);
-
-        return response; // JSON 반환
-    }
-    
-    
-    
-    @GetMapping("/pwChange")
-    public String toPwChange(Model model) 
-    {
-    	System.out.println("===========================================================================================");
-        System.out.println("MemberController : /members/toPwChange(GET)으로 매핑되었습니다");
-    	model.addAttribute("member", new Member());
-    	
-    	
-    	System.out.println("pwChange.jsp로 이동합니다");
-    	return "pwChange";
-    }
-    
-    
-    @PostMapping("/pwChange")
-    public String fromPwChange(@ModelAttribute("member") Member member, Model model, HttpSession session) 
-    {
-    	System.out.println("===========================================================================================");
-        System.out.println("MemberController : /members/toPwChange(POST)으로 매핑되었습니다");
-        Member mb = (Member)session.getAttribute("user");
-        String id = mb.getId();
-        String pw = member.getPw();
-        
-        System.out.println("기존 비밀번호 " + mb.getPw() + "에서 "+ member.getPw() + "로 수정합니다");
-    	memberService.updatePw(pw,id);
-        
-        System.out.println("메인페이지로 리다렉션합니다");
-    	return "redirect:/";
-    }
-    
-    @ResponseBody
-    @GetMapping("/checkCurrentPw")
-    public Map<String, String> checkCurrentPw(@RequestParam(value = "value", required = false, defaultValue = "") String value, HttpSession session)
-    {
-    	System.out.println("===========================================================================================");
-        System.out.println("MemberController : members/checkCurrentPw 로 AJAX 매핑");
-        System.out.println(value);
-    	Map<String, String> response = new HashMap<>();
-    	Member member = (Member)session.getAttribute("user");
-    	String pw = member.getPw();
-    	System.out.println(pw);
-    	if(pw.equals(value)) {response.put("true", "true");}else if(value.equals("")) {response.put("none", "none");}else {response.put("false", "false");}
-    	System.out.println(response);
-    	
-    	return response;
-    }
-    
-    
-    
+    //AJAX 요청 이메일 전송 메서드
     @GetMapping("/email")
     @ResponseBody
     public Map<String, String> emailSend(HttpSession session) 
@@ -267,6 +161,7 @@ public class MemberController {
 		return response;
     }
     
+    //인증 이메일 클릭 시 요청되는 메서드
     @GetMapping("/emailCheck")
     public String emailVerify(@RequestParam("userID")String userId, HttpSession session)
     {
@@ -292,9 +187,118 @@ public class MemberController {
     	return "redirect:/members/myPage";
     }
     
+    //회원 정보 수정 페이지로 이동
+    @GetMapping("/updateMember")
+    public String toUpdateMember(Model model) {
+        System.out.println("===========================================================================================");
+        System.out.println("MemberController : members/updateMember(GET)으로 매핑되어 updateMember.jsp로 이동합니다");
+        model.addAttribute("member", new Member());
+        return "updateMember";
+    }
     
+    // 회원 정보 수정 요청 처리
+    @PostMapping("/updateMember")
+    public String fromUpdateMember(@ModelAttribute("member") Member member,@RequestParam String emailId, 
+    								@RequestParam String emailDomain, HttpSession session, Model model) 
+    {
+        System.out.println("===========================================================================================");
+        System.out.println("MemberController : members/updateMember(POST)으로 매핑되었습니다");
+        member.setEmail(emailId, emailDomain);
+        
+        System.out.println("컨트롤러까지 결합된 이메일이 들어옴 "+ member.getEmail());
+        String phone = member.getPhone1();
+        String[] phoneList = phone.split("-");
+        
+        for(int i=1; i<=phoneList.length; i++) 
+        {
+        	member.setPhone1(phoneList[0]);
+            member.setPhone2(phoneList[1]);
+            member.setPhone3(phoneList[2]);
+        }
+        
+        memberService.updateMember(member);
+        String id = (String) member.getId();
+        Member mb = memberService.findById(id);
+        System.out.println(mb);
+        
+        session.setAttribute("user", mb);
+
+        System.out.println("updateMemberComplete 메서드로 리다렉션");
+        return "redirect:/";
+    }
+ 
+    //비밀번호 변경 페이지 이동
+    @GetMapping("/pwChange")
+    public String toPwChange(Model model) 
+    {
+    	System.out.println("===========================================================================================");
+        System.out.println("MemberController : /members/toPwChange(GET)으로 매핑되었습니다");
+    	model.addAttribute("member", new Member());
+    	
+    	
+    	System.out.println("pwChange.jsp로 이동합니다");
+    	return "pwChange";
+    }
     
+    //비밀번호 변경 처리
+    @PostMapping("/pwChange")
+    public String fromPwChange(@ModelAttribute("member") Member member, Model model, HttpSession session) 
+    {
+    	System.out.println("===========================================================================================");
+        System.out.println("MemberController : /members/toPwChange(POST)으로 매핑되었습니다");
+        Member mb = (Member)session.getAttribute("user");
+        String id = mb.getId();
+        String pw = member.getPw();
+        
+        System.out.println("기존 비밀번호 " + mb.getPw() + "에서 "+ member.getPw() + "로 수정합니다");
+    	memberService.updatePw(pw,id);
+        
+        System.out.println("메인페이지로 리다렉션합니다");
+    	return "redirect:/";
+    }
     
+    //입력한 비밀번호와 실제 비밀번호 일치 여부 확인 메서드
+    @ResponseBody
+    @GetMapping("/checkCurrentPw")
+    public Map<String, String> checkCurrentPw(@RequestParam(value = "value", required = false, defaultValue = "") String value, HttpSession session)
+    {
+    	System.out.println("===========================================================================================");
+        System.out.println("MemberController : members/checkCurrentPw 로 AJAX 매핑");
+        System.out.println(value);
+    	Map<String, String> response = new HashMap<>();
+    	Member member = (Member)session.getAttribute("user");
+    	String pw = member.getPw();
+    	System.out.println(pw);
+    	if(pw.equals(value)) {response.put("true", "true");}else if(value.equals("")) {response.put("none", "none");}else {response.put("false", "false");}
+    	System.out.println(response);
+    	
+    	return response;
+    }
     
+    //회원 탈퇴페이지 이동
+    @GetMapping("/deleteMember")
+    public String toDeleteMember(HttpSession session, Model model) 
+    {
+    	System.out.println("===========================================================================================");
+        System.out.println("MemberController : members/deleteMember(GET)으로 매핑되었습니다");
+        Member member = (Member) session.getAttribute("user");
+        model.addAttribute("member", member);
+        System.out.println("deleteMember.jsp로 이동합니다");
+        
+        return "deleteMember";
+    }
+
+    //회원 탈퇴 처리
+    @PostMapping("/deleteMember")
+    public String fromDeleteMember(HttpSession session) {
+        // 회원 탈퇴 요청 처리
+        System.out.println("===========================================================================================");
+        System.out.println("MemberController : members/deleteMember(POST)으로 매핑되었습니다");
+        Member member = (Member) session.getAttribute("user");
+        memberService.deleteMember(member);
+        session.invalidate();
+        System.out.println("deleteMemberSuccess.jsp로 이동합니다");
+        return "deleteMemberSuccess";
+    }
     
 }

@@ -1,4 +1,5 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function() 
+{
     let checkButton = document.getElementById("email");
     checkButton.addEventListener('click', emailCheck);
 });
