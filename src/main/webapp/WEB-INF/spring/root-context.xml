@@ -6,8 +6,8 @@
            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
     <!-- 컴포넌트 스캔을 통해 서비스 및 리포지토리 클래스 스캔 -->
-    <context:component-scan base-package="com.spring.repository" />
-    <context:component-scan base-package="com.spring.service" />
+    <context:component-scan base-package="com.spring.repository.*" />
+    <context:component-scan base-package="com.spring.service.*" />
 
     <!-- 데이터베이스 연결 설정 -->
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
