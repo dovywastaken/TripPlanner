@@ -202,20 +202,31 @@ public class MemberController {
 
     // 회원 정보 수정 요청 처리
     @PostMapping("/updateMember")
-    public String fromUpdateMember(HttpSession session, Model model,
+    public String fromUpdateMember(@ModelAttribute("user") Member member , HttpSession session, Model model,
                                     @RequestParam String emailId, @RequestParam String emailDomain) {
         System.out.println("===========================================================================================");
         System.out.println("MemberController : members/updateMember(POST)으로 매핑되었습니다");
-        Member member = (Member)session.getAttribute("user");
+        System.out.println("기존 이메일 주소 : "+ member.getEmail());
+    
+        
         // 이메일 설정
         member.setEmail(emailId, emailDomain);
+        String id = member.getId();
+        String phone = member.getPhone1();
+        String[] phoneList = phone.split("-");
+    	member.setPhone1(phoneList[0]);
+        member.setPhone2(phoneList[1]);
+        member.setPhone3(phoneList[2]);
         
         // 회원 정보 업데이트
         memberService.updateMember(member);
         Member updatedMember = memberService.findById(id);
+        System.out.println("파인드바이아이디 통과 ");
+        
 
         // 세션에 업데이트된 정보 반영
         session.setAttribute("user", updatedMember);
+        System.out.println("세션 담기 통과 ");
 
         System.out.println("updateMemberComplete 메서드로 리다렉션");
         return "redirect:/";

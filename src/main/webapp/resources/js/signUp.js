@@ -204,6 +204,10 @@ function domainValidator() {
     let domainPattern = /^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
     var messageElement = document.getElementById('message_email');
+	if(emailDomain === ''){
+			messageElement.innerHTML = '';
+			return false;
+	}
     if (!domainPattern.test(emailDomain)) {
         messageElement.innerHTML = '<span style="color:red;">유효한 이메일 도메인 형식이 아닙니다.</span>';
         return false;
@@ -211,6 +215,8 @@ function domainValidator() {
         messageElement.innerHTML = '<span style="color:green;">이메일 도메인이 유효합니다.</span>';
         return true;
     }
+	
+	
 }
 
 function phoneValidator() {

@@ -24,7 +24,8 @@
 
         <div class="form-group">
           <label for="id">아이디 :</label>
-          <input type="text" name="id" id ="id" value="${user.id}" placeholder="아이디" disabled/>
+          <input type="text" value="${user.id}" placeholder="아이디" disabled/>
+          <input type="hidden" name="id" id="id" value="${user.id}" />
         </div>
 
         <div class="form-group">
@@ -38,6 +39,7 @@
           <input type="text" id="emailId" name="emailId" placeholder="이메일" value="${emailParts[0]}"/>@
           <input type="text" id="emailDomain" name="emailDomain" value="${emailParts[1]}" placeholder="sample.com" readonly/>
           <select id="emailSelect" required="required" onchange="updateDomainInput(this)">
+          		<option value="${emailParts[1]}" disabled selected>--</option>
 	            <option value="custom">직접입력</option>
                 <option value="naver.com">naver.com</option>
                 <option value="gmail.com">gmail.com</option>
@@ -46,13 +48,14 @@
                 <option value="icloud.com">icloud.com</option>
           </select>
           <div id="message_email"></div>
+          <div id="message_email_warning"></div>
+          
         </div>
 
         <div class="form-group">
           <label for="region">지역 :</label>
-          <select id="region">
-	            <option value="" label="지역 선택"/>
-	            <option value="" label="지역 선택"/>
+          <select id="region" name="region">
+	            <option value="${member.region}" label="지역 선택하기" selected />
 	            <option value="서울" label="서울"/>
 	            <option value="부산" label="부산"/>
 	            <option value="대구" label="대구"/>
@@ -76,6 +79,7 @@
         <div class="form-group">
           <label for="phone1">전화번호 :</label>
           <input type="text" name="phone1" value="${user.phone1}-${user.phone2}-${user.phone3}" id="phone" placeholder="전화번호"/>
+          <div id="message_phone"></div>
         </div>
 
         <div class="form-group">
