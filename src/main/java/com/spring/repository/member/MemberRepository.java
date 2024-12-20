@@ -21,5 +21,6 @@ public interface MemberRepository
 	//Delete
 	void deleteMember(Member member);
 	//Validation
-	boolean checkUp(String field, String value);
+	boolean idCheckUp(String id);
+	boolean emailCheckUp(String email);
 }

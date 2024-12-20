@@ -23,6 +23,8 @@ public class MemberMapper implements RowMapper<Member>
 		member.setPhone3(rs.getString(9));
 		member.setBirthday(rs.getString(10));
 		member.setEmailCheck(rs.getInt(11));
+		member.setRegisterDate(rs.getDate(12));
+		member.setLoginDate(rs.getDate(13));
 
 		return member;
 	}

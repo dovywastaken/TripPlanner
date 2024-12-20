@@ -1,5 +1,7 @@
 package com.spring.domain;
 
+import java.sql.Date;
+
 public class Member 
 {
     private String id;       // 사용자 ID
@@ -13,6 +15,8 @@ public class Member
     private String birthday; // 생년월일
     private String email;    // 이메일
     private int emailCheck; //이메일 인증 여부
+    private Date registerDate; //가입일
+    private Date loginDate; //최근 접속일
     
     // 생성자, 게터, 세터들
 
@@ -91,4 +95,22 @@ public class Member
 	{
 		this.emailCheck = emailCheck;
 	}
+	
+	public Date getLoginDate() {
+		return loginDate;
+	}
+	public void setLoginDate(Date loginDate) {
+		this.loginDate = loginDate;
+	}
+	
+	public Date getRegisterDate() {
+		return registerDate;
+	}
+	
+	public void setRegisterDate(Date registerDate) {
+		this.registerDate = registerDate;
+	}
+
+	
+	
 }

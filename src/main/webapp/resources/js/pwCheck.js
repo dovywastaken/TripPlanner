@@ -81,19 +81,30 @@ function pwValidator() { //비밀번호 유효성 체크
 
 
 function passwordCheck() {
-    pw1 = document.getElementById("pw1").value;
-    pw2 = document.getElementById("pw2").value;
-    let pwCheck = document.getElementById("pwCheck");
+    let cpw = document.getElementById("pw").value; // 현재 비밀번호
+    let pw1 = document.getElementById("pw1").value; // 새 비밀번호
+    let pw2 = document.getElementById("pw2").value; // 새 비밀번호 확인
+    let pwCheck = document.getElementById("pwCheck"); // 메시지 표시 div
 
+    // 새 비밀번호와 비밀번호 확인이 일치하는지 체크
     if (pw1 !== pw2) {
         pwCheck.innerHTML = '<span style="color:red;">비밀번호가 서로 일치하지 않습니다.</span>';
         return false;
-    } else {
-        pwCheck.innerHTML = "";
-        document.getElementById("memPassword").value = pw1;
-        return true;
     }
+
+    // 새 비밀번호와 현재 비밀번호가 동일한지 체크
+    if (cpw === pw1) {
+        pwCheck.innerHTML = '<span style="color:red;">현재 비밀번호와 새 비밀번호가 같습니다.</span>';
+        return false;
+    }
+
+    // 비밀번호 일치 및 현재 비밀번호와의 중복 검사를 통과하면 비밀번호를 설정하고 메시지를 비웁니다.
+    pwCheck.innerHTML = "";
+    document.getElementById("memPassword").value = pw1;
+    return true;
 }
+
+
 function submit(event)
 {
 	if(passwordCheck() == true && pwValidator() == true && pwcheck === 1)

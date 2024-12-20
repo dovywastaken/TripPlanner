@@ -1,5 +1,6 @@
 package com.spring.repository.member;
 
+import java.sql.Date;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -33,15 +34,42 @@ public class MemberRepositoryImpl implements MemberRepository
     {
     	System.out.println("+++++++++++++++++++++++++++++++++++++++");
     	System.out.println("[MemberRepository : createMember 메서드 호출]");
-        String sql = "INSERT INTO t_member (name, id, pw, email, region, sex, phone1, phone2, phone3, birthday, emailCheck) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)";  
+        String sql = "INSERT INTO t_member (name, id, pw, email, region, sex, phone1, phone2, phone3, birthday, emailCheck, registerDate ,loginDate) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?)";  
+        Date date = new Date(System.currentTimeMillis());
         template.update(sql, 
-        			member.getName(), member.getId(), member.getPw(), member.getEmail(),
-        			member.getRegion(), member.getSex(), 
-                    member.getPhone1(), member.getPhone2(), member.getPhone3(), member.getBirthday());
+        			member.getName(), member.getId(), member.getPw(), member.getEmail(), member.getRegion(), 
+        			member.getSex(), member.getPhone1(), member.getPhone2(), member.getPhone3(),member.getBirthday(),
+                    date, date);
         System.out.println("폼태그에 작성한 데이터를 dto에 넣고 그것을 db에 집어넣습니다");
         System.out.println("[MemberRepository : createMember 메서드 종료]");
     }
+    
+  //회원가입 시 입력한 아이디가 db에 존재해서 리턴이 false가 된다면 중복된 아이디를 표시
+  	@Override
+  	public boolean idCheckUp(String id) 
+  	{
+  		System.out.println("+++++++++++++++++++++++++++++++++++++++");
+    	System.out.println("[MemberRepository : checkUp 메서드 호출]");
+  	    String sql = "select count(*) from t_member where id = ?";
+  	    int count = template.queryForObject(sql, Integer.class, id);
+  	    System.out.println("총 " + count + "개의 중복된 아이디가 있습니다");
+  	    return count >= 1;  // 이미 존재하는 값이 있으면 true
+  	}
+
+
+  //회원가입 시 입력한 아이디가 db에 존재해서 리턴이 false가 된다면 중복된 아이디를 표시
+  	@Override
+  	public boolean emailCheckUp(String email) 
+  	{
+  		System.out.println("+++++++++++++++++++++++++++++++++++++++");
+    	System.out.println("[MemberRepository : checkUp 메서드 호출]");
+  	    String sql = "select count(*) from t_member where email = ?";
+  	    int count = template.queryForObject(sql, Integer.class, email);
+  	    System.out.println("총 " + count + "개의 중복된 이메일이 있습니다");
+  	    return count >= 1;  // 이미 존재하는 값이 있으면 true
+  	}
+    
 
     //Read
 
@@ -52,9 +80,12 @@ public class MemberRepositoryImpl implements MemberRepository
     	System.out.println("+++++++++++++++++++++++++++++++++++++++");
     	System.out.println("[MemberRepository : findById 메서드 호출]");
         String sql = "SELECT * FROM t_member WHERE id = ?";
+        String updateSql = "UPDATE t_member SET loginDate = ? WHERE id = ?";
+        Date date = new Date(System.currentTimeMillis());
         try {
         	System.out.println("입력한 id에 맞는 dto를 가져옵니다");
         	System.out.println("들고온 아이디는 " + id);
+        	template.update(updateSql,date,id);
         	System.out.println("[MemberRepository : findById 메서드 종료]");
             return template.queryForObject(sql, new MemberMapper(), new Object[]{id});
         } catch (Exception e) {
@@ -191,20 +222,4 @@ public class MemberRepositoryImpl implements MemberRepository
         System.out.println("로그인한 사용자의 정보를 삭제합니다");
         System.out.println("[MemberRepository : deleteMember 메서드 종료]");
     }
-
-    //회원가입 시 입력한 아이디가 db에 존재해서 리턴이 false가 된다면 중복된 아이디를 표시
-	@Override
-	public boolean checkUp(String field, String value) 
-	{
-		String sql = "select count(*) from t_member where " + field + " = ?";
-		int count = template.queryForObject(sql, Integer.class, value);
-		if(count == 0) 
-		{
-			return true;
-		}
-		else 
-		{
-			return false;
-		}
-	}
 }

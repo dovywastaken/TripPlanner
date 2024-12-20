@@ -39,18 +39,39 @@ public class MemberController {
         return "member/signUp";
     }
 
-    //AJAX 요청 아이디 중복 확인 함수
-    @GetMapping("/checkDuplicate") 
+    //AJAX 요청 아이디,이메일 중복 확인 함수
+    @GetMapping("/idCheckDuplicate") 
     @ResponseBody
-    public Map<String, Boolean> checkDuplicate(@RequestParam String field, @RequestParam String value) {
+    public Map<String, Boolean> idCheckDuplicate(@RequestParam String value) {
         System.out.println("===========================================================================================");
-        System.out.println("MemberController : /members/checkDuplicate(GET)으로 매핑되었습니다");
-
-        boolean isAvailable = memberService.checkUp(field, value);
+        System.out.println("MemberController : /members/idCheckDuplicate(GET)으로 매핑되었습니다");
+        System.out.println("아이디"+value);
+        
+        boolean notAvailable = memberService.idCheckUp(value);
 
         Map<String, Boolean> response = new HashMap<>();
-        response.put("available", isAvailable);
 
+        response.put("notAvailable", notAvailable);
+        
+        return response; // JSON 반환
+    }
+
+
+    //AJAX 요청 이메일 중복 확인 함수
+    @GetMapping("/emailCheckDuplicate") 
+    @ResponseBody
+    public Map<String, Boolean> emailCheckDuplicate(@RequestParam String emailId, @RequestParam String domain) {
+        System.out.println("===========================================================================================");
+        System.out.println("MemberController : /members/emailCheckDuplicate(GET)으로 매핑되었습니다");
+
+        String email = emailId + "@"+ domain;
+        System.out.println("뷰페이지로부터 파라미터로 받아 들고온 이메일은 "+email);
+        boolean notAvailable = memberService.emailCheckUp(email);
+
+        Map<String, Boolean> response = new HashMap<>();
+
+        response.put("notAvailable", notAvailable);
+        
         return response; // JSON 반환
     }
 
@@ -95,11 +116,27 @@ public class MemberController {
         System.out.println("MemberController : members/signIn(POST)으로 매핑되었습니다");
         
         Member loginMb = memberService.findById(member.getId());
+        
         if (loginMb != null && loginMb.getPw().equals(member.getPw())) {
             session.setAttribute("user", loginMb);
             System.out.println("메인페이지로 리다렉션");
             return "redirect:/";
-        } else {
+        }
+        else if(member.getId() == null || member.getId() == "") 
+        {
+        	model.addAttribute("EmptyForm", "아이디를 입력해주세요");
+        	System.out.println("아이디가 빈 경우");
+            System.out.println("로그인 정보가 맞지 않아 signIn.jsp로 이동합니다");
+            return "member/signIn";
+        }
+        else if(member.getPw() == null || member.getPw() == "") 
+        {
+        	model.addAttribute("EmptyForm", "비밀번호를 입력해주세요");
+        	System.out.println("비밀번호가 빈 경우");
+            System.out.println("로그인 정보가 맞지 않아 signIn.jsp로 이동합니다");
+            return "member/signIn";
+        }
+        else {
             model.addAttribute("loginError", "아이디 또는 비밀번호가 일치하지 않습니다.");
             System.out.println("로그인 정보가 맞지 않아 signIn.jsp로 이동합니다");
             return "member/signIn";
