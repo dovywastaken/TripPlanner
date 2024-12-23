@@ -133,7 +133,7 @@
                     <a href="members/signUp" class="nav-link">회원가입</a>
                     <a href="admin/dashboard" class="nav-link">회원 목록</a>
                     <a href="/TripPlanner/Allboard" class="nav-link">게시판</a>
-                    <a href="/TripPlanner/postform" class="nav-link">작성</a>
+                    <a href="landmark/list" class="nav-link">관광지</a>
                 </c:otherwise>
             </c:choose>
         </section>
