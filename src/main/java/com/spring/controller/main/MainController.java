@@ -19,7 +19,6 @@ public class MainController
 		System.out.println("===========================================================================================");
 		Member member = (Member) session.getAttribute("user");
         model.addAttribute("member", member);
-		
 		System.out.println("MainController : 프로젝트명으로 매핑되어 mainPage.jsp로 이동합니다");
 		return "mainPage";
 	}
