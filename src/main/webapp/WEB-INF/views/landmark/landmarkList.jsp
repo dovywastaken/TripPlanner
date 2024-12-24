@@ -93,10 +93,161 @@ a {
     color: #0056b3;
 }
 
+        .filter-container {
+            font-family: 'Arial', sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        .filter-section {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .filter-group {
+            flex: 1;
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+
+        .filter-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .filter-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .filter-option {
+            padding: 8px 12px;
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-option:hover {
+            background-color: #e9e9e9;
+        }
+
+        .filter-option.selected {
+            background-color: #007bff;
+            color: white;
+            border-color: #0056b3;
+        }
+
+        .sub-region {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+            display: none;
+        }
+
+        .sub-region.visible {
+            display: block;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .action-button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .select-button {
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+        }
+
+        .reset-button {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .action-button:hover {
+        	background-color: red;
+            opacity: 0.5;
+        }
+
+        #selected-filters {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+
+
     </style>
 </head>
 <body>
 <a href="${pageContext.request.contextPath}">Home</a>
+    <div class="filter-container">
+        <div class="filter-section">
+            <div class="filter-group">
+                <div class="filter-title">관광 타입</div>
+                <div class="filter-options" id="tourType">
+                    <div class="filter-option" data-value="tourist">관광지</div>
+                    <div class="filter-option" data-value="culture">문화시설</div>
+                    <div class="filter-option" data-value="festival">축제공연</div>
+                    <div class="filter-option" data-value="leisure">레포츠</div>
+                    <div class="filter-option" data-value="shopping">쇼핑</div>
+                </div>
+            </div>
+            
+            <div class="filter-group">
+                <div class="filter-title">지역</div>
+                <div class="filter-options" id="region">
+                    <div class="filter-option" data-value="seoul">서울특별시</div>
+                    <div class="filter-option" data-value="busan">부산광역시</div>
+                    <div class="filter-option" data-value="daegu">대구광역시</div>
+                    <div class="filter-option" data-value="incheon">인천광역시</div>
+                    <div class="filter-option" data-value="gwangju">광주광역시</div>
+                    <div class="filter-option" data-value="daejeon">대전광역시</div>
+                    <div class="filter-option" data-value="ulsan">울산광역시</div>
+                    <div class="filter-option" data-value="sejong">세종특별자치시</div>
+                    <div class="filter-option" data-value="gyeonggi">경기도</div>
+                    <div class="filter-option" data-value="gangwon">강원도</div>
+                    <div class="filter-option" data-value="chungbuk">충청북도</div>
+                    <div class="filter-option" data-value="chungnam">충청남도</div>
+                    <div class="filter-option" data-value="jeonbuk">전라북도</div>
+                    <div class="filter-option" data-value="jeonnam">전라남도</div>
+                    <div class="filter-option" data-value="gyeongbuk">경상북도</div>
+                    <div class="filter-option" data-value="gyeongnam">경상남도</div>
+                    <div class="filter-option" data-value="jeju">제주특별자치도</div>
+                </div>
+                <div class="sub-region" id="subRegion">
+                    <!-- 하위 지역은 JavaScript로 동적 생성됨 -->
+                </div>
+            </div>
+        </div>
+        
+        <div class="action-buttons">
+            <button class="action-button select-button">선택</button>
+            <button class="action-button reset-button">초기화</button>
+        </div>
+
+        <div id="selected-filters">
+            선택된 필터: <span id="filter-display"></span>
+        </div>
+    </div>
+
     <div class="container">
         <div class="image-placeholder">
             썸네일
