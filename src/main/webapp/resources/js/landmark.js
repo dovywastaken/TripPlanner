@@ -8,76 +8,23 @@ let previousSigungu = null; // 직전에 선택했던 구 단위
 
 let regionResult = 1;//얘는 나중에 AJAX에 파라미터로 보내줄 값
 let tourResult = 12; //얘는 나중에 AJAX에 파라미터로 보내줄 값
-let sigunguResult = null; // AJAX로 보낼 구 단위 값
+let sigunguResult = 1; // AJAX로 보낼 구 단위 값
 
-const regionDivs = document.querySelectorAll('.regionType div'); //지역 목록이 배열로 들어감
+const regionDivs = document.querySelectorAll('.region'); //지역 목록이 배열로 들어감
+const firstRegion = regionDivs[1];
+const sigunguDivs = document.querySelectorAll('.sigunguType');
 const tourDivs = document.querySelectorAll('.tourType div'); //모든 관광 목록이 배열로 들어감
+
 
 const filterResult = document.getElementById("filterResult");
 const reset = document.getElementById('reset');
 const requestAPI = document.getElementById('requestAPI');
 
 
-
-
-
-
-
 document.addEventListener('DOMContentLoaded', function() {
     console.log("페이지 로딩");
     loadAjax();
 });
-
-function loadAjax() {
-    let open_key = 'WrDDwyS8ewwsZtX%2Bw9POHX4r8rVWShuslpdt7%2Bv0hEZhVvlddHkM0eFnIi2DYxfltV0h9zHXlW6mgecGdjXqvw%3D%3D';
-    let arrrange = 'A';
-    let sigunguCode = 1;
-
-    console.log("loadAjax 실행됨");
-    $.ajax({
-        url: "https://apis.data.go.kr/B551011/KorService1/areaBasedList1?serviceKey=" + open_key,
-        type: 'GET',
-        dataType: 'json',
-        data: {
-            MobileApp: 'AppTest',
-            MobileOS: 'ETC',
-            listYN: 'Y',
-			contentTypeId: tourConverter(tourResult),
-            arrange: arrrange,
-            areaCode: regionConverter(regionResult),
-            sigunguCode: sigunguCode,
-            _type: 'json',
-            numOfRows: 3,  // 최대 8개 데이터 가져오기
-            pageNo: 1
-        },
-        success: function(response) {
-            console.log("AJAX 요청 성공");
-            const items = response.response.body.items.item; // API에서 데이터 가져오기
-            items.forEach(function(item, index) {
-                const itemId = `.container:nth-child(${index + 2})`; // 각 container div 선택
-                const imagePlaceholder = $(itemId).find('.image-placeholder');
-                const title = $(itemId).find('.title');
-                const overview = $(itemId).find('.overview');
-                const contentTypeId = $(itemId).find('#contentTypeId');
-                const cat1 = $(itemId).find('#cat1');
-                const addr1 = $(itemId).find('#addr1');
-                const cat3 = $(itemId).find('#cat3');
-
-                // 데이터로 업데이트
-                imagePlaceholder.html(`<img src="${item.firstimage2}" alt="${item.title}">`);
-                title.text(item.title);
-                overview.text(item.overview);
-                contentTypeId.text(item.contenttypeid);
-                cat1.text(item.cat1);
-                addr1.text(item.addr1);
-                cat3.text(item.cat3);
-            });
-        },
-        error: function(error) {
-            console.error('첫 번째 AJAX 요청 실패! Error:', error);
-        }
-    });
-}
 
 
 reset.addEventListener('click', function()
@@ -90,6 +37,7 @@ reset.addEventListener('click', function()
 	regionResult = null;
 	tourResult = null;
 	filterResult.innerHTML = "선택한 필터 : ";
+	console.log(firstRegion);
 	
 });
 
@@ -98,6 +46,8 @@ requestAPI.addEventListener('click', function()
 	if(regionResult && tourResult)
 	{
 		console.log(regionResult+ ", " + tourResult);
+		regionConverter(regionResult);
+		tourConverter(tourResult);
 		loadAjax();
 	}
 	else
@@ -109,48 +59,31 @@ requestAPI.addEventListener('click', function()
 
 
 
-regionDivs.forEach(div => { //지역 배열을 반복문으로 div 하나하나 마다 click 이벤트를 지정
+regionDivs.forEach(div => {
     div.addEventListener('click', () => {
-        regionSelect = div.textContent; //클릭이 되면 해당 div 안의 value가 regionSelect의 값으로 대입됨
-        
-        if (previousRegion === null) { //지역 필터 처음 선택할 때
-            previousRegion = regionSelect; //일단 직전 선택과 현재 선택 모두 값 담아주고
-            if (tourSelect === null) { //만약 관광 타입을 아직 설정하지 않았다면
-                filterResult.innerHTML = "선택한 지역 : " + regionSelect;
-                regionResult = regionSelect; //지역 정보만 결과에 담는다
-            } else { //만약 관광 타입이 이미 선택된 상황이라면
-                filterResult.innerHTML = "선택한 지역 : " + regionSelect + ", 선택한 관광 타입 : " + tourSelect;
-                regionResult = regionSelect;
-                tourResult = tourSelect;
-            }
-        } else if (previousRegion === regionSelect) { //직전 선택과 현재 선택이 같다면
-            filterResult.innerHTML = "선택한 필터 : "; //다시 초기화
-            previousRegion = null; //다시 초기화
+        regionSelect = div.textContent.trim(); // 선택된 지역
+        if (previousRegion !== regionSelect) {
+            previousRegion = regionSelect;
+            sigunguSelect = null; // 지역 변경 시 구 단위 초기화
+            sigunguResult = null; // 구 단위 값 초기화
+            filterResult.innerHTML = "선택한 지역 : " + regionSelect;
+            regionResult = regionSelect; // 지역 값 업데이트
+        } else {
+            // 동일 지역을 클릭하면 초기화
+            previousRegion = null;
             regionSelect = null;
             regionResult = null;
-            if (tourSelect === null) {
-                regionResult = null; //다시 초기화
-                tourResult = tourSelect; //다시 초기화
-                filterResult.innerHTML = "선택한 필터 : ";
-            } else {
-                tourResult = tourSelect; //다시 초기화
-                filterResult.innerHTML = "선택한 관광 타입 : " + tourSelect;
-            }
-        } else {
-            previousRegion = regionSelect;
-            if (tourSelect === null) {
-                filterResult.innerHTML = "선택한 필터 : " + regionSelect; //방금 선택한 항목 표시하기
-                regionResult = regionSelect;
-            } else {
-                filterResult.innerHTML = "선택한 지역 : " + regionSelect + ", 선택한 관광 타입 : " + tourSelect;
-                regionResult = regionSelect;
-                tourResult = tourSelect;
-            }
+            filterResult.innerHTML = "선택한 필터 : ";
         }
-        console.log("지역 : " + regionSelect + ", 관광 : " + tourSelect);
-        console.log("최종 리스트에 담긴  항목은 : " + regionResult, tourResult);
+        console.log("지역 : " + regionSelect);
+		console.log("지역 선택 결과 : " + regionResult);
     });
 });
+
+
+
+
+
 
 tourDivs.forEach(div => { // 관광 배열을 반복문으로 div 하나하나 마다 click 이벤트를 지정
     div.addEventListener('click', () => {
@@ -194,6 +127,70 @@ tourDivs.forEach(div => { // 관광 배열을 반복문으로 div 하나하나 �
         console.log("최종 리스트에 담긴  항목은 : " + regionResult, tourResult);
     });
 });
+
+
+function logDistricts(region) {
+    region.forEach(div => {
+        div.addEventListener('click', () => {
+            console.log(div.textContent);
+        });
+    });
+}
+
+
+
+function loadAjax() {
+    let open_key = 'WrDDwyS8ewwsZtX%2Bw9POHX4r8rVWShuslpdt7%2Bv0hEZhVvlddHkM0eFnIi2DYxfltV0h9zHXlW6mgecGdjXqvw%3D%3D';
+    let arrrange = 'A';
+    let sigunguCode = 1;
+
+    console.log("loadAjax 실행됨");
+    $.ajax({
+        url: "https://apis.data.go.kr/B551011/KorService1/areaBasedList1?serviceKey=" + open_key,
+        type: 'GET',
+        dataType: 'json',
+        data: {
+            MobileApp: 'AppTest',
+            MobileOS: 'ETC',
+            listYN: 'Y',
+			contentTypeId: tourConverter(tourResult),
+            arrange: arrrange,
+            areaCode: regionConverter(regionResult),
+            sigunguCode: sigunguCode,
+            _type: 'json',
+            numOfRows: 8,  // 최대 8개 데이터 가져오기
+            pageNo: 1
+        },
+        success: function(response) {
+            console.log("AJAX 요청 성공");
+            const items = response.response.body.items.item; // API에서 데이터 가져오기
+            items.forEach(function(item, index) {
+                const itemId = `.container:nth-child(${index + 5})`; // 각 container div 선택
+                const imagePlaceholder = $(itemId).find('.image-placeholder');
+                const title = $(itemId).find('.title');
+                const overview = $(itemId).find('.overview');
+                const contentTypeId = $(itemId).find('#contentTypeId');
+                const cat1 = $(itemId).find('#cat1');
+                const addr1 = $(itemId).find('#addr1');
+                const cat3 = $(itemId).find('#cat3');
+
+                // 데이터로 업데이트
+                imagePlaceholder.html(`<img src="${item.firstimage2}" alt="${item.title}">`);
+                title.text(item.title);
+                overview.text(item.overview);
+                contentTypeId.text(item.contenttypeid);
+                cat1.text(item.cat1);
+                addr1.text(item.addr1);
+                cat3.text(item.cat3);
+            });
+        },
+        error: function(error) {
+            console.error('첫 번째 AJAX 요청 실패! Error:', error);
+        }
+    });
+}
+
+
 
 function regionConverter(regionResult)
 {
@@ -496,8 +493,6 @@ function sigunguConverter(sigunguResult) {
   
     return regionCode[regionResult];
 }
-
-
 
 
 function tourConverter(tourResult)
