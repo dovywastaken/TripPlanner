@@ -7,13 +7,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>트립플래너</title>
+    
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/normalize.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/header.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mainPage.css">
 </head>
 <body>
-<%@ include file="/WEB-INF/views/header.jsp"%>
-	
+<div class="container-fluid">
+	<%@ include file="/WEB-INF/views/header.jsp"%>
+		
     <main class="main-content">
         <section class="section welcome-section">
             <c:choose>
@@ -23,7 +25,6 @@
                     <a href="members/myPage" class="nav-link">마이 페이지</a>
                     <a href="admin/dashboard" class="nav-link">회원 목록</a>
                     <a href="/TripPlanner/Allboard" class="nav-link">게시판</a>
-                    
                 </c:when>
                 <c:otherwise>
                     <p class="welcome-message">환영합니다! 로그인을 해주세요.</p>
@@ -55,36 +56,11 @@
                 <a href="/TripPlanner/postform" class="nav-link">작성</a>
             </section>
         </c:if>
-
-        <section class="section popular-plans">
-            <h2 class="section-title">인기 여행 계획</h2>
-            <div class="card-container">
-                <div class="card">경주 불국사</div>
-                <div class="card">추가 여행 계획</div>
-                <div class="card">다른 여행 계획</div>
-            </div>
-        </section>
-
-        <section class="section festivals">
-            <h2 class="section-title">축제들</h2>
-            <div class="card-container">
-                <div class="card">김밥축제</div>
-                <div class="card">다른 축제</div>
-            </div>
-        </section>
-
-        <section class="section landmarks">
-            <h2 class="section-title">관광지</h2>
-            <div class="card-container">
-                <div class="card">경주 대릉원</div>
-                <div class="card">추가 관광지</div>
-            </div>
-        </section>
     </main>
+	<%@ include file="/WEB-INF/views/footer.jsp"%>
+</div>
 
-    <footer class="footer">
-        <p>© 2024 TripPlanner. All rights reserved.</p>
-    </footer>
+
 </body>
 </html>
 
