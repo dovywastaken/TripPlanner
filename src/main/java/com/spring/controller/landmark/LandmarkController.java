@@ -15,12 +15,4 @@ public class LandmarkController {
     	
         return "landmark/landmarkList";
     }
-    
-    @GetMapping("/filterTest")
-    public String toTestChamber() 
-    {
-    	
-    	return "landmark/filter";
-    }
-    
 }
