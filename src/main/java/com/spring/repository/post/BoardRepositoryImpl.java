@@ -62,14 +62,43 @@ public class BoardRepositoryImpl implements BoardRepository {
         result.put("Allpostgetnum", totalPosts);
         return result;
     }
-	
-	
-	/*
-	public Map<String, Object> hotPlanner()
-	{
-		
+	@Override
+	public Map<String, Object> getMyboard(String member, int page) {
+		 int pageSize = 10; 
+	     int startIndex = (page - 1) * pageSize; 
+	     Map<String, Object>result = new HashMap<String,Object>();
+	     
+	    String getnumSQL="SELECT count(*) FROM POST WHERE id=?"; 
+		String myboardSQL="SELECT * FROM Post WHERE id=? ORDER BY publishdate DESC LIMIT ?, ?";
+		List<Post> Allpost=template.query(myboardSQL, new PostRowMapper(),member, startIndex, pageSize);
+		int totalPosts=template.queryForObject(getnumSQL, Integer.class,member);
+		result.put("Allpost", Allpost);
+		result.put("Allpostgetnum",totalPosts);
+		return result;
 	}
-	*/
+
+	@Override
+	public Map<String, Object> mysearchPosts(String id,String keyword, int page) {
+		   int pageSize = 10; 
+	        int startIndex = (page - 1) * pageSize; 
+
+	        
+	        String mySearchSql = "SELECT * FROM Post WHERE id=? And title Like ? ORDER BY publishdate DESC LIMIT ?, ?";
+	        String countSql = "SELECT COUNT(*) FROM Post WHERE id=? And title LIKE ?";
+	        keyword = "%" + keyword + "%"; 
+	
+
+	        List<Post> posts = template.query(mySearchSql, new PostRowMapper(),id, keyword, startIndex, pageSize);
+	        int totalPosts = template.queryForObject(countSql, Integer.class,id,keyword);
+
+	        
+	        Map<String, Object> result = new HashMap<>();
+	        result.put("Allpost", posts);
+	        result.put("Allpostgetnum", totalPosts);
+	        return result;
+	}
+	
+	
 }
 
 

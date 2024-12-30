@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.domain.Comment;
+import com.spring.domain.Likes;
+import com.spring.domain.Member;
 import com.spring.service.post.CommentService;
 
 
@@ -33,16 +35,25 @@ public class CommentController {
 
     @GetMapping
     public Map<String, Object> getComments(@RequestParam("postId") int postId,
-                                           @RequestParam(value="page", defaultValue="1") int page) {
+                                           @RequestParam(value="page", defaultValue="1") int page,
+                                           HttpSession session) {
+    	
+    	Member member=(Member) session.getAttribute("user");
+    	Map<String, Object> response = new HashMap<>();
         int pageSize = 10;
         int totalCount = commentService.countCommentsByPostId(postId);
         int totalPage = (int)Math.ceil((double)totalCount / pageSize);
-
-        List<Comment> comments = commentService.getCommentsByPostId(postId, page, pageSize);
-        if(comments==null) {
-        	comments=new ArrayList<>();
+        String id=null;
+        if(member!=null) {
+        id =member.getId();
+        response = commentService.getCommentsByPostId(postId, page, pageSize,id);
+        }else {
+        response = commentService.getCommentsByPostId(postId, page, pageSize,id);	
         }
-        Map<String, Object> response = new HashMap<>();
+        List<Comment> comments=(List<Comment>) response.get("comments");
+        List<Integer> commentisLike=(List<Integer>) response.get("isLike");
+        
+        response.put("commentisLike", commentisLike);
         response.put("comments", comments);
         response.put("currentPage", page);
         response.put("totalPage", totalPage);
@@ -79,12 +90,34 @@ public class CommentController {
         return response;
     }
 
-    @PostMapping("/{c_unique}/like")
-    public Map<String,Object> likeComment(@PathVariable int c_unique) {
-        commentService.incrementCommentLikes(c_unique);
-        Map<String,Object> response = new HashMap<>();
-        response.put("message", "liked");
-        return response;
+    @PostMapping(value ="/{c_unique}/like",produces = "application/json")
+    public Map<String,Object> likeComment(@PathVariable int c_unique,HttpSession session) {
+    	Member member =(Member) session.getAttribute("user");
+    	Map<String,Object> response=new HashMap<String, Object>();
+    	Timestamp timestamp=new Timestamp(System.currentTimeMillis());
+    	Likes like=new Likes();
+    	List<Integer> result=new ArrayList<Integer>();
+    	String id=null;
+    	if(member!=null) {
+    	 id=member.getId();
+    	 like.setId(id);
+    	 like.setC_unique(c_unique);
+    	 like.setLikesDate(timestamp);
+    	 result=commentService.incrementCommentLikes(like);
+    	 int islike=result.get(0);
+    	 int totallike=result.get(1);
+    	 
+    	 System.out.println("눌림:"+islike);
+    	 System.out.println("총수"+totallike);
+    	 response.put("id", id);
+    	 response.put("islike", islike);
+    	 response.put("totallike", totallike);
+    	 return response;
+    	}else {
+    	 response.put("id", id);
+    	 return response;
+    	}
+       
     }
 }
 

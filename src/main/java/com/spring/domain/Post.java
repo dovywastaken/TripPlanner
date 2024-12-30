@@ -1,6 +1,7 @@
 package com.spring.domain;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,21 +22,19 @@ public class Post
 	private int p_unique;
 	private boolean commentIsAllowed;
 	private int satisfaction;
-	private Dining dining;
-	private Landmark landmark;
-	private Festival festival;
-	private MultipartFile fileImage;
+	private List<String> fileImage;
 
 	
 	
-	public MultipartFile getFileImage() {
+
+	
+	
+	public List<String> getFileImage() {
 		return fileImage;
 	}
-	public void setFileImage(MultipartFile fileImage) {
-		this.fileImage = fileImage;
+	public void setFileImage(List<String> savedFileNames) {
+		this.fileImage = savedFileNames;
 	}
-	
-	
 	public String getId() {
 		return id;
 	}
@@ -107,26 +106,6 @@ public class Post
 	}
 	public void setSatisfaction(int satisfaction) {
 		this.satisfaction = satisfaction;
-	}
-	public Dining getDining() {
-		return dining;
-	}
-	public void setDining(Dining dining) {
-		this.dining = dining;
-	}
-	public Landmark getLandmark() {
-		return landmark;
-	}
-	public void setLandmark(Landmark landmark) {
-		this.landmark = landmark;
-	}
-	public Festival getFestival() {
-		return festival;
-	}
-	public void setFestival(Festival festival) {
-		this.festival = festival;
-	}
-	
-	
+	}	
 	
 }

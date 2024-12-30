@@ -1,5 +1,9 @@
 package com.spring.repository.post;
 
+import java.util.List;
+import java.util.Map;
+
+import com.spring.domain.Likes;
 import com.spring.domain.Post;
 
 public interface PostRepository  {
@@ -8,5 +12,8 @@ public interface PostRepository  {
 	    void updatePost(Post post, int postId);
 	    void deletePost(int postId);
 	    void incrementViewCount(int postId);
-	    void incrementPostLike(int postId);
+	    List<Integer> incrementPostLike(Likes likes);
+	    int getIdisLike(String id,int num);
+	    int findLatestPostIdByUser(String userId);
+	    Map<String,Object> getMainPost(String id);
 }

@@ -75,44 +75,32 @@ $(document).ready(function() {
         });
     });
 
-    // 댓글 좋아요
-    $(document).on("click", ".likeBtn", function() {
-        var c_unique = $(this).closest(".comment").data("id");
-        $.ajax({
-            url: "/TripPlanner/api/comments/" + c_unique + "/like",
-            method: "POST",
-            dataType: "json",
-            success: function(res) {
-                if (res.message === "liked") {
-                    // 좋아요 후 다시 현재 페이지 로딩
-                    loadComments(postId, currentPageNum);
-                } else {
-                    alert("좋아요 처리에 실패했습니다.");
-                }
-            },
-            error: function() {
-                alert("좋아요 처리 중 오류가 발생했습니다.");
-            }
-        });
-    });
+	$(document).on("click", ".likeBtn", function () {
+	    const commentElement = $(this).closest(".comment");
+	    const c_unique = commentElement.data("id");
+	    const likeBtn = commentElement.find(".likeBtn");
+	    const likeNum = commentElement.find(".likenum");
 
-	$("#postLikeBtn").on("click", function() {
-	        $.ajax({
-	            url: contextPath + "/" + postId + "/like", // contextPath + postId 조합
-	            method: "POST",
-	            dataType: "json",
-	            success: function(res) {
-	                if (res.message === "liked") {
-	                    $("#postLikes").text(res.likes);
-	                } else {
-	                    alert("포스트 좋아요 실패");
-	                }
-	            },
-	            error: function() {
-	                alert("포스트 좋아요 처리 중 오류 발생");
-	            }
-	        });
+	    $.ajax({
+	        url: `/TripPlanner/api/comments/${c_unique}/like`,
+	        method: "POST",
+	        dataType: "json",
+	        success: function (res) {
+	            if (!res.id) return;
+
+	            likeBtn.html(
+	                res.islike === 1
+	                    ? "<i class='fa-solid fa-heart'></i>"
+	                    : "<i class='fa-regular fa-heart'></i>"
+	            );
+	            likeNum.text(`Likes: ${res.totallike}`);
+	        },
+	        error: function () {
+	            alert("좋아요 처리 중 오류가 발생했습니다.");
+	        },
 	    });
+	});
+
     function loadComments(postId, page, callback) {
         $.ajax({
             url: "/TripPlanner/api/comments",
@@ -127,7 +115,7 @@ $(document).ready(function() {
 				                totalPages = 0;
 				                currentPageNum = 1;
 				            } else {
-				                renderComments(res.comments);
+				                renderComments(res.comments,res.commentisLike);
 				                renderPagination(res.currentPage, res.totalPage);
 				                totalPages = res.totalPage;
 				                currentPageNum = res.currentPage;
@@ -142,24 +130,71 @@ $(document).ready(function() {
         });
     }
 
-    function renderComments(comments) {
-        var section = $("#commentSection");
-        section.empty();
+	function renderComments(comments,commentisLike) {
+	    var section = $("#commentSection");
+	    section.empty();
 
-        if (!comments || comments.length === 0) {
-            section.append("<p>댓글이 없습니다.</p>");
-            return;
-        }
+	    if (!comments || comments.length === 0) {
+	        section.append("<p>댓글이 없습니다.</p>");
+	        return;
+	    }
 
-        $.each(comments, function(i, comment) {
-            var html = "<div class='comment' data-id='" + comment.c_unique + "'>";
-            html += "<p>" + comment.id + ": " + comment.comments + " (" + comment.commentDate + ")<br>Likes: " + comment.commentLikes + "</p>";
-            html += "<button class='likeBtn'>좋아요</button> ";
-            html += "<button class='deleteBtn'>삭제</button>";
-            html += "</div>";
-            section.append(html);
-        });
-    }
+	    $.each(comments, function (i, comment) {
+	        var html = "<div class='comment' data-id='" + comment.c_unique + "'>";
+	        html += "<p>" + comment.id + ": " + comment.comments + " (" + comment.commentDate + ")</p>";
+	        html += "<span class='likenum'>Likes: " + comment.commentLikes + "</span><br>";
+	
+	        if (sessionId != comment.id) {
+				
+				if(commentisLike[i]==1){
+	            html += `<button class='likeBtn'><i class='fa-solid fa-heart'></button>`;
+				}else{
+				html += `<button class='likeBtn'><i class='fa-regular fa-heart'></i></button>`;	
+				}
+	        }
+
+	        if (sessionId === comment.id) {
+	            html += "<button class='deleteBtn'>삭제</button>";
+	        }
+
+	        html += "</div>";
+	        section.append(html);
+	    });
+	}
+
+
+	
+	$("#postLikeBtn").on("click", function() {
+	        $.ajax({
+	            url: contextPath + "/" + postId + "/like", 
+	            method: "POST",
+	            dataType: "json",
+	            success: function(res) {					
+
+					if(res.id===null){
+						console.log("아이디 없음");
+						return
+					}
+	                if (res.isLiked===1) {
+						const likenum=document.getElementById("postLikes")
+				
+						if(likenum!=null){
+	                    document.getElementById("postLikes").textContent=res.totalLikes;
+						document.getElementById("postLikeBtn").innerHTML = "<i class='fa-solid fa-heart'></i>";
+						}
+	                } else if(res.isLiked===0) {
+						const likenum=document.getElementById("postLikes")
+						if(likenum!=null){
+						document.getElementById("postLikes").textContent=res.totalLikes;
+						document.getElementById("postLikeBtn").innerHTML = "<i class='fa-regular fa-heart'>";
+						}
+	               }	
+	            },
+	            error: function() {
+	                alert("포스트 좋아요 처리 중 오류 발생");
+	            }
+	        });
+	    });
 
     function renderPagination(currentPage, totalPage) {
         var pagination = $("#pagination");
@@ -182,4 +217,18 @@ $(document).ready(function() {
         });
     }
 });
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const signInButton = document.getElementById("SignIn");
+
+    if (signInButton) {
+        signInButton.addEventListener("click", function () {
+            window.location.href = 'http://localhost:8080/TripPlanner/members/signIn';
+        });
+    } else {
+        console.log("SignIn 버튼이 렌더링되지 않았습니다.");
+    }
+});
+
 

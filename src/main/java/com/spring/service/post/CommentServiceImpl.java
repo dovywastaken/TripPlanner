@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.spring.domain.Comment;
+import com.spring.domain.Likes;
 import com.spring.repository.post.CommentRepository;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -15,9 +17,9 @@ public class CommentServiceImpl implements CommentService {
 	CommentRepository commentRepository;
 
     @Override
-    public List<Comment> getCommentsByPostId(int postId, int page, int size) {
+    public Map<String,Object> getCommentsByPostId(int postId, int page, int size,String id) {
         int offset = (page - 1) * size;
-        return commentRepository.getCommentsByPostId(postId, offset, size);
+        return commentRepository.getCommentsByPostId(postId, offset, size,id);
     }
 
     @Override
@@ -46,8 +48,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void incrementCommentLikes(int c_unique) {
-        commentRepository.incrementCommentLikes(c_unique);
+    public List<Integer> incrementCommentLikes(Likes like) {
+    	return commentRepository.incrementCommentLikes(like);
     }
 	
 }

@@ -193,25 +193,29 @@
 				            <div class="myPostTitle">
 				                <div class="postTitle">최근 작성 글</div>
 				            </div>
-				            
+				            <c:forEach var="post" items="${posts}" varStatus="status">
+				             <c:choose>
+				               <c:when test="${status.index == 0}">
 				            <div class="post">
-				                <div class="postName">결혼 기념일 여행</div>
-				                <div class="postTime">2025.02.04 19:24</div>
+				                <div class="postName">${post.title}</div>
+				                <div class="postTime">${days[status.index]}</div>
 				            </div>
 				        </div>
-				        
-				        <div class="myPost">
+				       	 <div class="myPost">
 				            <div class="myPostTitle">
 				                <div class="postTitle"><p>내 여행 계획 (이 부분은 el태그로 해당 사용자의 모든 글 카운트 수 표시)</p></div>
-				                <a href="#" class="postMore">더보기</a>
+				                <a href='/TripPlanner/Myboard'>더보기</a>
 				            </div>
-				
+						 </c:when>
+						 <c:otherwise>
 				            <div class="post">
-				                <div class="postName">(el태그로 2번째 게시글 제목)</div>
-				                <div class="postTime">(el태그로 2번째 게시글 날짜)</div>
+				                <div class="postName">${post.title}</div>
+				                <div class="postTime">${days[status.index]}</div>
 				            </div>
 				        </div>
-				
+				         </c:otherwise>
+						</c:choose>
+					 </c:forEach>
 				        <a href="postform" class="postButton">+ 새 여정 만들기</a>
 				        <a href="/TripPlanner/members/signOut" class="signOutButton">로그아웃</a>
 				    </c:if>

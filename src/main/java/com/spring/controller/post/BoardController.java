@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.spring.domain.Member;
 import com.spring.domain.Post;
 import com.spring.service.post.BoardService;
 
@@ -102,4 +105,47 @@ public class BoardController {
 		return "post/hotSpots";
 	}
 
+	@GetMapping("/Myboard")
+	public String getMyboard(HttpSession session,Model model, @RequestParam(value = "page", defaultValue = "1") int page) {
+		if(session!=null) {
+			
+		Member member=(Member)session.getAttribute("user");
+		Map<String,Object> result=boardService.getMyboard(member.getId(),page);
+		int Allpostgetnum=(int) result.get("Allpostgetnum");
+		
+		Map<String, Object> pagination = paginationHelper.getPagination(page, Allpostgetnum, 10, 5);
+		setBoardModelAttributes(result,page,model);
+		model.addAttribute("pagination",pagination);
+		model.addAttribute("currentPage", page);
+		return "post/Myboard";
+		}else
+		return "errorPage";
+	}
+	
+	
+	
+	@GetMapping("/board/mysearch")
+	public String mysearchBoard(@RequestParam(value = "page", defaultValue = "1") int page,
+	                          @RequestParam("keyword") String keyword,
+	                          HttpSession session,
+	                          Model model
+	                          ) {
+	    if(session!=null) {
+	    Member member=(Member)session.getAttribute("user");
+	    String id=member.getId();
+	    Map<String, Object> result = boardService.mysearchPosts(id,keyword, page);
+	    setBoardModelAttributes(result, page, model);
+	    int totalPosts = (int) result.get("Allpostgetnum"); 
+	    Map<String, Object> pagination = paginationHelper.getPagination(page, totalPosts, 10, 5);
+
+	    model.addAttribute("keyword", keyword);
+	    model.addAttribute("currentPage", page);
+	    model.addAttribute("pagination", pagination);
+	    return "post/MySearchBoard";
+	    }else {
+			return "errorPage";
+		}
+	}
+	
 }
+

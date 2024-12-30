@@ -1,4 +1,4 @@
-package com.spring.controller.landmark;
+package com.spring.controller.tour;
 
 
 import org.springframework.stereotype.Controller;

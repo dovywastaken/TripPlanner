@@ -1,12 +1,16 @@
 package com.spring.repository.post;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.spring.domain.Comment;
+import com.spring.domain.Likes;
 
 @Repository
 public class CommentRepositoryImpl implements CommentRepository {
@@ -15,13 +19,33 @@ public class CommentRepositoryImpl implements CommentRepository {
 	    private JdbcTemplate template;
 
 	 	@Override
-	 	public List<Comment> getCommentsByPostId(int postId, int offset, int limit) {
+	 	public Map<String,Object> getCommentsByPostId(int postId, int offset, int limit,String id) {
 	 		if (offset < 0) {
 	 		    offset = 0;
 	 		}
-	     String sql = "SELECT c_unique, p_unique, id, comments, commentDate, commentLikes " +
-	                  "FROM Comment WHERE p_unique = ? ORDER BY commentDate ASC LIMIT ? OFFSET ?";
-	     return template.query(sql, new CommentRowMapper(), postId, limit, offset);
+	 	 Map<String,Object> response=new HashMap<String, Object>();
+	 	 String sql = "SELECT c_unique, p_unique, id, comments, commentDate, commentLikes " +
+             "FROM Comment WHERE p_unique = ? ORDER BY commentDate ASC LIMIT ? OFFSET ?";
+	 	 List<Comment> comments=template.query(sql, new CommentRowMapper(), postId, limit, offset);
+	 	 List<Integer> isLike=new ArrayList<Integer>();
+	 	 
+	 	 if(id!=null) {
+	 		 for(int i=0;i<comments.size();i++) {
+		    	 int C_unique=comments.get(i).getC_unique();
+		    	 String Likefindsql="select count(*) from commentLike where id=? and c_unique=?";
+		    	 int isLikes=template.queryForObject(Likefindsql, Integer.class,id,C_unique);
+		    	 isLike.add(isLikes);
+	    	 }
+	     }else {
+
+	    	 for(int i=0;i<comments.size();i++) {
+	    		 isLike.add(0);
+		    	 } 	    	 
+	     }
+	 	 
+	 	response.put("comments", comments);
+	 	response.put("isLike", isLike);
+	     return response;
 	 	}
 
 	    @Override
@@ -49,6 +73,7 @@ public class CommentRepositoryImpl implements CommentRepository {
 	        );
 	    }
 
+
 	    @Override
 	    public void updateComment(int c_unique, String comments) {
 	        String sql = "UPDATE Comment SET comments = ? WHERE c_unique = ?";
@@ -62,9 +87,28 @@ public class CommentRepositoryImpl implements CommentRepository {
 	    }
 
 	    @Override
-	    public void incrementCommentLikes(int c_unique) {
-	        String sql = "UPDATE Comment SET commentLikes = commentLikes + 1 WHERE c_unique = ?";
-	        template.update(sql, c_unique);
+	    public List<Integer> incrementCommentLikes(Likes like) {
+	    	List<Integer> result=new ArrayList<Integer>();
+	    	String SQL="select count(*) from commentLike where id=? and c_unique=?";
+	    	int count=template.queryForObject(SQL, Integer.class,like.getId(),like.getC_unique());
+	    	if(count==0) {
+	        String insertSQL = "insert commentLike(id,c_unique,likesDate) values(?,?,?)";
+	        template.update(insertSQL,like.getId(),like.getC_unique(),like.getLikesDate());
+	        String plusSQL= "update Comment set commentLikes=commentLikes+1 where c_unique=? ";
+	        template.update(plusSQL,like.getC_unique());
+	        count=1;
+	        }else {
+	        String deleteSQL = "delete from commentLike where id=? and c_unique=?";
+		    template.update(deleteSQL,like.getId(),like.getC_unique());
+		    String minusSQL= "update Comment set commentLikes=commentLikes-1 where c_unique=? and commentLikes>0";
+	        template.update(minusSQL,like.getC_unique());
+	        count=0;
+	        }
+	    	String totalcountSQL= "select commentLikes from Comment where c_unique=?";
+		    int totalcount=template.queryForObject(totalcountSQL,Integer.class,like.getC_unique());	
+	    	result.add(count);
+	        result.add(totalcount);
+	    	return result;
 	    }
 
 

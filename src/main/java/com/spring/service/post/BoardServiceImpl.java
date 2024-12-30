@@ -23,6 +23,15 @@ public class BoardServiceImpl implements BoardService{
     public Map<String, Object> searchPosts(String type, String keyword, int page) {
         return boardRepository.searchPosts(type, keyword, page);
     }
-	
+	@Override
+	public Map<String, Object> getMyboard(String member, int page) {
+		
+		return boardRepository.getMyboard(member,page);
+	}
 
+	@Override
+	public Map<String, Object> mysearchPosts(String id,String keyword, int page) {
+		// TODO Auto-generated method stub
+		return boardRepository.mysearchPosts(id,keyword, page);
+	}
 }
