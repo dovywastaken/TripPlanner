@@ -110,7 +110,7 @@ public class PostRepositoryImpl implements PostRepository {
 	public Map<String, Object> getMainPost(String id) {
 		System.out.println(id);
 		PostRowMapper postRowMapper=new PostRowMapper();
-		String mainSQL="SELECT * FROM POST WHERE id = ? ORDER BY publishDate DESC LIMIT 4";
+		String mainSQL="SELECT * FROM POST WHERE id = ? ORDER BY publishDate DESC LIMIT 3";
 		Map<String,Object> result=new HashMap<String, Object>();
 		List<Post> post=template.query(mainSQL,postRowMapper,id);
 		result.put("Post",post);                                                                                                     

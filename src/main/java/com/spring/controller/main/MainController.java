@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import com.spring.controller.post.DateFormatter;
 import com.spring.domain.Member;
 import com.spring.domain.Post;
+import com.spring.service.post.BoardService;
 import com.spring.service.post.PostService;
 
 @Controller
@@ -22,6 +23,9 @@ public class MainController
 {
 	@Autowired
 	PostService postService;
+	
+	@Autowired
+	BoardService boardService;
 	
 	@GetMapping("/") // 메인 페이지 뷰를 띄워주는 메서드
 	public String mainPage(Model model, HttpSession session) {
@@ -47,9 +51,14 @@ public class MainController
 	                String formattedDate = dateFormatter.formatPostDate(post.getPublishDate());
 	                days.add(formattedDate);
 	            }
+	            
+	            Map<String, Object> count = boardService.getMyboard(member2.getId(), 1);
+	            
+	            
 	            System.out.println(days);
 	            System.out.println(posts);
 	            // 모델에 게시물과 날짜 데이터 추가
+	            model.addAttribute("count",count.get("Allpostgetnum"));
 	            model.addAttribute("days", days);
 	            model.addAttribute("posts", posts);
 	        }

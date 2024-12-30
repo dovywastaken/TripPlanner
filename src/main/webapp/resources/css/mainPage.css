@@ -206,7 +206,7 @@ header
         top: 102px;
         left: 34px;
         z-index: 999;
-        transition: top 0.8s ease; /* 위치 변경 시 부드러운 애니메이션 */
+        transition: top 0.2s ease-out; /* 위치 변경 시 부드러운 애니메이션 */
     }
 
     #searchBar input{
@@ -263,6 +263,17 @@ header
         font-size: 13px;
         color: #2C3F3C;   
     }
+
+
+	#postTitle
+	{
+		font-size: 15px;
+	}
+	
+	#postCount
+	{
+		font-weight: 800;
+	}
 
     .postMore{
         text-decoration: underline;
