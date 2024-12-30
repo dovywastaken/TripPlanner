@@ -1,136 +1,116 @@
-*
-{
-	box-sizing: border-box;
-}
-
-body {
-    overflow-x: hidden;
-}
-
-.aTag
-{
-	color:black;
-}
-
-
-header {
+header{
     width: 100vw;
-    height: 40px; /* 헤더 높이를 조금 더 여유 있게 설정 */
-    padding: 0;
-    margin-top: 15px;
-    background-color: white; /* 헤더 배경색 */
+    padding: 0 300px;
+    margin-bottom: 15px;
+    position: fixed;
+	background: rgba(102,244,136,0.5);
+	backdrop-filter: blur( 5px );
+	-webkit-backdrop-filter: blur( 5px );
+    box-shadow: 0px 7px 25px rgba(33,88,55,0.2);
+    z-index: 9999;
 }
 
-#headerContainer {
-    width: 60%;
-    margin: 0 auto; /* 중앙 정렬 */
-    height: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.logo {
-    display: flex;
-    justify-content: left;
-    align-items: center;
-}
-
-#iconLogo {
-    font-size: 48px;
-    font-weight: 900;
-    margin: 0;
-    margin-right : 5px;
-    color: #FFD700; /* 아이콘 로고 색상 변경 (금색) */
-}
-
-#textLogo {
-    font-size: 24px;
-    font-weight: 600;
-    margin: 0;
-}
-
-.board {
-    width: 30%;
-    height: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size : 14px;
-    font-weight : bold;
-}
-
-.board a {
-    padding: 10px 20px;
-    border-radius: 25px; /* border-radius 추가 */
-    background-color: white;
-    border : 2px solid #333333;
-}
-
-
-.board a:hover {
-	border: 2px solid white; /* 버튼 테두리 */
-	background-color: #FFD700; /* hover 시 배경색 변경 */
-    color: #333; /* hover 시 텍스트 색상 변경 */
-}
-
-.member {
-    height: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-#login {
-    font-size: 14px;
-    font-weight: 600;
-    padding: 10px 20px;
-    border-radius: 25px;
-    color : white;
-    background-color: black; /* 배경색을 어두운 회색으로 설정 */
-}
-
-#login:hover {
-    background-color: #FFD700; /* hover 시 배경색 변경 */
-    color: #333; /* hover 시 텍스트 색상 변경 */
-}
-
-#logout
+#headerContainer
 {
-	font-size: 14px;
-    font-weight: 600;
-    padding: 10px 20px;
-    border: 2px solid #00A86B;
-    background-color: #00A86B; 
-    border-radius: 25px;
+    display: flex;
+    width : 100%;
+    justify-content: space-between;
+    height: 55px;
+    align-items: center;
+   	margin : 0 auto;
 }
 
-#logout:hover {
-    background-color: white;
-    border: 2px solid black;
-    color: #333;
+#headerLeft {
+    display: flex;
+    align-items: center;  
+    height: 55px; 
+    white-space : nowrap;
+}
+
+.headerLeft {
+    border: transparent 1px solid;
+    border-radius: 34px;
+    height: 34px;
+    width: 100px;
+    color: black;
+    display: flex;           
+    align-items: center;     
+    justify-content: center; 
+    font-weight: 500;
+    font-size : 14px;
+    transition: all 0.3s ease; 
+    background: #66F488; 
+    margin-right:15px;
+}
+
+.headerLeft:hover {
+    border: transparent 1px solid;
+    border-radius: 34px;
+    box-shadow: 0px 0px 8px rgba(33,55,55,0.6);
+    background: #44D899;  
+    transform: translateY(-1px); 
+}
+
+.headerLeft:active {
+    transform: translateY(1px);
+    box-shadow: 0px 0px 4px rgba(33,55,55,0.4);
+}
+
+#logoImg {
+    width: auto;
+    height: 35px;
+    object-fit: contain;
+    max-height: 35px;
+    margin-right: 15px;
 }
 
 
-/* 미디어 쿼리: 태블릿 이하 해상도 */
-@media (max-width: 768px) {
-    #iconLogo {
-        font-size: 40px; /* 로고 크기 조정 */
-    }
 
-    #textLogo {
-        font-size: 18px; /* 텍스트 로고 크기 조정 */
-    }
+#headerRight
+{
+	display: flex; 
+    align-items: center; 
+    height: 55px;
+    white-space : nowrap; 
 }
 
-/* 미디어 쿼리: 모바일 이하 해상도 */
-@media (max-width: 580px) {
-    #textLogo {
-        display : none; /* 모바일에서는 텍스트 로고 숨기기 */
-    }
+.headerRight {
+    border: transparent 1px solid;
+    border-radius: 34px;
+    height: 34px;
+    width: 100px;
+    color: black;
+    display: flex;           
+    align-items: center;     
+    justify-content: center;
+    font-size : 14px;
+    font-weight: 500;
+    transition: all 0.3s ease; 
+    background: #66F488; 
+    margin-left:15px;
+}
 
-    #login {
-        font-size: 10px; /* 모바일에서 로그인 텍스트 크기 축소 */
-        padding: 8px 16px; /* 로그인 버튼 크기 조정 */
-    }
+
+.headerRight:nth-child(3)
+{
+	background: #FFEE8D; 
+}
+
+.headerRight:nth-child(3):hover
+{
+	background: #FF5500; 
+}
+
+.headerRight:hover {
+    border: transparent 1px solid;
+    border-radius: 34px;
+    box-shadow: 0px 0px 8px rgba(33,55,55,0.6);
+    background: #44D899;  
+    transform: translateY(-1px); 
+}
+
+/* 버튼 클릭 효과 추가 */
+.headerRight:active {
+    transform: translateY(1px);
+    box-shadow: 0px 0px 4px rgba(33,55,55,0.4);
 }

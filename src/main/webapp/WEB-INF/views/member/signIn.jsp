@@ -60,6 +60,8 @@
 </head>
 
 <body>
+	<%@ include file="../header.jsp" %>
+
     <div class="form-container">
         <h2>로그인</h2>
         <a href="${pageContext.request.contextPath}">Home</a>
@@ -91,5 +93,6 @@
             </script>
         </c:if>
     </div>
+    <%@ include file="../footer.jsp" %>
 </body>
 </html>

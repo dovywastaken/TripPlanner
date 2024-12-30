@@ -64,6 +64,9 @@
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 <body>
+
+	<%@ include file="../header.jsp" %>
+
     <div class="form-container">
         <a href="${pageContext.request.contextPath}">Home</a>
         <h1>비밀번호 변경</h1>
@@ -88,5 +91,6 @@
             </div>
         </form:form>
     </div>
+    <%@ include file="../footer.jsp" %>
 </body>
 </html>

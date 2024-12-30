@@ -77,6 +77,8 @@
 </style>
 </head>
 <body>
+<%@ include file="../header.jsp" %>
+
     <div class="form-container">
         <h2>회원가입</h2>
         <a href="${pageContext.request.contextPath}">Home</a>
@@ -175,5 +177,6 @@
             </div>
         </form:form>
     </div>
+    <%@ include file="../footer.jsp" %>
 </body>
 </html>

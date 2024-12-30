@@ -17,8 +17,10 @@ public class MainController
 	public String mainPage(Model model, HttpSession session) //로그인 한 상태에서 메인페이지에 갔을 때가 있어 세션과 모델을 챙겨간다
 	{
 		System.out.println("===========================================================================================");
-		Member member = (Member) session.getAttribute("user");
-        model.addAttribute("member", member);
+
+		Member member = new Member();
+		model.addAttribute("member", member);
+        
 		System.out.println("MainController : 프로젝트명으로 매핑되어 mainPage.jsp로 이동합니다");
 		return "mainPage";
 	}

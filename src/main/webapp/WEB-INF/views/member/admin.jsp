@@ -94,8 +94,17 @@
     </script>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/adminPage.js"></script>
+    
+    <link href="https://cdn.jsdelivr.net/gh/sun-typeface/SUITE@2/fonts/static/woff2/SUITE.css" rel="stylesheet">
+
+	<style>
+	    body {font-family: 'SUITE', sans-serif;}
+	</style>
 </head>
 <body>
+
+	<%@ include file="../header.jsp" %>
+
     <div class="container">
         <h1>어드민 페이지</h1>
         <a href="${pageContext.request.contextPath}">Home</a>
@@ -166,5 +175,8 @@
             </c:forEach>
         </div>
     </div>
+    
+    <%@ include file="../footer.jsp" %>
+    
 </body>
 </html>

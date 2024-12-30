@@ -67,6 +67,9 @@
     <script src="${pageContext.request.contextPath}/resources/js/myPage.js"></script>
 </head>
 <body>
+
+	<%@ include file="../header.jsp" %>
+
     <div class="container">
         <a href="${pageContext.request.contextPath}">Home</a>
         <hr>
@@ -102,5 +105,6 @@
             </div>
         </div>
     </div>
+    <%@ include file="../footer.jsp" %>
 </body>
 </html>

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -8,59 +9,259 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>트립플래너</title>
     
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/normalize.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/header.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mainPage.css">
+    <link rel="stylesheet" href="/TripPlanner/resources/css/normalize.css">
+    <link rel="stylesheet" href="/TripPlanner/resources/css/mainPage.css">
+    <link href="https://cdn.jsdelivr.net/gh/sun-typeface/SUITE@2/fonts/static/woff2/SUITE.css" rel="stylesheet">
+
+	<style>
+	    body {font-family: 'SUITE', sans-serif;}
+	</style>
+
+	<script src="https://kit.fontawesome.com/96b1ce314a.js"></script>
+
 </head>
-<body>
-<div class="container-fluid">
-	<%@ include file="/WEB-INF/views/header.jsp"%>
-		
-    <main class="main-content">
-        <section class="section welcome-section">
-            <c:choose>
-                <c:when test="${not empty member}">
-                    <p class="welcome-message">어서오세요, ${member.name}님!</p>
-                    <a href="members/signOut" class="nav-link">로그아웃</a>
-                    <a href="members/myPage" class="nav-link">마이 페이지</a>
-                    <a href="admin/dashboard" class="nav-link">회원 목록</a>
-                    <a href="/TripPlanner/Allboard" class="nav-link">게시판</a>
-                </c:when>
-                <c:otherwise>
-                    <p class="welcome-message">환영합니다! 로그인을 해주세요.</p>
-                    <a href="members/signUp" class="nav-link">회원가입</a>
-                    <a href="admin/dashboard" class="nav-link">회원 목록</a>
-                    <a href="/TripPlanner/Allboard" class="nav-link">게시판</a>
-                    <a href="landmark/list" class="nav-link">관광지</a>
-                </c:otherwise>
-            </c:choose>
-        </section>
 
-        <c:if test="${empty member}">
-            <section class="section intro-section">
-                <h2 class="section-title">트립플래너에 오신 것을 환영합니다!</h2>
-                <p class="sub-title">로그인 후 여행 계획을 세워보세요!</p>
-                <a href="members/signIn" class="nav-link">로그인하기</a>
-            </section>
-        </c:if>
+	<%@ include file="header.jsp" %>
 
-        <c:if test="${not empty member}">
-            <section class="section my-posts">
-                <h2 class="section-title">${member.name}님, 떠나보실까요?</h2>
-                <p class="sub-title">여행 포스트 4</p>
-                <div class="card-container">
-                    <div class="card">내 포스트 1</div>
-                    <div class="card">내 포스트 2</div>
-                    <div class="card">내 포스트 3</div>
-                </div>
-                <a href="/TripPlanner/postform" class="nav-link">작성</a>
-            </section>
-        </c:if>
-    </main>
-	<%@ include file="/WEB-INF/views/footer.jsp"%>
-</div>
-
-
+	<div class="container-fluid">
+	    <main>
+	        <div class="mainContainer">
+				<div id="banner"></div>
+	            <div class="section">
+	                <div class="title">
+	                    <span>인기 여행 계획</span>
+	                    <a href="/TripPlanner/hotPlanners" class="morePost">더보기</a>
+	                </div>
+	                <div id="planner">
+	                    <div class="plannerCard">
+	                        <div class="imgFrame">
+	                            <img src="/TripPlanner/resources/img/logo.png" class="pImg">
+	                        </div>
+	                        <div class="plannerCol" id="pText">
+	                            <h3 class="plannerTitle">불국사...</h3>
+	                            <p class="hashtag">#겨울여행 #경주</p>
+	                            <p class="plannerContents">갔는데 머시기 갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기</p>
+	                        </div>
+	                    </div>
+	
+	                    <div class="plannerCard">
+	                        <div class="imgFrame">
+	                            <img src="/TripPlanner/resources/img/logo.png" class="pImg">
+	                        </div>
+	                        <div class="plannerCol" id="pText">
+	                            <h3 class="plannerTitle">불국사...</h3>
+	                            <p class="hashtag">#겨울여행 #경주</p>
+	                            <p class="plannerContents">갔는데 머시기 갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기</p>
+	                        </div>
+	                    </div>
+	
+	                    <div class="plannerCard">
+	                        <div class="imgFrame">
+	                            <img src="/TripPlanner/resources/img/logo.png" class="pImg">
+	                        </div>
+	                        <div class="plannerCol" id="pText">
+	                            <h3 class="plannerTitle">불국사...</h3>
+	                            <p class="hashtag">#겨울여행 #경주</p>
+	                            <p class="plannerContents">갔는데 머시기 갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기</p>
+	                        </div>
+	                    </div>
+	
+	                    <div class="plannerCard">
+	                        <div class="imgFrame">
+	                            <img src="/TripPlanner/resources/img/logo.png" class="pImg">
+	                        </div>
+	                        <div class="plannerCol" id="pText">
+	                            <h3 class="plannerTitle">불국사...</h3>
+	                            <p class="hashtag">#겨울여행 #경주</p>
+	                            <p class="plannerContents">갔는데 머시기 갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기</p>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	
+	
+				<div id="tourDividerTitle">트립플래너가 추천하는 지역 명소들</div>
+				<br>
+	
+	
+	            <div class="section">
+	                <div class="title">
+	                    <span>추천 축제</span>
+	                    <a href="#" class="morePost">더보기</a>
+	                </div>
+	                <div id="planner">
+	                    <div class="plannerCard">
+	                        <div class="imgFrame">
+	                            <img src="/TripPlanner/resources/img/logo.png" class="pImg">
+	                        </div>
+	                        <div class="plannerCol" id="pText">
+	                            <h3 class="plannerTitle">군항제...</h3>
+	                            <p class="hashtag">#벚꽃 #진해</p>
+	                            <p class="plannerContents">갔는데 머시기 갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기</p>
+	                        </div>
+	                    </div>
+	
+	                    <div class="plannerCard">
+	                        <div class="imgFrame">
+	                            <img src="/TripPlanner/resources/img/logo.png" class="">
+	                        </div>
+	                        <div class="plannerCol" id="pText">
+	                            <h3 class="plannerTitle">군항제...</h3>
+	                            <p class="hashtag">#벚꽃 #진해</p>
+	                            <p class="plannerContents">갔는데 머시기 갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기</p>
+	                        </div>
+	                    </div>
+	
+	                </div>
+	            </div>
+	
+				 <div class="section">
+		                  <div class="title">
+		                      <span>추천 관광지</span>
+		                      <a href="#" class="morePost">더보기</a>
+		                  </div>
+		                  <div id="planner">
+		                      <div class="plannerCard">
+		                          <div class="imgFrame">
+		                              <img src="/TripPlanner/resources/img/logo.png" class="pImg">
+		                          </div>
+		                          <div class="plannerCol" id="pText">
+		                              <h3 class="plannerTitle">불국사...</h3>
+		                              <p class="hashtag">#겨울여행 #경주</p>
+		                              <p class="plannerContents">갔는데 머시기 갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기</p>
+		                          </div>
+		                      </div>
+		      
+		                      <div class="plannerCard">
+		                          <div class="imgFrame">
+		                              <img src="/TripPlanner/resources/img/logo.png" class="pImg">
+		                          </div>
+		                          <div class="plannerCol" id="pText">
+		                              <h3 class="plannerTitle">불국사...</h3>
+		                              <p class="hashtag">#겨울여행 #경주</p>
+		                              <p class="plannerContents">갔는데 머시기 갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기</p>
+		                          </div>
+		                      </div>
+		      
+		                  </div>
+		              </div>
+		              
+		              
+		              <div class="section">
+		                  <div class="title">
+		                      <span>추천 맛집</span>
+		                      <a href="#" class="morePost">더보기</a>
+		                  </div>
+		                  <div id="planner">
+		                      <div class="plannerCard">
+		                          <div class="imgFrame">
+		                              <img src="/TripPlanner/resources/img/logo.png" class="pImg">
+		                          </div>
+		                          <div class="plannerCol" id="pText">
+		                              <h3 class="plannerTitle">불국사...</h3>
+		                              <p class="hashtag">#겨울여행 #경주</p>
+		                              <p class="plannerContents">갔는데 머시기 갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기</p>
+		                          </div>
+		                      </div>
+		      
+		                      <div class="plannerCard">
+		                          <div class="imgFrame">
+		                              <img src="/TripPlanner/resources/img/logo.png" class="pImg">
+		                          </div>
+		                          <div class="plannerCol" id="pText">
+		                              <h3 class="plannerTitle">불국사...</h3>
+		                              <p class="hashtag">#겨울여행 #경주</p>
+		                              <p class="plannerContents">갔는데 머시기 갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기</p>
+		                          </div>
+		                      </div>
+		      
+		                  </div>
+		              </div>
+	        </div>
+	    </main>
+	
+	    <aside>
+	        <div class="sidePanelContainer">
+	            <div id="searchBar">
+	                <input type="text" placeholder="플래너 검색">
+	            </div>
+	            <div id="myPanel">
+				    <c:if test="${not empty user}">
+				        <!-- 로그인한 사용자가 있을 때 보여줄 내용 -->
+				        <h1>${user.name} 님, <br>떠날 준비 되셨나요?</h1>
+				        <div class="myPost">
+				            <div class="myPostTitle">
+				                <div class="postTitle">최근 작성 글</div>
+				            </div>
+				            
+				            <div class="post">
+				                <div class="postName">결혼 기념일 여행</div>
+				                <div class="postTime">2025.02.04 19:24</div>
+				            </div>
+				        </div>
+				        
+				        <div class="myPost">
+				            <div class="myPostTitle">
+				                <div class="postTitle"><p>내 여행 계획 (이 부분은 el태그로 해당 사용자의 모든 글 카운트 수 표시)</p></div>
+				                <a href="#" class="postMore">더보기</a>
+				            </div>
+				
+				            <div class="post">
+				                <div class="postName">(el태그로 2번째 게시글 제목)</div>
+				                <div class="postTime">(el태그로 2번째 게시글 날짜)</div>
+				            </div>
+				        </div>
+				
+				        <a href="postform" class="postButton">+ 새 여정 만들기</a>
+				        <a href="/TripPlanner/members/signOut" class="signOutButton">로그아웃</a>
+				    </c:if>
+				
+				    <c:if test="${empty user}">
+				    <br>
+				    <h1 class="signInTitle">로그인하고</h1>
+				    <h1 class="signInTitle">여정을 떠나봐요!</h1>
+					    <!-- 로그인 폼이 보이는 부분 -->
+				        <div class="form-container">
+				            
+				            <!-- 로그인 폼 -->
+				            <form:form modelAttribute="member" method="POST" action="members/signIn">
+				                <div class="form-group">
+				                    <label for="id">아이디:</label>
+				                    <form:input path="id" id="id" placeholder="아이디" />
+				                </div>
+				                <div class="form-group">
+				                    <label for="pw">비밀번호:</label>
+				                    <form:input path="pw" id="pw" placeholder="비밀번호" type="password" />
+				                </div>
+				                <!-- hidden 필드 추가 -->
+			        			<input type="hidden" name="dummy" value="1" />
+				                <div class="form-group">
+				                    <input type="submit" id="submitButton" value="로그인">
+				                </div>
+				                <a href="/TripPlanner/members/signUp" id="signUpButton">가입하기</a>
+				            </form:form>
+				            
+				
+				            <!-- 에러 메시지 표시 -->
+				            <c:if test="${not empty EmptyForm}">
+				                <script>
+				                    alert("${EmptyForm}");
+				                </script>
+				            </c:if>
+				            <c:if test="${not empty loginError}">
+				                <script>
+				                    alert("${loginError}");
+				                </script>
+				            </c:if>
+				        </div>
+					</c:if>
+				</div>
+				
+	        </div>
+	    </aside>
+	</div>
+	<%@ include file="footer.jsp" %>
 </body>
+
 </html>
 

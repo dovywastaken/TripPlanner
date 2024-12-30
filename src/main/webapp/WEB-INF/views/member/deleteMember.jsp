@@ -60,6 +60,9 @@
     </style>
 </head>
 <body>
+
+	<%@ include file="../header.jsp" %>
+
     <div class="form-container">
         <h1>정말로 삭제하시겠습니까?!?!?!?!?</h1>
         <a href="${pageContext.request.contextPath}">Home</a>
@@ -88,5 +91,6 @@
             </div>
         </form>
     </div>
+    <%@ include file="../footer.jsp" %>
 </body>
 </html>

@@ -1,0 +1,482 @@
+.container-fluid
+{
+    width: 100vw;
+    min-height: 100vh;
+}
+
+header
+{
+    width: 100vw;
+    padding: 0 300px;
+    margin-bottom: 15px;
+    position: fixed;
+	background: rgba(102,244,136,0.5);
+	backdrop-filter: blur( 5px );
+	-webkit-backdrop-filter: blur( 5px );
+    box-shadow: 0px 7px 25px rgba(33,88,55,0.2);
+
+    z-index: 9999;
+}
+
+#headerContainer
+{
+    display: flex;
+    justify-content: space-between;
+    height: 55px;
+    align-items: center;
+}
+
+#login{
+    height: 34px;
+    width: 89px;
+}
+
+#login:hover
+{
+    border: #ffee8d 1px solid;
+    border-radius: 34px;
+    box-shadow: 0px 0px 5px rgba(33,55,55,1);
+
+}
+
+
+/* ======================================================================================================= */
+
+/* <!-- main --> */
+
+    main
+    {
+        width: 100vw;
+        margin : 0 auto;
+        padding: 94px 300px 0;
+        background-color: #f9fff9;
+    }
+
+
+    .mainContainer
+    {
+        display: flex;
+        flex-direction: column;
+        justify-self: center;
+        width: 100%;
+    }
+
+    .section{
+        margin-bottom: 55px;
+        width: 100%;
+    }
+
+    .title{
+        margin: 0 0 0px 8px;
+        display: flex;
+        align-items: center;
+    }
+
+
+    .title span
+    {
+        font-size: 25px;
+        margin: 13px;
+    }
+    
+    
+    #banner {
+    width: 100%;
+    height: 100px;
+    border-radius: 35px;
+    padding: 35px;
+    background-image: url('/TripPlanner/resources/img/logo.png'); 
+    background-size: contain; 
+    background-position: center;
+    background-repeat : no-repeat;
+    background-color:#FFFFFF;
+	}
+    
+    
+    #tourDividerTitle 
+    {
+	    font-weight: bold;
+	    font-size: 48px;
+	    width: 100%;
+	    height: 250px;
+	    border-radius: 35px;
+	    padding: 35px;
+	    text-align: center; 
+	    display: flex; 
+	    justify-content: center; 
+	    align-items: center; 
+	    background-color: #ffee8d;
+	}
+    
+
+    .morePost{
+        background-color: #ffee8d;
+        font-size: 13px;
+        font-weight: bold;
+        border-radius: 13px;
+        padding: 0 8px;
+        height: 21px;
+        display: flex;
+        align-items: center;
+    }
+
+    #planner
+    {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .plannerCard {
+        position: relative; /* 가상 요소를 위한 상대 위치 설정 */
+        display: flex;
+        width: calc(50% - 10px);
+        min-width: calc(50% - 8px);
+        height: 196px;
+        background-color: #ffffff;
+        box-shadow: 0px 7px 30px rgba(33,55,55,0.1);
+        border-radius: 29px;
+        overflow: hidden;
+        padding: 8px;
+        margin: 0 15px 0 0;
+    }
+
+    .plannerCard:nth-child(2n)
+    {
+        margin-right: 0;
+    }
+
+    .plannerCard:nth-child(3),
+    .plannerCard:nth-child(4)
+    {
+        margin-top: 35px;
+    }
+
+    .imgFrame
+    {
+        width: 180px;
+        min-width: 180px;
+        height: 180px;
+        background-color: #eaeeef;
+        border-radius: 21px;
+        margin-right: 10px;
+        overflow: hidden;
+    }
+
+    .pImg
+    {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        outline: 1px solid magenta;
+    }
+
+
+    .plannerCol
+    {
+        width: 40%;
+        height: 100%;
+    }
+
+    .plannerTitle
+    {
+        font-size: 21px;
+        line-height: 34px;
+        font-weight: bold;
+        color: #0f7060;
+
+    }
+
+    .hashtag{
+        font-size: 13px;
+        color: #00ee66;
+        font-weight: bold;
+    }
+    .plannerContents{
+        margin-top: 13px;
+        font-size: 13px;
+        line-height: 21px;
+    }
+
+    /* ======================================================================================================= */
+
+
+
+    aside{
+        position: fixed;
+        top: 102px;
+        left: 34px;
+        z-index: 999;
+        transition: top 0.8s ease; /* 위치 변경 시 부드러운 애니메이션 */
+    }
+
+    #searchBar input{
+        border: none;
+        outline: 1px solid #e1e3e9;
+        background-color: #ffffff;
+        box-shadow: 5px 7px 18px 0px rgba(33,55,55,0.1);
+        border-radius: 21px;
+        height: 38px;
+        padding: 0 13px;
+        transition: 120ms;
+        box-sizing: border-box;
+        width: 232px;
+
+    }
+
+    #searchBar input:hover{
+        outline: 1px solid #0f7060;
+        transition: 120ms;
+    }
+
+    #searchBar input:focus{
+        outline: 3.1px solid #0f7060;
+        transition: 120ms;
+    }
+
+    #myPanel{
+        background: rgba(255,255,255,0.8);
+        backdrop-filter: blur(30px);
+        -webkit-backdrop-filter: blur(30px);
+        box-shadow: 5px 7px 18px 0px rgba(33,55,55,0.1);
+        border-radius: 21px;
+        margin-top: 21px;
+        box-sizing: border-box;
+        padding: 13px;
+        width: 232px;
+
+    }
+    #myPanel h1{
+        font-size: 21px; 
+        color: #2C3F3C;   
+        font-weight: bold;
+    }
+
+    .myPost{
+        margin-top: 34px;
+    }
+
+    .myPostTitle{
+        padding: 0 0 5px 5px;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: space-between;
+        font-size: 13px;
+        color: #2C3F3C;   
+    }
+
+    .postMore{
+        text-decoration: underline;
+    }
+
+    .postMore:hover{
+        cursor: pointer;
+    }
+
+
+    .post{
+        width: 100%;
+        height: 89px;
+        background-color: #fff0bd;
+        box-shadow: 0px 2px 2px rgba(33,55,55,0.1);
+        padding: 8px;
+        border-radius: 8px;
+        box-sizing: border-box;
+        margin-bottom: 13px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .postName{
+        text-align: left;
+        font-size: 18px;
+    }
+
+    .postTime{
+        text-align: right;
+        font-size: 13px;
+    }
+
+    .postButton{
+        background-color: #66f488;
+        box-shadow: 0px 0px 8px rgba(155,255,188,1);
+        padding: 8px;
+        height: 34px;
+        border-radius: 8px;
+        text-align: center;
+        line-height: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 34px;
+        font-size: 18px;
+    }
+
+    .postButton:hover{
+        cursor:pointer;
+        background-color: #88ffaa;
+    }
+    
+    /* 로그아웃 버튼 스타일 */
+	.signOutButton{
+	    background-color: #FFEE8D; 
+	    box-shadow: 0px 4px 10px rgba(255, 200, 120, 0.5);
+	    height: 36px;
+	    border-radius: 8px;
+	    text-align: center;
+	    display: flex;
+	    align-items: center;
+	    justify-content: center;
+	    margin-top: 10px;
+	    font-size: 18px;
+	    font-weight: bold;
+	    color: #2C3F3C; 
+	    transition: background-color 0.3s ease, transform 0.2s ease; 
+	}
+	
+	/* Hover 효과 */
+	.signOutButton:hover {
+	    cursor: pointer;
+	    background-color: #FF5722; 
+	}
+	
+	
+	/*=============================================================================================== */
+	
+	
+	.signInTitle
+	{
+		text-align : center;
+	}
+	
+	
+	
+	/* 로그인 폼 컨테이너 스타일 */
+	.form-container {
+	    background: rgba(255,255,255,0.8);
+        border-radius: 21px;
+        padding: 13px;
+        display : flex;
+        justify-content:center;
+	}
+	
+	/* 각 입력 그룹 */
+	.form-group {
+	    margin-bottom: 20px;
+	    text-align: left;
+	}
+	
+	/* 레이블 스타일 */
+	.form-group label {
+	    font-size: 14px;
+	    color: #555;
+	    display: block;
+	    margin-bottom: 5px;
+	}
+	
+	/* 텍스트 및 비밀번호 입력 필드 스타일 */
+	.form-group input[type="text"],
+	.form-group input[type="password"] {
+	    width: 100%;
+	    padding: 10px;
+	    font-size: 14px;
+	    border: 1px solid #ccc;
+	    border-radius: 5px;
+	    box-sizing: border-box;
+	}
+	
+	/* 로그인 버튼 스타일 */
+	#submitButton {
+	    background-color: #66f488;
+        box-shadow: 0px 0px 8px rgba(155,255,188,1);
+        width : 100%;
+        padding: 8px;
+        height: 34px;
+        border-radius: 8px;
+        text-align: center;
+        line-height: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 14px;
+        font-size: 18px;
+	}
+	
+	#submitButton:hover {
+	    cursor:pointer;
+        background-color: #88ffaa;
+	}
+	
+	
+	#signUpButton
+	{
+		background-color: #FFFFFF;
+        box-shadow: 0px 0px 8px rgba(155,255,188,1);
+        width : 100%;
+        padding: 8px;
+        height: 34px;
+        border : 1px solid #44D899;
+        border-radius: 8px;
+        text-align: center;
+        line-height: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 14px;
+        font-size: 18px;
+	}
+	
+	
+	/* 에러 메시지 표시 */
+	.alert {
+	    font-size: 14px;
+	    color: red;
+	    margin-top: 10px;
+	}
+	
+	
+	
+
+/* ======================================================================================================= */
+
+
+ /* <!--반응형 관련 css--> */
+ /* 미디어 쿼리: 태블릿 이하 해상도 */
+ @media (max-width: 768px) {
+     #iconLogo {
+         font-size: 40px; /* 로고 크기 조정 */
+     }
+ 
+     #textLogo {
+         font-size: 18px; /* 텍스트 로고 크기 조정 */
+     }
+ }
+ 
+ /* 미디어 쿼리: 모바일 이하 해상도 */
+ @media (max-width: 580px) {
+     /* #textLogo {
+         display : none; /* 모바일에서는 텍스트 로고 숨기기 
+     }
+ 
+     #login {
+         font-size: 10px; 
+         padding: 8px 16px; 
+     }*/
+
+    #headerContainer
+    {
+        width: 100%;
+    }
+
+    .board
+    {
+        display: none;
+    }
+
+    .imgFrame
+    {
+        display: none;;
+    }
+
+ }
+ 

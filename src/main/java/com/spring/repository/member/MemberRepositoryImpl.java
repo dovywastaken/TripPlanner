@@ -34,7 +34,7 @@ public class MemberRepositoryImpl implements MemberRepository
     {
     	System.out.println("+++++++++++++++++++++++++++++++++++++++");
     	System.out.println("[MemberRepository : createMember 메서드 호출]");
-        String sql = "INSERT INTO t_member (name, id, pw, email, region, sex, phone1, phone2, phone3, birthday, emailCheck, registerDate ,loginDate) " +
+        String sql = "INSERT INTO members (name, id, pw, email, region, sex, phone1, phone2, phone3, birthday, emailCheck, registerDate ,loginDate) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?)";  
         Date date = new Date(System.currentTimeMillis());
         template.update(sql, 
@@ -51,7 +51,7 @@ public class MemberRepositoryImpl implements MemberRepository
   	{
   		System.out.println("+++++++++++++++++++++++++++++++++++++++");
     	System.out.println("[MemberRepository : checkUp 메서드 호출]");
-  	    String sql = "select count(*) from t_member where id = ?";
+  	    String sql = "select count(*) from members where id = ?";
   	    int count = template.queryForObject(sql, Integer.class, id);
   	    System.out.println("총 " + count + "개의 중복된 아이디가 있습니다");
   	    return count >= 1;  // 이미 존재하는 값이 있으면 true
@@ -64,7 +64,7 @@ public class MemberRepositoryImpl implements MemberRepository
   	{
   		System.out.println("+++++++++++++++++++++++++++++++++++++++");
     	System.out.println("[MemberRepository : checkUp 메서드 호출]");
-  	    String sql = "select count(*) from t_member where email = ?";
+  	    String sql = "select count(*) from members where email = ?";
   	    int count = template.queryForObject(sql, Integer.class, email);
   	    System.out.println("총 " + count + "개의 중복된 이메일이 있습니다");
   	    return count >= 1;  // 이미 존재하는 값이 있으면 true
@@ -79,8 +79,8 @@ public class MemberRepositoryImpl implements MemberRepository
     {
     	System.out.println("+++++++++++++++++++++++++++++++++++++++");
     	System.out.println("[MemberRepository : findById 메서드 호출]");
-        String sql = "SELECT * FROM t_member WHERE id = ?";
-        String updateSql = "UPDATE t_member SET loginDate = ? WHERE id = ?";
+        String sql = "SELECT * FROM members WHERE id = ?";
+        String updateSql = "UPDATE members SET loginDate = ? WHERE id = ?";
         Date date = new Date(System.currentTimeMillis());
         try {
         	System.out.println("입력한 id에 맞는 dto를 가져옵니다");
@@ -100,7 +100,7 @@ public class MemberRepositoryImpl implements MemberRepository
     {
         System.out.println("+++++++++++++++++++++++++++++++++++++++");
         System.out.println("[MemberRepository : searchMember 메서드 호출]");
-        String sql = "SELECT * FROM t_member WHERE name LIKE ? ORDER BY name LIMIT ? OFFSET ?";
+        String sql = "SELECT * FROM members WHERE name LIKE ? ORDER BY name LIMIT ? OFFSET ?";
         String searchName = "%" + name + "%";
         System.out.println("입력한 이름에 맞는 dto 가져옵니다");
 
@@ -114,7 +114,7 @@ public class MemberRepositoryImpl implements MemberRepository
     {
         System.out.println("+++++++++++++++++++++++++++++++++++++++");
         System.out.println("[MemberRepository : readAllMemberPaging 메서드 호출]");
-        String sql = "SELECT * FROM t_member ORDER BY name LIMIT ? OFFSET ?";
+        String sql = "SELECT * FROM members ORDER BY name LIMIT ? OFFSET ?";
 
         System.out.println("[MemberRepository : readAllMemberPaging 메서드 종료]");
         return template.query(sql, new MemberMapper(), limit, offset);
@@ -126,8 +126,8 @@ public class MemberRepositoryImpl implements MemberRepository
 	{
 		System.out.println("+++++++++++++++++++++++++++++++++++++++");
     	System.out.println("[MemberRepository : getTotalMemberCount 메서드 호출]");
-		String sql = "select count(*) from t_member";
-		String sql2 = "select count(*) from t_member where name like ?";
+		String sql = "select count(*) from members";
+		String sql2 = "select count(*) from members where name like ?";
 		
 		if(keyword == null || keyword.isEmpty()) //검색어 입력 안했으면 테이블 내 모든 회원의 수 계산해서 리턴
 		{
@@ -149,7 +149,7 @@ public class MemberRepositoryImpl implements MemberRepository
 	@Override
 	public String getPasswordById(String id) 
 	{
-	    String sql = "select pw from t_member where id = ?";
+	    String sql = "select pw from members where id = ?";
 	    try 
 	    {
 	        return template.queryForObject(sql, String.class,new Object[]{id});
@@ -171,7 +171,7 @@ public class MemberRepositoryImpl implements MemberRepository
 	    System.out.println("[MemberRepository : updateMember 메서드 호출]");
 	    
 	    // 기존 이메일 가져오기
-	    String existingEmailSql = "SELECT email FROM t_member WHERE id = ?";
+	    String existingEmailSql = "SELECT email FROM members WHERE id = ?";
 	    String existingEmail = template.queryForObject(existingEmailSql, String.class, member.getId());
 
 	    // 이메일 변경 여부 확인
@@ -179,7 +179,7 @@ public class MemberRepositoryImpl implements MemberRepository
 	    member.setEmailCheck(emailCheck); // DTO에 emailCheck 값 설정
 
 	    // 회원 정보 업데이트 쿼리
-	    String sql = "UPDATE t_member SET email = ?, region = ?, phone1 = ?, phone2 = ?, phone3 = ?, emailCheck = ? WHERE id = ?";    
+	    String sql = "UPDATE members SET email = ?, region = ?, phone1 = ?, phone2 = ?, phone3 = ?, emailCheck = ? WHERE id = ?";    
 	    template.update(sql, member.getEmail(), member.getRegion(), member.getPhone1(), member.getPhone2(), member.getPhone3(), emailCheck, member.getId());
 
 	    System.out.println("이메일 변경 여부: " + (emailCheck == 1 ? "변경 없음" : "변경됨"));
@@ -193,7 +193,7 @@ public class MemberRepositoryImpl implements MemberRepository
 	{
 		System.out.println("+++++++++++++++++++++++++++++++++++++++");
     	System.out.println("[MemberRepository : updatePw 메서드 호출]");
-    	String sql = "UPDATE t_member SET pw = ? WHERE id = ?";    
+    	String sql = "UPDATE members SET pw = ? WHERE id = ?";    
         template.update(sql, pw, id); //아이디에 맞는 비밀번호만 수정
         
         System.out.println("[MemberRepository : updatePw 메서드 종료]");
@@ -203,7 +203,7 @@ public class MemberRepositoryImpl implements MemberRepository
 	@Override
 	public void updateEmail(String id) 
 	{
-		String sql = "UPDATE t_member SET emailCheck = 1 WHERE id = ?"; 
+		String sql = "UPDATE members SET emailCheck = 1 WHERE id = ?"; 
 		System.out.println("이메일 update sql문"+sql + id);
         template.update(sql,id);
         System.out.println("update sql문 실행");
@@ -217,7 +217,7 @@ public class MemberRepositoryImpl implements MemberRepository
     {
     	System.out.println("+++++++++++++++++++++++++++++++++++++++");
     	System.out.println("[MemberRepository : deleteMember 메서드 호출]");
-        String sql = "DELETE FROM t_member WHERE id = ?";
+        String sql = "DELETE FROM members WHERE id = ?";
         template.update(sql, member.getId());
         System.out.println("로그인한 사용자의 정보를 삭제합니다");
         System.out.println("[MemberRepository : deleteMember 메서드 종료]");

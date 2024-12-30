@@ -36,9 +36,11 @@
     </style>
 </head>
 <body>
+	<%@ include file="../header.jsp" %>
     <div class="container">
         <h1>그동안 함께 해주셔서 감사합니다</h1>
         <a href="${pageContext.request.contextPath}">Home</a>
     </div>
+    <%@ include file="../footer.jsp" %>
 </body>
 </html>
