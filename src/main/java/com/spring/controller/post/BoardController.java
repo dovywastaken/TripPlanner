@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.spring.domain.Member;
 import com.spring.domain.Post;
+import com.spring.domain.Tour;
 import com.spring.service.post.BoardService;
 
 @Controller
@@ -99,8 +100,14 @@ public class BoardController {
 	
 	
 	@GetMapping("/hotSpots")
-	public String toHotSpots()
+	public String toHotSpots(@RequestParam(value = "page", defaultValue = "1") int page, Model model) //1번)
 	{
+		System.out.println("===========================================================================================");
+        System.out.println("BoardController : hotSpots(GET)으로 매핑");
+		int limit = 12; //한 페이지에 표시할 관광지 숫자
+		int offset = (page - 1) * limit;
+		List<Tour> tourList = boardService.hotSpots(limit, offset);
+		System.out.println("관광지 정보 담겼는지 "+tourList);
 		
 		return "post/hotSpots";
 	}

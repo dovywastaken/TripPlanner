@@ -9,7 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.spring.domain.Member;
 import com.spring.domain.Post;
+import com.spring.domain.Tour;
+import com.spring.repository.member.MemberMapper;
 @Repository
 public class BoardRepositoryImpl implements BoardRepository {
 	
@@ -97,8 +100,15 @@ public class BoardRepositoryImpl implements BoardRepository {
 	        result.put("Allpostgetnum", totalPosts);
 	        return result;
 	}
-	
-	
+
+	@Override
+	public List<Tour> hotSpots(int limit, int offset) { //12 , 0로 들어옴
+	    // 1. 데이터 조회
+	    String sql = "SELECT * FROM tour ORDER BY citation_count DESC LIMIT ? OFFSET ?";
+	    System.out.println("hotspots 함수로 " + limit+  ", "+ offset + " 파라미터를 가지고 db에서 데이터 fetch 시도합니다");
+	    System.out.println("[BoardRepository : hotSpots 메서드 종료]");
+	    return template.query(sql, new TourMapper(), limit, offset);
+	}
 }
 
 

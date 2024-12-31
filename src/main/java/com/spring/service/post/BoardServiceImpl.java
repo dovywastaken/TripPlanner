@@ -1,10 +1,12 @@
 package com.spring.service.post;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.spring.domain.Tour;
 import com.spring.repository.post.BoardRepository;
 
 
@@ -31,7 +33,12 @@ public class BoardServiceImpl implements BoardService{
 
 	@Override
 	public Map<String, Object> mysearchPosts(String id,String keyword, int page) {
-		// TODO Auto-generated method stub
 		return boardRepository.mysearchPosts(id,keyword, page);
+	}
+
+	@Override
+	public List<Tour> hotSpots(int limit, int offset) {
+		System.out.println("서비스에서 limit,offset값을 들고 갑니다" + limit + offset);
+		return boardRepository.hotSpots(limit, offset);
 	}
 }

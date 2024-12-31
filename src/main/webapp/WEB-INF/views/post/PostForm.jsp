@@ -6,20 +6,19 @@
     <meta charset="UTF-8">
     <title>게시글 작성</title>
     <style>
+    
         body {
             font-family: Arial, sans-serif;
             background-color: #fff;
             margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
             padding: 20px;
+            display : flex;
+            flex-direction : column;
         }
 
         .container {
             display: flex;
             width: 100%;
-            max-width: 1200px;
         }
 
         .left {
@@ -167,6 +166,7 @@
             <button type="button" id="submitBtn">수정 완료</button>
         </div>
     </div>
-
+    
+	<%@ include file="../footer.jsp" %>
 </body>
 </html>

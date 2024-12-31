@@ -14,28 +14,26 @@
 	        <br>
 	        <br>
 	        <div id="members">
+		        <div class="member">
+	                <ul>
+	                    <h2>메인 페이지</h2>
+	                    <br>
+	                    <li><a href="/TripPlanner">• 메인 페이지</a></li>
+	                    <li><a href="#">• 에러 페이지</a></li>
+	                </ul>
+	            </div>
 	            <div class="member">
 	                <ul>
 	                    <h2>회원 관련</h2>
 	                    <br>
-	                    <li><a href="#">•무슨 무슨 페이지</a></li>
-	                    <li><a href="#">•무슨 무슨 페이지</a></li>
-	                    <li><a href="#">•무슨 무슨 페이지</a></li>
-	                    <li><a href="#">•무슨 무슨 페이지</a></li>
-	                    <li><a href="#">•무슨 무슨 페이지</a></li>
-	                    <li><a href="#">•무슨 무슨 페이지</a></li>
-	                    <li><a href="#">•무슨 무슨 페이지</a></li>
-	                </ul>
-	            </div>
-	            
-	            <div class="member">
-	                <ul>
-	                    <h2>플래너 관련</h2>
-	                    <br>
-	                    <li><a href="#">•무슨 무슨 페이지</a></li>
-	                    <li><a href="#">•무슨 무슨 페이지</a></li>
-	                    <li><a href="#">•무슨 무슨 페이지</a></li>
-	                    <li><a href="#">•무슨 무슨 페이지</a></li>
+	                    <li><a href="#">• 회원가입 페이지</a></li>
+	                    <li><a href="#">• 로그인 페이지</a></li>
+	                    <li><a href="#">• 내 정보 페이지</a></li>
+	                    <li><a href="#">• 정보 수정 페이지</a></li>
+	                    <li><a href="#">• 회원 삭제 페이지</a></li>
+	                    <li><a href="#">• 회원 삭제 확인 페이지</a></li>
+	                    <li><a href="#">• 비밀번호 변경 페이지</a></li>
+	                    <li><a href="#">• 관리자 페이지</a></li>
 	                </ul>
 	            </div>
 	            
@@ -43,10 +41,22 @@
 	                <ul>
 	                    <h2>게시판 관련</h2>
 	                    <br>
-	                    <li><a href="#">•무슨 무슨 페이지</a></li>
-	                    <li><a href="#">•무슨 무슨 페이지</a></li>
-	                    <li><a href="#">•무슨 무슨 페이지</a></li>
-	                    <li><a href="#">•무슨 무슨 페이지</a></li>
+	                    <li><a href="#">• 전체 플래너 페이지</a></li>
+	                    <li><a href="#">• 개인 플래너 페이지</a></li>
+	                    <li><a href="#">• 인기 플래너 페이지</a></li>
+	                    <li><a href="#">• 인기 명소 페이지</a></li>
+	                    <li><a href="#">• 인기 명소 페이지</a></li>
+	                </ul>
+	            </div>
+	            
+	            <div class="member">
+	                <ul>
+	                    <h2>플래너 관련</h2>
+	                    <br>
+	                    <li><a href="#">• 플래너 작성 페이지</a></li>
+	                    <li><a href="#">• 명소 가져오기 페이지</a></li>
+	                    <li><a href="#">• 플래너 수정 페이지</a></li>
+	                    <li><a href="#">• 플래너 조회 페이지</a></li>
 	                </ul>
 	            </div>
 	        </div>
