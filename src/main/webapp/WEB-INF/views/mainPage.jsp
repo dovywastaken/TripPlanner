@@ -239,27 +239,7 @@
 				
 	        </div>
 	    </aside>
-	    <script>
-			const aside = document.querySelector('aside');
-			let lastScrollY = window.scrollY;
-			let velocity = 0; // 속도 변수
-			let acceleration = 0.1; // 가속도
-			
-			window.addEventListener('scroll', () => {
-			    const currentScrollY = window.scrollY;
-			    velocity += (currentScrollY - lastScrollY) * acceleration;
-			    
-			    // 새로운 위치 계산
-			    const newTop = parseFloat(getComputedStyle(aside).top) + velocity;
-			    aside.style.top = `${Math.max(0, newTop)}px`;
-			
-			    // 점진적으로 속도를 줄이기 위해 감속 처리
-			    velocity *= 0.9;
-			
-			    // 업데이트
-			    lastScrollY = currentScrollY;
-			});
-		</script>
+	    
 	</div>
 	<%@ include file="footer.jsp" %>
 </body>

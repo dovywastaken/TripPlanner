@@ -71,6 +71,7 @@ public class MainController
 	    System.out.println("MainController: 프로젝트명으로 매핑되어 mainPage.jsp로 이동합니다.");
 	    return "mainPage"; // mainPage.jsp로 이동
 	}
+	
 	private void returnTourList(Model model){
 		
 		int limit = 2; // 한 페이지당 표시할 관광지 수
