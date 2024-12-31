@@ -7,7 +7,7 @@ footer
         width: 100vw;
         padding: 0 300px;
         bottom: 0px;
-        background-color: #0f7060;
+        background-color: #e1e4ea;
         z-index: 100;
     }
 
@@ -17,14 +17,14 @@ footer
         flex-direction: column;
         width: 100%;
         padding: 55px 0 45px 0;
-        border-bottom: 1px solid #449988;
+        border-bottom: 1px solid #c1c3c9;
     }
 
     .sitemap h3,
     .social h3
     {
         font-size: 26px;
-        color: #66f488;
+        color: #2C3c3f;
         font-weight: 700;
         margin: 0 auto;
     }
@@ -40,7 +40,7 @@ footer
     .teammate h1
     {
         font-size: 18px;
-        color: #e1e9e3;
+        color: #2C3c3f;
         font-weight: bold;
         padding-bottom: 8px;
         border-bottom: 1px solid #449988;
@@ -56,7 +56,7 @@ footer
     .member a
     {
         font-size: 16px;
-        color: #e1e9e3;
+        color: #2C3c3f;
         line-height: 27px;
     }
 
@@ -86,7 +86,7 @@ footer
     .teammate p
     {
         font-size: 16px;
-        color: #e1e9e3;
+        color: #2C3c3f;
         line-height: 21px;
     }
 
@@ -100,19 +100,19 @@ footer
     #icons i
     {
         font-size: 30px;
-        color: #e1e9e3;
+        color: #008866;
     }
 
     .copyright
     {
         width: calc(100% + 600px);
         height: 10%;
-        color: #0f7060;
-        background-color: #010909;
+        color: #a1a3a9;
         text-align: center;
         height: 90px;
         display: flex;
         align-items: center;
         justify-content: center;
+        font-size: 13px;
     }
     

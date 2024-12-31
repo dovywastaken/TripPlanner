@@ -18,7 +18,6 @@
 		    </a>
 		    <a href="/TripPlanner/postform" class="headerLeft">글쓰기</a>
 		    <a href="/TripPlanner/hotPlanners" class="headerLeft">인기 여행 계획</a>
-            <a href="/TripPlanner/hotSpots" class="headerLeft">인기 명소</a>
 		</div>
         <div id="headerRight">
 	        <c:if test="${empty user}">

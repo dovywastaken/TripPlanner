@@ -82,99 +82,75 @@
 	
 				<div id="tourDividerTitle">트립플래너가 추천하는 지역 명소들</div>
 				<br>
-	
-	
 	            <div class="section">
 	                <div class="title">
 	                    <span>추천 축제</span>
-	                    <a href="#" class="morePost">더보기</a>
+	                    <a href="/TripPlanner/boardFestival" class="morePost">더보기</a>
 	                </div>
-	                <div id="planner">
-	                    <div class="plannerCard">
-	                        <div class="imgFrame">
-	                            <img src="/TripPlanner/resources/img/logo.png" class="pImg">
-	                        </div>
-	                        <div class="plannerCol" id="pText">
-	                            <h3 class="plannerTitle">군항제...</h3>
-	                            <p class="hashtag">#벚꽃 #진해</p>
-	                            <p class="plannerContents">갔는데 머시기 갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기</p>
-	                        </div>
-	                    </div>
-	
-	                    <div class="plannerCard">
-	                        <div class="imgFrame">
-	                            <img src="/TripPlanner/resources/img/logo.png" class="">
-	                        </div>
-	                        <div class="plannerCol" id="pText">
-	                            <h3 class="plannerTitle">군항제...</h3>
-	                            <p class="hashtag">#벚꽃 #진해</p>
-	                            <p class="plannerContents">갔는데 머시기 갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기</p>
-	                        </div>
-	                    </div>
-	
-	                </div>
+	                <c:choose>
+               			<c:when test="${not empty festival}">
+               				<c:forEach var="festival" items="${festival}">
+		                      <div class="plannerCard">
+		                          <div class="imgFrame">
+		                              <img src="${festival.firstimage}" class="pImg">
+		                          </div>
+		                          <div class="plannerCol" id="pText">
+		                              <h3 class="plannerTitle">${festival.title}</h3>
+		                              <p class="hashtag">#겨울여행 #경주</p>
+		                              <p class="plannerContents">${festival.overview}</p>
+		                          </div>
+		                      </div>
+	                     	</c:forEach>
+                    	</c:when>
+   					</c:choose>
 	            </div>
 	
 				 <div class="section">
 		                  <div class="title">
 		                      <span>추천 관광지</span>
-		                      <a href="#" class="morePost">더보기</a>
+		                      <a href="/TripPlanner/boardTour" class="morePost">더보기</a>
 		                  </div>
 		                  <div id="planner">
-		                      <div class="plannerCard">
-		                          <div class="imgFrame">
-		                              <img src="/TripPlanner/resources/img/logo.png" class="pImg">
-		                          </div>
-		                          <div class="plannerCol" id="pText">
-		                              <h3 class="plannerTitle">불국사...</h3>
-		                              <p class="hashtag">#겨울여행 #경주</p>
-		                              <p class="plannerContents">갔는데 머시기 갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기</p>
-		                          </div>
-		                      </div>
-		      
-		                      <div class="plannerCard">
-		                          <div class="imgFrame">
-		                              <img src="/TripPlanner/resources/img/logo.png" class="pImg">
-		                          </div>
-		                          <div class="plannerCol" id="pText">
-		                              <h3 class="plannerTitle">불국사...</h3>
-		                              <p class="hashtag">#겨울여행 #경주</p>
-		                              <p class="plannerContents">갔는데 머시기 갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기</p>
-		                          </div>
-		                      </div>
-		      
+		                  		<c:choose>
+		                  			<c:when test="${not empty tourSpots}">
+		                  				<c:forEach var="tourSpots" items="${tourSpots}">
+						                      <div class="plannerCard">
+						                          <div class="imgFrame">
+						                              <img src="${tourSpots.firstimage}" class="pImg">
+						                          </div>
+						                          <div class="plannerCol" id="pText">
+						                              <h3 class="plannerTitle">${tourSpots.title}</h3>
+						                              <p class="hashtag">#겨울여행 #경주</p>
+						                              <p class="plannerContents">${tourSpots.overview}</p>
+						                          </div>
+						                      </div>
+				                      	</c:forEach>
+			                      	</c:when>
+		      					</c:choose>
 		                  </div>
 		              </div>
-		              
-		              
 		              <div class="section">
 		                  <div class="title">
 		                      <span>추천 맛집</span>
-		                      <a href="#" class="morePost">더보기</a>
+		                      <a href="/TripPlanner/boardRestaurant" class="morePost">더보기</a>
 		                  </div>
 		                  <div id="planner">
-		                      <div class="plannerCard">
-		                          <div class="imgFrame">
-		                              <img src="/TripPlanner/resources/img/logo.png" class="pImg">
-		                          </div>
-		                          <div class="plannerCol" id="pText">
-		                              <h3 class="plannerTitle">불국사...</h3>
-		                              <p class="hashtag">#겨울여행 #경주</p>
-		                              <p class="plannerContents">갔는데 머시기 갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기</p>
-		                          </div>
-		                      </div>
-		      
-		                      <div class="plannerCard">
-		                          <div class="imgFrame">
-		                              <img src="/TripPlanner/resources/img/logo.png" class="pImg">
-		                          </div>
-		                          <div class="plannerCol" id="pText">
-		                              <h3 class="plannerTitle">불국사...</h3>
-		                              <p class="hashtag">#겨울여행 #경주</p>
-		                              <p class="plannerContents">갔는데 머시기 갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기</p>
-		                          </div>
-		                      </div>
-		      
+		                      <c:choose>
+		                  			<c:when test="${not empty restaurants}">
+		                  				<c:forEach var="restaurants" items="${restaurants}">
+						                      <div class="plannerCard">
+						                          <div class="imgFrame">
+						                              <img src="${restaurants.firstimage}" class="pImg">
+						                          </div>
+						                          <div class="plannerCol" id="pText">
+						                              <h3 class="plannerTitle">${restaurants.title}</h3>
+						                              <p class="hashtag">#겨울여행 #경주</p>
+						                              <p class="plannerContents">${restaurants.overview}</p>
+						                          </div>
+						                      </div>
+				                      	</c:forEach>
+			                      	</c:when>
+		      					</c:choose>
 		                  </div>
 		              </div>
 	        </div>

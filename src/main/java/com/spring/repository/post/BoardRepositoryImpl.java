@@ -102,12 +102,12 @@ public class BoardRepositoryImpl implements BoardRepository {
 	}
 
 	@Override
-	public List<Tour> hotSpots(int limit, int offset) { //12 , 0로 들어옴
+	public List<Tour> hotSpots(String type, int limit, int offset) { //12 , 0로 들어옴
 	    // 1. 데이터 조회
-	    String sql = "SELECT * FROM tour ORDER BY citation_count DESC LIMIT ? OFFSET ?";
+	    String sql = "SELECT * FROM tour Where contenttypeid = ? ORDER BY citation_count DESC LIMIT ? OFFSET ?";
 	    System.out.println("hotspots 함수로 " + limit+  ", "+ offset + " 파라미터를 가지고 db에서 데이터 fetch 시도합니다");
 	    System.out.println("[BoardRepository : hotSpots 메서드 종료]");
-	    return template.query(sql, new TourMapper(), limit, offset);
+	    return template.query(sql, new TourMapper(), type, limit, offset);
 	}
 }
 

@@ -1,10 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>인기 명소</title>
+<title>트립플래너</title>
 </head>
 
 <style>
@@ -125,32 +125,28 @@
 <%@ include file="../header.jsp" %>
 
 <div class="container">
-	<h1>추천 축제 게시판 입니다.</h1>
+	<h1>추천 식당 게시판 입니다.</h1>
 
 	<div class="section">
         <div id="planner">
-            <div class="plannerCard">
-                <div class="imgFrame">
-                    <img src="/TripPlanner/resources/img/logo.png" class="pImg">
-                </div>
-                <div class="plannerCol" id="pText">
-                    <h3 class="plannerTitle">군항제...</h3>
-                    <p class="hashtag">#벚꽃 #진해</p>
-                    <p class="plannerContents">갔는데 머시기 갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기</p>
-                </div>
-            </div>
-
-            <div class="plannerCard">
-                <div class="imgFrame">
-                    <img src="/TripPlanner/resources/img/logo.png" class="">
-                </div>
-                <div class="plannerCol" id="pText">
-                    <h3 class="plannerTitle">군항제...</h3>
-                    <p class="hashtag">#벚꽃 #진해</p>
-                    <p class="plannerContents">갔는데 머시기 갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기</p>
-                </div>
-            </div>
-
+			<c:choose>
+				<c:when test="${not empty restaurants}">
+					<c:forEach var="restaurants" items="${restaurants}">
+			            <div class="plannerCard">
+			                <div class="imgFrame">
+			                    <img src="${restaurants.firstimage}" class="">
+			                </div>
+			                <div class="plannerCol" id="pText">
+			                    <h3 class="plannerTitle">${restaurants.title}</h3>
+			                    <p class="hashtag">#${restaurants.addr1}</p>
+			                </div>
+			            </div>
+		           	</c:forEach>
+		        </c:when>
+		        <c:otherwise>
+		        	<div>아직 웹사이트가 응애라 추천할 축제 정보가 없어요 :( </div>
+		        </c:otherwise>
+			</c:choose>
         </div>
     </div>
 </div>

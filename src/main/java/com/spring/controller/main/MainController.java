@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import com.spring.controller.post.DateFormatter;
 import com.spring.domain.Member;
 import com.spring.domain.Post;
+import com.spring.domain.Tour;
 import com.spring.service.post.BoardService;
 import com.spring.service.post.PostService;
 
@@ -63,10 +64,26 @@ public class MainController
 	            model.addAttribute("posts", posts);
 	        }
 	    }
+	    
+	    returnTourList(model);
+	    System.out.println("관광지 모델 담겼는지 확인" + model.getAttribute("festival"));
 
 	    System.out.println("MainController: 프로젝트명으로 매핑되어 mainPage.jsp로 이동합니다.");
 	    return "mainPage"; // mainPage.jsp로 이동
 	}
-
+	private void returnTourList(Model model){
+		
+		int limit = 2; // 한 페이지당 표시할 관광지 수
+	    int offset = 0;
+	    // DB에서 전체 관광지 리스트를 가져옴
+	    List<Tour> tourSpots = boardService.hotSpots("12",limit, offset);
+	    List<Tour> festival = boardService.hotSpots("15", limit, offset);
+	    List<Tour> restaurants = boardService.hotSpots("39", limit, offset);
+	    
+	    model.addAttribute("tourSpots",tourSpots);
+	    model.addAttribute("festival",festival);
+	    model.addAttribute("restaurants",restaurants);
+	}
+	
 	
 }

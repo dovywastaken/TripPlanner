@@ -171,7 +171,7 @@
 
         <div class="pagination">
             <c:forEach var="i" begin="1" end="${totalPages}">
-                <a href="${pageContext.request.contextPath}/admin/dashboard?page=${i}&keyword=${keyword}">${i}</a>
+                <a href="/TripPlanner/admin/dashboard?page=${i}&keyword=${keyword}">${i}</a>
             </c:forEach>
         </div>
     </div>

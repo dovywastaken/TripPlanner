@@ -33,7 +33,7 @@ public class BoardController {
 		Map<String, Object> pagination = paginationHelper.getPagination(page, totalPosts, 10, 5);
 		model.addAttribute("currentPage", page);
 		model.addAttribute("pagination", pagination);
-		return "post/Allboard";
+		return "board/Allboard";
 	}
 	
 	
@@ -57,7 +57,7 @@ public class BoardController {
 	    model.addAttribute("keyword", keyword);
 	    model.addAttribute("currentPage", page);
 	    model.addAttribute("pagination", pagination);
-	    return "post/SearchBoard";
+	    return "board/SearchBoard";
 	}
 
 	
@@ -95,21 +95,59 @@ public class BoardController {
 		model.addAttribute("currentPage", page);
 		model.addAttribute("pagination", pagination);
 
-		return "post/hotPlanners";
+		return "board/hotPlanners";
 	}
 	
 	
-	@GetMapping("/hotSpots")
-	public String toHotSpots(@RequestParam(value = "page", defaultValue = "1") int page, Model model) //1번)
-	{
-		System.out.println("===========================================================================================");
-        System.out.println("BoardController : hotSpots(GET)으로 매핑");
-		int limit = 12; //한 페이지에 표시할 관광지 숫자
-		int offset = (page - 1) * limit;
-		List<Tour> tourList = boardService.hotSpots(limit, offset);
-		System.out.println("관광지 정보 담겼는지 "+tourList);
-		
-		return "post/hotSpots";
+	@GetMapping("/boardFestival")
+	public String toBoardFestival(@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
+	    int limit = 12; // 한 페이지당 표시할 관광지 수
+	    int offset = (page - 1) * limit;
+	    String type = "15";
+	    // DB에서 전체 관광지 리스트를 가져옴
+	    List<Tour> festivals = boardService.hotSpots(type,limit, offset);
+	    
+	    System.out.println("축제(15): " + festivals.size() + "개");
+	    
+	    // 모델에 각 카테고리별 리스트 추가
+	    model.addAttribute("festivals", festivals);
+	    model.addAttribute("totalCount", festivals.size());
+	    
+	    return "board/boardFestival";
+	}
+	
+	@GetMapping("/boardTour")
+	public String toBoardTour(@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
+	    int limit = 12; // 한 페이지당 표시할 관광지 수
+	    int offset = (page - 1) * limit;
+	    String type = "12";
+	    // DB에서 전체 관광지 리스트를 가져옴
+	    List<Tour> tourSpots = boardService.hotSpots(type,limit, offset);
+	    
+	    System.out.println("관광지(12): " + tourSpots.size() + "개");
+	    
+	    // 모델에 각 카테고리별 리스트 추가
+	    model.addAttribute("tourSpots", tourSpots);
+	    model.addAttribute("totalCount", tourSpots.size());
+	    
+	    return "board/boardTour";
+	}
+	
+	@GetMapping("/boardRestaurant")
+	public String toBoardRestaurant(@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
+	    int limit = 12; // 한 페이지당 표시할 관광지 수
+	    int offset = (page - 1) * limit;
+	    String type = "39";
+	    // DB에서 전체 관광지 리스트를 가져옴
+	    List<Tour> restaurants = boardService.hotSpots(type,limit, offset);
+	    
+	    System.out.println("음식점(39): " + restaurants.size() + "개");
+	    
+	    // 모델에 각 카테고리별 리스트 추가
+	    model.addAttribute("restaurants", restaurants);
+	    model.addAttribute("totalCount", restaurants.size());
+	    
+	    return "board/boardRestaurant";
 	}
 
 	@GetMapping("/Myboard")
@@ -124,7 +162,7 @@ public class BoardController {
 		setBoardModelAttributes(result,page,model);
 		model.addAttribute("pagination",pagination);
 		model.addAttribute("currentPage", page);
-		return "post/Myboard";
+		return "board/Myboard";
 		}else
 		return "errorPage";
 	}
@@ -148,7 +186,7 @@ public class BoardController {
 	    model.addAttribute("keyword", keyword);
 	    model.addAttribute("currentPage", page);
 	    model.addAttribute("pagination", pagination);
-	    return "post/MySearchBoard";
+	    return "board/MySearchBoard";
 	    }else {
 			return "errorPage";
 		}

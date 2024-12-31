@@ -37,8 +37,8 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public List<Tour> hotSpots(int limit, int offset) {
+	public List<Tour> hotSpots(String type, int limit, int offset) {
 		System.out.println("서비스에서 limit,offset값을 들고 갑니다" + limit + offset);
-		return boardRepository.hotSpots(limit, offset);
+		return boardRepository.hotSpots(type, limit, offset);
 	}
 }
