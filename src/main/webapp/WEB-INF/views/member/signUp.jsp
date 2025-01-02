@@ -85,8 +85,8 @@
         <button id="testButton">Test</button>
 
         <form:form modelAttribute="member" method="POST" action="${pageContext.request.contextPath}/members/signUp" id="signUp_form" onsubmit="combineEmail()">
-            <div class="form-group"> <label for="id">아이디 : </label> 
-            <form:input path="id" id="id" placeholder="아이디" onchange="IDValidator()" />
+            <div class="form-group"> <label for="id">이메일 : </label> 
+            <form:input path="id" id="id" placeholder="이메일" onchange="IDValidator()" />
             <input type="button" id="confirmId" class="checkSome" value="중복체크"> 
             <div id="message_id"></div> 
             <form:errors path="id" class="error-color"/> </div>
@@ -109,23 +109,6 @@
 			    <input id="pw2" placeholder="비밀번호 확인" type="password"/>
 			    <div id="pwCheck"></div> <!-- 비밀번호 확인시 메시지 -->
 			</div> 
-			
-            <div class="form-group">
-                <label for="emailId">Email : </label>
-                <input type="text" id="emailId" name="emailId" placeholder="이메일" />@
-                <input type="text" id="emailDomain" name="emailDomain"  placeholder="sample.com" readonly="readonly"/>
-                <select id="emailSelect" required="required" onchange="updateDomainInput(this)">
-                    <option value="custom">직접입력</option>
-                    <option value="naver.com">naver.com</option>
-                    <option value="gmail.com">gmail.com</option>
-                    <option value="hanmail.net">hanmail.net</option>
-                    <option value="daum.net">daum.net</option>
-                    <option value="icloud.com">icloud.com</option>
-                </select>         
-                <div id="message_email"></div> 
-            </div>
-            
-            <form:input type="hidden" id="email" path="email"/>
 
             <div class="form-group">
                 <label for="region">지역 : </label>

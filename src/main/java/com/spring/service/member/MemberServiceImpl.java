@@ -52,12 +52,6 @@ public class MemberServiceImpl implements MemberService
 	}
 
 	@Override
-	public boolean emailCheckUp(String email) 
-	{
-		return memberRepository.emailCheckUp(email);
-	}
-
-	@Override
 	public List<Member> readAllMemberPaging(int limit, int offset) 
 	{	
 		return memberRepository.readAllMemberPaging(limit, offset);

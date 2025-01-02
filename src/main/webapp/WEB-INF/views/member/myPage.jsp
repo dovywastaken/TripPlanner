@@ -75,13 +75,12 @@
         <hr>
         <h2>내 정보</h2>
         <form method="POST" action="updateMember">
-            <p>아이디: ${user.id}</p>
-            <p>이름: ${user.name}</p>
-            <p>이메일: ${user.email}
-                <c:if test="${user.emailCheck == 1}">
+            <p>아이디: ${user.id}
+            	<c:if test="${user.emailCheck == 1}">
                     <span class="green-text">✔ 인증 완료</span>
                 </c:if>
             </p>
+            <p>이름: ${user.name}</p>
             <p>지역: ${user.region}</p>
             <p>전화번호: ${user.phone1}-${user.phone2}-${user.phone3}</p>
             <p>생년월일: ${user.birthday}</p>

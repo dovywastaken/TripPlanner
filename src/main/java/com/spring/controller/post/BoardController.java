@@ -149,6 +149,16 @@ public class BoardController {
 	    
 	    return "board/boardRestaurant";
 	}
+	
+	
+	
+	@GetMapping("/detailedInfo")
+	public String toDetailedPage(@RequestParam String contentTypeId, @RequestParam String contentId, Model model) 
+	{
+		model.addAttribute("contenttypeid", contentTypeId);
+		model.addAttribute("contentid", contentId);
+		return "board/detailedPage";
+	}
 
 	@GetMapping("/Myboard")
 	public String getMyboard(HttpSession session,Model model, @RequestParam(value = "page", defaultValue = "1") int page) {

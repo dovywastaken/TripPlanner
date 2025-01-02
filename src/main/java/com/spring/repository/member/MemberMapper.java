@@ -15,16 +15,15 @@ public class MemberMapper implements RowMapper<Member>
 		member.setName(rs.getString(1));
 		member.setId(rs.getString(2));
 		member.setPw(rs.getString(3));
-		member.setEmail(rs.getString(4));
-		member.setRegion(rs.getString(5));
-		member.setSex(rs.getString(6));
-		member.setPhone1(rs.getString(7));
-		member.setPhone2(rs.getString(8));
-		member.setPhone3(rs.getString(9));
-		member.setBirthday(rs.getString(10));
-		member.setEmailCheck(rs.getInt(11));
-		member.setRegisterDate(rs.getDate(12));
-		member.setLoginDate(rs.getDate(13));
+		member.setRegion(rs.getString(4));
+		member.setSex(rs.getString(5));
+		member.setPhone1(rs.getString(6));
+		member.setPhone2(rs.getString(7));
+		member.setPhone3(rs.getString(8));
+		member.setBirthday(rs.getString(9));
+		member.setEmailCheck(rs.getInt(10));
+		member.setRegisterDate(rs.getDate(11));
+		member.setLoginDate(rs.getDate(12));
 
 		return member;
 	}

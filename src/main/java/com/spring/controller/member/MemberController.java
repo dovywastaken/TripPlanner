@@ -56,34 +56,13 @@ public class MemberController {
         return response; // JSON 반환
     }
 
-
-    //AJAX 요청 이메일 중복 확인 함수
-    @GetMapping("/emailCheckDuplicate") 
-    @ResponseBody
-    public Map<String, Boolean> emailCheckDuplicate(@RequestParam String emailId, @RequestParam String domain) {
-        System.out.println("===========================================================================================");
-        System.out.println("MemberController : /members/emailCheckDuplicate(GET)으로 매핑되었습니다");
-
-        String email = emailId + "@"+ domain;
-        System.out.println("뷰페이지로부터 파라미터로 받아 들고온 이메일은 "+email);
-        boolean notAvailable = memberService.emailCheckUp(email);
-
-        Map<String, Boolean> response = new HashMap<>();
-
-        response.put("notAvailable", notAvailable);
-        
-        return response; // JSON 반환
-    }
-
     //회원가입 폼전송
     @PostMapping("/signUp") 
-    public String fromSignUp(@ModelAttribute("member") Member member, @RequestParam String emailId, @RequestParam String emailDomain) {
+    public String fromSignUp(@ModelAttribute("member") Member member) {
         // 회원 가입 요청 처리
         System.out.println("===========================================================================================");
         System.out.println("MemberController : members/signUp(POST)으로 매핑");
-        member.setEmail(emailId, emailDomain);
         
-        System.out.println("컨트롤러까지 결합된 이메일이 들어옴 "+member.getEmail());
         String phone = member.getPhone1();
         String[] phoneList = phone.split("-");
         
@@ -191,7 +170,7 @@ public class MemberController {
     	{
     		String host = "http://localhost:8080/TripPlanner/members/emailCheck";
     		String from = "larrydaniels751@gmail.com";
-    		String to = member.getEmail();
+    		String to = member.getId();
     		String who = member.getId();
     		String content = "클릭하여 이메일 인증을 완료해주십시요\n" + host + "?userID=" + who;
     		
@@ -254,15 +233,12 @@ public class MemberController {
 
     // 회원 정보 수정 요청 처리
     @PostMapping("/updateMember")
-    public String fromUpdateMember(@ModelAttribute("user") Member member , HttpSession session, Model model,
-                                    @RequestParam String emailId, @RequestParam String emailDomain) {
+    public String fromUpdateMember(@ModelAttribute("user") Member member , HttpSession session, Model model) {
         System.out.println("===========================================================================================");
         System.out.println("MemberController : members/updateMember(POST)으로 매핑되었습니다");
-        System.out.println("기존 이메일 주소 : "+ member.getEmail());
     
         
         // 이메일 설정
-        member.setEmail(emailId, emailDomain);
         String id = member.getId();
         String phone = member.getPhone1();
         String[] phoneList = phone.split("-");

@@ -14,7 +14,7 @@
         <property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
         <property name="url" value="jdbc:mysql://localhost:3306/plannerDB?serverTimezone=Asia/Seoul" />
         <property name="username" value="root" />
-        <property name="password" value="1234" />
+        <property name="password" value="Uisin2848!" />
     </bean>
 
     <!-- JdbcTemplate 빈 설정 -->

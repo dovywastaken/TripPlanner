@@ -92,29 +92,12 @@
 	            <form method="POST" action="${pageContext.request.contextPath}/members/updateMember">
 	                <div class="form-group">
 	                    <label for="id">아이디 :</label>
-	                    <input type="text" value="${user.id}" placeholder="아이디" disabled/>
+	                    <input type="text" value="${user.id}" placeholder="아이디" disabled />
 	                    <input type="hidden" name="id" id="id" value="${user.id}"/>
 	                </div>
 	                <div class="form-group">
 	                    <label for="name">이름 :</label>
 	                    <input type="text" name="name" value="${user.name}" placeholder="이름" disabled/>
-	                </div>
-	                <div class="form-group">
-	                    <label for="emailId">Email :</label>
-	                    <c:set var="emailParts" value="${fn:split(user.email, '@')}"/>
-	                    <input type="text" id="emailId" name="emailId" placeholder="이메일" value="${emailParts[0]}"/>@
-	                    <input type="text" id="emailDomain" name="emailDomain" value="${emailParts[1]}" placeholder="sample.com" readonly/>
-	                    <select id="emailSelect" required="required" onchange="updateDomainInput(this)">
-	                        <option value="${emailParts[1]}" disabled selected>--</option>
-	                        <option value="custom">직접입력</option>
-	                        <option value="naver.com">naver.com</option>
-	                        <option value="gmail.com">gmail.com</option>
-	                        <option value="hanmail.net">hanmail.net</option>
-	                        <option value="daum.net">daum.net</option>
-	                        <option value="icloud.com">icloud.com</option>
-	                    </select>
-	                    <div id="message_email"></div>
-	                    <div id="message_email_warning"></div>
 	                </div>
 	                <div class="form-group">
 	                    <label for="region">지역 :</label>

@@ -34,12 +34,12 @@ public class MemberRepositoryImpl implements MemberRepository
     {
     	System.out.println("+++++++++++++++++++++++++++++++++++++++");
     	System.out.println("[MemberRepository : createMember 메서드 호출]");
-        String sql = "INSERT INTO members (name, id, pw, email, region, sex, phone1, phone2, phone3, birthday, emailCheck, registerDate ,loginDate) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?)";  
+        String sql = "INSERT INTO members (name, id, pw, region, sex, phone1, phone2, phone3, birthday, emailCheck, registerDate ,loginDate) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?)";  
         Date date = new Date(System.currentTimeMillis());
         template.update(sql, 
-        			member.getName(), member.getId(), member.getPw(), member.getEmail(), member.getRegion(), 
-        			member.getSex(), member.getPhone1(), member.getPhone2(), member.getPhone3(),member.getBirthday(),
+        			member.getName(), member.getId(), member.getPw(), member.getRegion(), member.getSex(),
+        			member.getPhone1(), member.getPhone2(), member.getPhone3(),member.getBirthday(),
                     date, date);
         System.out.println("폼태그에 작성한 데이터를 dto에 넣고 그것을 db에 집어넣습니다");
         System.out.println("[MemberRepository : createMember 메서드 종료]");
@@ -56,21 +56,7 @@ public class MemberRepositoryImpl implements MemberRepository
   	    System.out.println("총 " + count + "개의 중복된 아이디가 있습니다");
   	    return count >= 1;  // 이미 존재하는 값이 있으면 true
   	}
-
-
-  //회원가입 시 입력한 아이디가 db에 존재해서 리턴이 false가 된다면 중복된 아이디를 표시
-  	@Override
-  	public boolean emailCheckUp(String email) 
-  	{
-  		System.out.println("+++++++++++++++++++++++++++++++++++++++");
-    	System.out.println("[MemberRepository : checkUp 메서드 호출]");
-  	    String sql = "select count(*) from members where email = ?";
-  	    int count = template.queryForObject(sql, Integer.class, email);
-  	    System.out.println("총 " + count + "개의 중복된 이메일이 있습니다");
-  	    return count >= 1;  // 이미 존재하는 값이 있으면 true
-  	}
-    
-
+  	
     //Read
 
     //로그인 시 입력한 아이디에 맞는 아이디를 db에서 가져오기
@@ -169,21 +155,11 @@ public class MemberRepositoryImpl implements MemberRepository
 	{
 	    System.out.println("+++++++++++++++++++++++++++++++++++++++");
 	    System.out.println("[MemberRepository : updateMember 메서드 호출]");
-	    
-	    // 기존 이메일 가져오기
-	    String existingEmailSql = "SELECT email FROM members WHERE id = ?";
-	    String existingEmail = template.queryForObject(existingEmailSql, String.class, member.getId());
-
-	    // 이메일 변경 여부 확인
-	    int emailCheck = existingEmail.equals(member.getEmail()) ? 1 : 0;
-	    member.setEmailCheck(emailCheck); // DTO에 emailCheck 값 설정
 
 	    // 회원 정보 업데이트 쿼리
-	    String sql = "UPDATE members SET email = ?, region = ?, phone1 = ?, phone2 = ?, phone3 = ?, emailCheck = ? WHERE id = ?";    
-	    template.update(sql, member.getEmail(), member.getRegion(), member.getPhone1(), member.getPhone2(), member.getPhone3(), emailCheck, member.getId());
+	    String sql = "UPDATE members SET region = ?, phone1 = ?, phone2 = ?, phone3 = ? WHERE id = ?";    
+	    template.update(sql, member.getRegion(), member.getPhone1(), member.getPhone2(), member.getPhone3(),member.getId());
 
-	    System.out.println("이메일 변경 여부: " + (emailCheck == 1 ? "변경 없음" : "변경됨"));
-	    System.out.println("업데이트된 정보: " + member.getEmail() + ", " + member.getRegion() + ", " + member.getPhone1() + ", " + member.getPhone2() + ", " + member.getPhone3() + ", emailCheck=" + emailCheck);
 	    System.out.println("[MemberRepository : updateMember 메서드 종료]");
 	}
 

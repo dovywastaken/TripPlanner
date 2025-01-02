@@ -124,7 +124,6 @@
                     <tr>
                         <th>이름</th>
                         <th>ID</th>
-                        <th>Email</th>
                         <th>지역</th>
                         <th>성별</th>
                         <th>생년월일</th>
@@ -141,7 +140,6 @@
                                 <tr>
                                     <td>${member.name}</td>
                                     <td>${member.id}</td>
-                                    <td>${member.email}</td>
                                     <td>${member.region}</td>
                                     <td>${member.sex}</td>
                                     <td>${member.birthday}</td>

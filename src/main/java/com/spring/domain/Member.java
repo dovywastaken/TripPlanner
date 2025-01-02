@@ -13,7 +13,6 @@ public class Member
     private String phone2;   // 전화번호 중간부분
     private String phone3;   // 전화번호 뒷부분
     private String birthday; // 생년월일
-    private String email;    // 이메일
     private int emailCheck; //이메일 인증 여부
     private Date registerDate; //가입일
     private Date loginDate; //최근 접속일
@@ -74,17 +73,6 @@ public class Member
     public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
-    public String getEmail() {
-        return email;
-    }
-    public void setEmail(String email) {
-        this.email = email;
-    }
-    
-    public void setEmail(String email, String domain) 
-    {
-    	this.email = email + "@" + domain;
-    }
     
 	public int getEmailCheck() 
 	{
@@ -110,7 +98,4 @@ public class Member
 	public void setRegisterDate(Date registerDate) {
 		this.registerDate = registerDate;
 	}
-
-	
-	
 }

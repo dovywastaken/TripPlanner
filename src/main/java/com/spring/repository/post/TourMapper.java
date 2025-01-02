@@ -16,18 +16,13 @@ public class TourMapper implements RowMapper<Tour>
 		tour.setContentid(rs.getString(2));
 		tour.setContenttypeid(rs.getString(3));
 		tour.setTitle(rs.getString(4));
-		tour.setTel(rs.getString(5));
-		tour.setHomepage(rs.getString(6));
-		tour.setFirstimage(rs.getString(7));
-		tour.setAreacode(rs.getString(8));
-		tour.setSigungucode(rs.getString(9));
-		tour.setAddr1(rs.getString(10));
-		tour.setAddr2(rs.getString(11));
-		tour.setZipcode(rs.getString(12));
-		tour.setOverview(rs.getString(13) != null ? rs.getString(13) : "");
-		tour.setMapx(rs.getLong(14));
-		tour.setMapy(rs.getLong(15));
-		tour.setCitation_count(rs.getInt(16));
+		tour.setFirstimage(rs.getString(5));
+		tour.setAddr1(rs.getString(6));
+		tour.setCat2(rs.getString(7));
+		tour.setCat3(rs.getString(8));
+		tour.setMapx(rs.getLong(9));
+		tour.setMapy(rs.getLong(10));
+		tour.setCitation_count(rs.getInt(11));
 
 		return tour;
 	}
