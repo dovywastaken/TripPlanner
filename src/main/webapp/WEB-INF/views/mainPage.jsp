@@ -26,7 +26,7 @@
 	<div class="container-fluid">
 	    <main>
 	        <div class="mainContainer">
-				<div id="banner"></div>
+				<!-- <div id="banner"></div> -->
 	            <div class="section">
 	                <div class="title">
 	                    <span>인기 여행 계획</span>
@@ -96,8 +96,7 @@
 		                          </div>
 		                          <div class="plannerCol" id="pText">
 		                              <h3 class="plannerTitle">${festival.title}</h3>
-		                              <p class="hashtag">#겨울여행 #경주</p>
-		                              <p class="plannerContents">${festival.overview}</p>
+		                              <p class="hashtag">#경산시 #문화관광축제</p>
 		                          </div>
 		                      </div>
 	                     	</c:forEach>
@@ -106,53 +105,51 @@
 	            </div>
 	
 				 <div class="section">
-		                  <div class="title">
-		                      <span>추천 관광지</span>
-		                      <a href="/TripPlanner/boardTour" class="morePost">더보기</a>
-		                  </div>
-		                  <div id="planner">
-		                  		<c:choose>
-		                  			<c:when test="${not empty tourSpots}">
-		                  				<c:forEach var="tourSpots" items="${tourSpots}">
-						                      <div class="plannerCard">
-						                          <div class="imgFrame">
-						                              <img src="${tourSpots.firstimage}" class="pImg">
-						                          </div>
-						                          <div class="plannerCol" id="pText">
-						                              <h3 class="plannerTitle">${tourSpots.title}</h3>
-						                              <p class="hashtag">#겨울여행 #경주</p>
-						                              <p class="plannerContents">${tourSpots.overview}</p>
-						                          </div>
-						                      </div>
-				                      	</c:forEach>
-			                      	</c:when>
-		      					</c:choose>
-		                  </div>
-		              </div>
-		              <div class="section">
-		                  <div class="title">
-		                      <span>추천 맛집</span>
-		                      <a href="/TripPlanner/boardRestaurant" class="morePost">더보기</a>
-		                  </div>
-		                  <div id="planner">
-		                      <c:choose>
-		                  			<c:when test="${not empty restaurants}">
-		                  				<c:forEach var="restaurants" items="${restaurants}">
-						                      <div class="plannerCard">
-						                          <div class="imgFrame">
-						                              <img src="${restaurants.firstimage}" class="pImg">
-						                          </div>
-						                          <div class="plannerCol" id="pText">
-						                              <h3 class="plannerTitle">${restaurants.title}</h3>
-						                              <p class="hashtag">#겨울여행 #경주</p>
-						                              <p class="plannerContents">${restaurants.overview}</p>
-						                          </div>
-						                      </div>
-				                      	</c:forEach>
-			                      	</c:when>
-		      					</c:choose>
-		                  </div>
-		              </div>
+	                  <div class="title">
+	                      <span>추천 관광지</span>
+	                      <a href="/TripPlanner/boardTour" class="morePost">더보기</a>
+	                  </div>
+	                  <div id="planner">
+	                  		<c:choose>
+	                  			<c:when test="${not empty tourSpots}">
+	                  				<c:forEach var="tourSpots" items="${tourSpots}">
+					                      <div class="plannerCard">
+					                          <div class="imgFrame">
+					                              <img src="${tourSpots.firstimage}" class="pImg">
+					                          </div>
+					                          <div class="plannerCol" id="pText">
+					                              <h3 class="plannerTitle">${tourSpots.title}</h3>
+					                              <p class="hashtag">#성산구 #국립공원</p>  
+					                          </div>
+					                      </div>
+			                      	</c:forEach>
+		                      	</c:when>
+	      					</c:choose>
+	                  </div>
+	              </div>
+	              <div class="section">
+	                  <div class="title">
+	                      <span>추천 맛집</span>
+	                      <a href="/TripPlanner/boardRestaurant" class="morePost">더보기</a>
+	                  </div>
+	                  <div id="planner">
+	                      <c:choose>
+	                  			<c:when test="${not empty restaurants}">
+	                  				<c:forEach var="restaurants" items="${restaurants}">
+					                      <div class="plannerCard">
+					                          <div class="imgFrame">
+					                              <img src="${restaurants.firstimage}" class="pImg">
+					                          </div>
+					                          <div class="plannerCol" id="pText">
+					                              <h3 class="plannerTitle">${restaurants.title}</h3>
+					                              <p class="hashtag">#경산시 #한식</p>       
+					                          </div>
+					                      </div>
+			                      	</c:forEach>
+		                      	</c:when>
+	      					</c:choose>
+	                  </div>
+	              </div>
 	        </div>
 	    </main>
 	
@@ -169,29 +166,35 @@
 				            <div class="myPostTitle">
 				                <div class="postTitle">최근 작성 글</div>
 				            </div>
+				            <c:if test="${posts.size() == 0}">
+				            	<h3>최근 작성글이 없어요!</h3>
+				            </c:if>
 				            <c:forEach var="post" items="${posts}" varStatus="status">
-				             <c:choose>
-				               <c:when test="${status.index == 0}">
-				            <div class="post">
-				                <div class="postName">${post.title}</div>
-				                <div class="postTime">${days[status.index]}</div>
-				            </div>
-				        </div>
-				       	 <div class="myPost">
-				            <div class="myPostTitle">
-				                <div id="postTitle"><span>내 여행 계획 </span><span id="postCount">${count}</span></div>
-				                <a href='/TripPlanner/Myboard'>더보기</a>
-				            </div>
-						 </c:when>
-						 <c:otherwise>
-				            <div class="post">
-				                <div class="postName">${post.title}</div>
-				                <div class="postTime">${days[status.index]}</div>
-				            </div>
-				        </div>
-				         </c:otherwise>
-						</c:choose>
-					 </c:forEach>
+							    <c:choose>
+							        <c:when test="${status.index == 0}">
+							            <div class="post">
+							                <div class="postName">${post.title}</div>
+							                <div class="postTime">${days[status.index]}</div>
+							            </div>
+							            <div class="myPost">
+							                <div class="myPostTitle">
+							                    <div id="postTitle">
+							                        <span>내 여행 계획 </span>
+							                        <span id="postCount">${count}</span>
+							                    </div>
+							                    <a href='/TripPlanner/Myboard'>더보기</a>
+							                </div>
+							            </div>
+							        </c:when>
+							        <c:otherwise>
+							            <div class="post">
+							                <div class="postName">${post.title}</div>
+							                <div class="postTime">${days[status.index]}</div>
+							            </div>
+							        </c:otherwise>
+							    </c:choose>
+							</c:forEach>
+						</div>
 				        <a href="postform" class="postButton">+ 새 여정 만들기</a>
 				        <a href="/TripPlanner/members/signOut" class="signOutButton">로그아웃</a>
 				    </c:if>

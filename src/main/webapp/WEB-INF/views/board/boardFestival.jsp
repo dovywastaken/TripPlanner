@@ -13,18 +13,18 @@
 
 <div class="container">
 	<h1>추천 축제 게시판 입니다.</h1>
-
+	<h2 id="contentId">컨텐츠아이디</h2>
 	<div class="section">
         <div id="planner">
 			<c:choose>
 				<c:when test="${not empty festivals}">
 					<c:forEach var="festivals" items="${festivals}">
 			            <div class="plannerCard">
-			                <div class="imgFrame">
+			                <a href="/TripPlanner/detailedInfo?contentTypeId=${festivals.contenttypeid}&contentId=${festivals.contentid}" class="imgFrame">
 			                    <img src="${festivals.firstimage}" class="pImg">
-			                </div>
+			                </a>
 			                <div class="plannerCol" id="pText">
-			                    <h3 class="plannerTitle">${festivals.title}</h3>
+			                    <a href="/TripPlanner/detailedInfo?contentTypeId=${festivals.contenttypeid}&contentId=${festivals.contentid}" class="plannerTitle">${festivals.title}</a>
 			                    <p class="hashtag">#${festivals.addr1}</p>
 			                </div>
 			            </div>

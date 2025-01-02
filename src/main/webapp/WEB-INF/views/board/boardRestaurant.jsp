@@ -20,11 +20,11 @@
 				<c:when test="${not empty restaurants}">
 					<c:forEach var="restaurants" items="${restaurants}">
 			            <div class="plannerCard">
-			                <div class="imgFrame">
+			                <a href="/TripPlanner/detailedInfo?contentTypeId=${restaurants.contenttypeid}&contentId=${restaurants.contentid}" class="imgFrame">
 			                    <img src="${restaurants.firstimage}" class="pImg">
-			                </div>
+			                </a>
 			                <div class="plannerCol" id="pText">
-			                    <h3 class="plannerTitle">${restaurants.title}</h3>
+			                    <a href="/TripPlanner/detailedInfo?contentTypeId=${restaurants.contenttypeid}&contentId=${restaurants.contentid}" class="plannerTitle">${restaurants.title}</a>
 			                    <p class="hashtag">#${restaurants.addr1}</p>
 			                </div>
 			            </div>

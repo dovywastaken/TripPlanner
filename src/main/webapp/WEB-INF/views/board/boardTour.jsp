@@ -5,7 +5,6 @@
 <head>
 <meta charset="UTF-8">
 <title>인기 명소</title>
-<script src="/TripPlanner/resources/js/boardTours.js"></script>
 <link rel="stylesheet" href="/TripPlanner/resources/css/boardTours.css">
 </head>
 	<body>
@@ -19,11 +18,11 @@
 						<c:when test="${not empty tourSpots}">
 							<c:forEach var="tourSpots" items="${tourSpots}">
 					            <div class="plannerCard">
-					                <div class="imgFrame">
+					                <a href="/TripPlanner/detailedInfo?contentTypeId=${tourSpots.contenttypeid}&contentId=${tourSpots.contentid}" class="imgFrame">
 					                    <img src="${tourSpots.firstimage}" class="pImg">
-					                </div>
+					                </a>
 					                <div class="plannerCol" id="pText">
-					                    <h3 class="plannerTitle">${tourSpots.title}</h3>
+					                    <a href="/TripPlanner/detailedInfo?contentTypeId=${tourSpots.contenttypeid}&contentId=${tourSpots.contentid}" class="plannerTitle">${tourSpots.title}</a>
 					                    <p class="hashtag">#${tourSpots.addr1}</p>
 					                </div>
 					            </div>
