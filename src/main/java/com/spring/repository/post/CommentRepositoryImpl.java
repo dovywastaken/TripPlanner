@@ -71,6 +71,8 @@ public class CommentRepositoryImpl implements CommentRepository {
 	                comment.getCommentDate(),
 	                comment.getCommentLikes()
 	        );
+	        String commentCountsql="update post set commentCount=commentCount+1 where p_unique=?";
+	        template.update(commentCountsql,comment.getP_unique());
 	    }
 
 
@@ -82,8 +84,14 @@ public class CommentRepositoryImpl implements CommentRepository {
 
 	    @Override
 	    public void deleteComment(int c_unique) {
+	    	String P_uniqueSql="SELECT p_unique FROM Comment WHERE c_unique = ?";
+	    	int Punique=template.queryForObject(P_uniqueSql,Integer.class,c_unique);
 	        String sql = "DELETE FROM Comment WHERE c_unique = ?";
 	        template.update(sql, c_unique);
+	        
+	        String commentCountsql="update post set commentCount=commentCount-1 where p_unique=?";
+	        template.update(commentCountsql,Punique);
+	        
 	    }
 
 	    @Override

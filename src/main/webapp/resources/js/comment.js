@@ -1,13 +1,14 @@
 $(document).ready(function() {
-    var currentPageNum = 1;
+    let currentPageNum = 1;
 
-    // 페이지 로딩 시 마지막 페이지 로딩 시도
+    // 초기 댓글 로딩
     if (typeof totalPages !== 'undefined' && totalPages > 0) {
         loadComments(postId, totalPages);
     } else {
         loadComments(postId, 1);
     }
 
+    // 댓글 작성
     $("#submitCommentBtn").on("click", function() {
         if (!sessionId) {
             alert("로그인이 필요합니다.");
@@ -32,10 +33,9 @@ $(document).ready(function() {
             success: function(response) {
                 if (response.message === "success") {
                     $("#commentContent").val("");
-                    // 댓글 작성 후 마지막 페이지를 알 수 없으니 더블 로딩
                     doubleLoadLastPage();
                 } else {
-                    alert("댓글 작성에 실패했습니다. 다시 시도해주세요.");
+                    alert("댓글 작성에 실패했습니다.");
                 }
             },
             error: function() {
@@ -44,6 +44,7 @@ $(document).ready(function() {
         });
     });
 
+    // 페이지네이션 클릭
     $(document).on("click", ".page-link", function(e) {
         e.preventDefault();
         var page = $(this).data("page");
@@ -53,9 +54,7 @@ $(document).ready(function() {
     // 댓글 삭제
     $(document).on("click", ".deleteBtn", function() {
         var c_unique = $(this).closest(".comment").data("id");
-        if (!confirm("해당 댓글을 삭제하시겠습니까?")) {
-            return;
-        }
+        if (!confirm("댓글을 삭제하시겠습니까?")) return;
 
         $.ajax({
             url: "/TripPlanner/api/comments/" + c_unique,
@@ -63,7 +62,6 @@ $(document).ready(function() {
             dataType: "json",
             success: function(res) {
                 if (res.message === "deleted") {
-                    // 삭제 후 페이지 수 변동 가능성 → 더블 로딩
                     doubleLoadLastPage();
                 } else {
                     alert("댓글 삭제에 실패했습니다.");
@@ -75,32 +73,123 @@ $(document).ready(function() {
         });
     });
 
-	$(document).on("click", ".likeBtn", function () {
-	    const commentElement = $(this).closest(".comment");
-	    const c_unique = commentElement.data("id");
-	    const likeBtn = commentElement.find(".likeBtn");
-	    const likeNum = commentElement.find(".likenum");
+    // 댓글 수정 모드
+    $(document).on("click", ".updateBtn", function() {
+        var commentDiv = $(this).closest(".comment");
+        var originalContent = commentDiv.find(".comment-content").text().trim();
+        
+        // 기존 내용 숨기기
+        commentDiv.find(".comment-text").hide();
+        commentDiv.find(".comment-controls").hide();
+        
+        // 수정 폼 추가
+        var editForm = $('<div class="edit-form">' +
+            '<textarea class="edit-input">' + originalContent + '</textarea>' +
+            '<div class="edit-buttons">' +
+            '<button class="saveBtn">저장</button> ' +
+            '<button class="cancelBtn">취소</button>' +
+            '</div></div>');
+        
+        commentDiv.append(editForm);
+    });
 
+    // 댓글 수정 취소
+    $(document).on("click", ".cancelBtn", function() {
+        var commentDiv = $(this).closest(".comment");
+        commentDiv.find(".comment-text").show();
+        commentDiv.find(".comment-controls").show();
+        commentDiv.find(".edit-form").remove();
+    });
+
+    // 댓글 수정 저장
+    $(document).on("click", ".saveBtn", function() {
+        var commentDiv = $(this).closest(".comment");
+        var c_unique = commentDiv.data("id");
+        var updatedContent = commentDiv.find(".edit-input").val().trim();
+
+        if (updatedContent === "") {
+            alert("댓글 내용을 입력해주세요.");
+            return;
+        }
+
+        $.ajax({
+            url: "/TripPlanner/api/comments/" + c_unique + "/update",
+            method: "POST",
+            data: {
+                content: updatedContent
+            },
+            success: function(res) {
+                if (res.message === "updated") {
+                    loadComments(postId, currentPageNum);
+                } else {
+                    alert("댓글 수정에 실패했습니다.");
+                }
+            },
+            error: function() {
+                alert("댓글 수정 중 오류가 발생했습니다.");
+            }
+        });
+    });
+
+    // 댓글 좋아요
+    $(document).on("click", ".likeBtn", function() {
+        const commentElement = $(this).closest(".comment");
+        const c_unique = commentElement.data("id");
+        const likeBtn = $(this);
+
+        $.ajax({
+            url: `/TripPlanner/api/comments/${c_unique}/like`,
+            method: "POST",
+            dataType: "json",
+            success: function(res) {
+                if (!res.id) {
+                    alert("로그인이 필요합니다.");
+                    return;
+                }
+                if (res.islike === 1) {
+                    likeBtn.html("<i class='fa-solid fa-heart'></i>");
+                } else {
+                    likeBtn.html("<i class='fa-regular fa-heart'></i>");
+                }
+                commentElement.find(".likenum").text(`좋아요 ${res.totallike}`);
+            },
+            error: function() {
+                alert("좋아요 처리 중 오류가 발생했습니다.");
+            }
+        });
+    });
+
+    // 게시글 좋아요
+	// 게시글 좋아요 수정된 버전
+	$("#postLikeBtn").on("click", function() {
 	    $.ajax({
-	        url: `/TripPlanner/api/comments/${c_unique}/like`,
+	        url: contextPath + "/" + postId + "/like",  // 원래 URL 구조 유지
 	        method: "POST",
 	        dataType: "json",
-	        success: function (res) {
-	            if (!res.id) return;
+	        success: function(res) {           
+	            if(res.id === null) {
+	                alert("로그인이 필요합니다.");
+	                return;
+	            }
 
-	            likeBtn.html(
-	                res.islike === 1
-	                    ? "<i class='fa-solid fa-heart'></i>"
-	                    : "<i class='fa-regular fa-heart'></i>"
-	            );
-	            likeNum.text(`Likes: ${res.totallike}`);
+	            const likenum = document.getElementById("postLikes");
+	            if(likenum) {
+	                if(res.isLiked === 1) {
+	                    document.getElementById("postLikes").textContent = res.totalLikes;
+	                    document.getElementById("postLikeBtn").innerHTML = "<i class='fa-solid fa-heart'></i>";
+	                } else if(res.isLiked === 0) {
+	                    document.getElementById("postLikes").textContent = res.totalLikes;
+	                    document.getElementById("postLikeBtn").innerHTML = "<i class='fa-regular fa-heart'></i>";
+	                }
+	            }
 	        },
-	        error: function () {
-	            alert("좋아요 처리 중 오류가 발생했습니다.");
-	        },
+	        error: function() {
+	            alert("포스트 좋아요 처리 중 오류가 발생했습니다.");
+	        }
 	    });
 	});
 
+    // 댓글 목록 로드
     function loadComments(postId, page, callback) {
         $.ajax({
             url: "/TripPlanner/api/comments",
@@ -108,127 +197,80 @@ $(document).ready(function() {
             dataType: "json",
             data: { postId: postId, page: page },
             success: function(res) {
-				
-				if (!res.comments || res.comments.length === 0) {
-				                $("#commentSection").html("<p>댓글이 없습니다.</p>");
-				                $("#pagination").empty(); // 페이지네이션 비우기
-				                totalPages = 0;
-				                currentPageNum = 1;
-				            } else {
-				                renderComments(res.comments,res.commentisLike);
-				                renderPagination(res.currentPage, res.totalPage);
-				                totalPages = res.totalPage;
-				                currentPageNum = res.currentPage;
-				            }
+                if (!res.comments || res.comments.length === 0) {
+                    $("#commentSection").html("<p class='no-comments'>댓글이 없습니다.</p>");
+                    $("#pagination").empty();
+                    totalPages = 0;
+                    currentPageNum = 1;
+                } else {
+                    renderComments(res.comments, res.commentisLike);
+                    renderPagination(res.currentPage, res.totalPage);
+                    totalPages = res.totalPage;
+                    currentPageNum = res.currentPage;
+                }
                 if (typeof callback === 'function') {
                     callback(res);
                 }
             },
             error: function() {
-                alert("댓글 목록을 가져오는 중 오류가 발생했습니다.");
+                alert("댓글을 불러오는 중 오류가 발생했습니다.");
             }
         });
     }
 
-	function renderComments(comments,commentisLike) {
-	    var section = $("#commentSection");
-	    section.empty();
+    // 댓글 렌더링
+    function renderComments(comments, commentisLike) {
+        var section = $("#commentSection");
+        section.empty();
 
-	    if (!comments || comments.length === 0) {
-	        section.append("<p>댓글이 없습니다.</p>");
-	        return;
-	    }
+        comments.forEach((comment, i) => {
+            var html = `
+                <div class="comment" data-id="${comment.c_unique}">
+                    <div class="comment-text">
+                        <div class="comment-header">
+                            <span class="comment-author">${comment.id}</span>
+                            <span class="comment-date">${comment.commentDate}</span>
+                        </div>
+                        <p class="comment-content">${comment.comments}</p>
+                    </div>
+                    <div class="comment-controls">
+                        <span class="likenum">좋아요 ${comment.commentLikes}</span>
+                        ${sessionId !== comment.id ? 
+                            `<button class="likeBtn">
+                                <i class="${commentisLike[i] === 1 ? 'fa-solid' : 'fa-regular'} fa-heart"></i>
+                            </button>` : ''}
+                        ${sessionId === comment.id ? 
+                            `<button class="updateBtn">수정</button>
+                             <button class="deleteBtn">삭제</button>` : ''}
+                    </div>
+                </div>`;
+            section.append(html);
+        });
+    }
 
-	    $.each(comments, function (i, comment) {
-	        var html = "<div class='comment' data-id='" + comment.c_unique + "'>";
-	        html += "<p>" + comment.id + ": " + comment.comments + " (" + comment.commentDate + ")</p>";
-	        html += "<span class='likenum'>Likes: " + comment.commentLikes + "</span><br>";
-	
-	        if (sessionId != comment.id) {
-				
-				if(commentisLike[i]==1){
-	            html += `<button class='likeBtn'><i class='fa-solid fa-heart'></button>`;
-				}else{
-				html += `<button class='likeBtn'><i class='fa-regular fa-heart'></i></button>`;	
-				}
-	        }
-
-	        if (sessionId === comment.id) {
-	            html += "<button class='deleteBtn'>삭제</button>";
-	        }
-
-	        html += "</div>";
-	        section.append(html);
-	    });
-	}
-
-
-	
-	$("#postLikeBtn").on("click", function() {
-	        $.ajax({
-	            url: contextPath + "/" + postId + "/like", 
-	            method: "POST",
-	            dataType: "json",
-	            success: function(res) {					
-
-					if(res.id===null){
-						console.log("아이디 없음");
-						return
-					}
-	                if (res.isLiked===1) {
-						const likenum=document.getElementById("postLikes")
-				
-						if(likenum!=null){
-	                    document.getElementById("postLikes").textContent=res.totalLikes;
-						document.getElementById("postLikeBtn").innerHTML = "<i class='fa-solid fa-heart'></i>";
-						}
-	                } else if(res.isLiked===0) {
-						const likenum=document.getElementById("postLikes")
-						if(likenum!=null){
-						document.getElementById("postLikes").textContent=res.totalLikes;
-						document.getElementById("postLikeBtn").innerHTML = "<i class='fa-regular fa-heart'>";
-						}
-	               }	
-	            },
-	            error: function() {
-	                alert("포스트 좋아요 처리 중 오류 발생");
-	            }
-	        });
-	    });
-
+    // 페이지네이션 렌더링
     function renderPagination(currentPage, totalPage) {
         var pagination = $("#pagination");
         pagination.empty();
 
+        if (totalPage <= 1) return;
+
+        var html = '<div class="pagination-container">';
         for (var i = 1; i <= totalPage; i++) {
             if (i === currentPage) {
-                pagination.append("<span>" + i + "</span> ");
+                html += `<span class="page-current">${i}</span>`;
             } else {
-                pagination.append("<a href='#' class='page-link' data-page='" + i + "'>" + i + "</a> ");
+                html += `<a href="#" class="page-link" data-page="${i}">${i}</a>`;
             }
         }
+        html += '</div>';
+        pagination.html(html);
     }
 
-    // 더블 로딩: 999999 페이지를 불러서 totalPage 최신화 후 다시 마지막 페이지 로딩
+    // 더블 로딩 (마지막 페이지 갱신)
     function doubleLoadLastPage() {
         loadComments(postId, 999999, function(res) {
-            // 응답에서 최신 totalPage 획득 후 다시 로딩
             loadComments(postId, res.totalPage);
         });
     }
 });
-
-
-document.addEventListener("DOMContentLoaded", function () {
-    const signInButton = document.getElementById("SignIn");
-
-    if (signInButton) {
-        signInButton.addEventListener("click", function () {
-            window.location.href = 'http://localhost:8080/TripPlanner/members/signIn';
-        });
-    } else {
-        console.log("SignIn 버튼이 렌더링되지 않았습니다.");
-    }
-});
-
-

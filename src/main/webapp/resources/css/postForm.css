@@ -1,0 +1,325 @@
+/* 기본 스타일 */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #f8f9fa;
+    color: #333;
+    font-family: 'Nanum Gothic', sans-serif;
+    line-height: 1.6;
+}
+
+.container {
+    display: flex;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    gap: 20px;
+}
+
+/* 왼쪽 영역 */
+.left {
+    width: 280px;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* 중앙 영역 */
+.center {
+    flex: 1;
+    min-width: 800px;
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* 마이 리스트 */
+.my-list {
+    margin-bottom: 20px;
+}
+
+.my-list h3 {
+    margin-bottom: 15px;
+    color: #333;
+    font-size: 18px;
+}
+
+.mylist-wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 8px;
+}
+
+.mylist-item {
+    flex: 1;
+    padding: 12px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    cursor: move;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.mylist-item:hover {
+    background-color: #e9ecef;
+}
+
+.delete-btn {
+    padding: 4px 8px;
+    background: none;
+    border: none;
+    color: #dc3545;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* 에디터 영역 */
+#titles {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    font-size: 18px;
+    min-height: 50px;
+}
+
+#titles:focus {
+    outline: none;
+    border-color: #0d6efd;
+}
+
+.editor-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.toolbar-group {
+    display: flex;
+    gap: 5px;
+}
+
+.toolbar-item {
+    padding: 8px 12px;
+    background-color: white;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    min-width: 40px;
+    text-align: center;
+}
+
+.toolbar-item:hover {
+    background-color: #e9ecef;
+    border-color: #adb5bd;
+}
+
+select.toolbar-item {
+    min-width: 100px;
+}
+
+.color-buttons {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.color-btn {
+    width: 24px;
+    height: 24px;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.color-picker {
+    width: 40px;
+    height: 24px;
+    padding: 0;
+    border: 1px solid #dee2e6;
+}
+
+#editor {
+    width: 100%;
+    min-height: 400px;
+    padding: 20px;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    overflow-y: auto;
+}
+
+#editor:focus {
+    outline: none;
+    border-color: #0d6efd;
+}
+
+/* 하단 컨트롤 영역 */
+.bottom-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.upload-section {
+    margin-bottom: 20px;
+}
+
+.file-upload-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #0d6efd;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.file-upload-btn:hover {
+    background-color: #0b5ed7;
+}
+
+#fileImage {
+    display: none;
+}
+
+.options-section {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 20px;
+}
+
+.option-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.radio-group {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.radio-group input[type="radio"] {
+    margin-right: 5px;
+}
+
+.submit-btn {
+    padding: 12px 24px;
+    background-color: #198754;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    align-self: flex-end;
+}
+
+.submit-btn:hover {
+    background-color: #157347;
+}
+
+/* 지도 버튼 */
+.map-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.map-button:hover {
+    background-color: #5c636a;
+}
+
+/* 드래그 관련 */
+.place-info {
+    display: inline-flex;
+    align-items: center;
+    margin: 5px;
+    cursor: move;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 6px 12px;
+}
+
+.place-info.dragging {
+    opacity: 0.7;
+    background-color: #e9ecef;
+}
+
+/* Placeholder 스타일 */
+[contenteditable=true]:empty:before {
+    content: attr(placeholder);
+    color: #6c757d;
+    font-style: italic;
+}
+
+/* 이미지 관련 */
+.image-wrapper {
+    display: inline-block;
+    margin: 10px;
+    position: relative;
+    max-width: 100%;
+}
+
+.image-container {
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+}
+
+.resizable-image {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.resize-handle {
+    position: absolute;
+    right: -5px;
+    bottom: -5px;
+    width: 10px;
+    height: 10px;
+    background-color: #0d6efd;
+    cursor: se-resize;
+    border-radius: 50%;
+}
+
+.image-wrapper .delete-btn {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    z-index: 10;
+    background: #dc3545;
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    padding: 0;
+}

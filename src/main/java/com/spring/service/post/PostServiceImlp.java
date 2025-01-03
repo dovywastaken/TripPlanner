@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.spring.domain.Likes;
 import com.spring.domain.Post;
+import com.spring.domain.Tour;
 import com.spring.repository.post.PostRepository;
 
 
@@ -34,8 +35,8 @@ public class PostServiceImlp implements PostService {
     }
 
     @Override
-    public void updatePost(Post post, int num) {
-        postRepository.updatePost(post, num);
+    public void updatePost(Post post) {
+        postRepository.updatePost(post);
     }
 
     @Override
@@ -62,6 +63,18 @@ public class PostServiceImlp implements PostService {
 	public Map<String, Object> getMainPost(String id) {
 		
 		return postRepository.getMainPost(id);
+	}
+
+	@Override
+	public int pageserch(int p_unique) {
+		
+		return postRepository.pageserch(p_unique);
+	}
+
+	@Override
+	public void updatetour(Tour tour) {
+		postRepository.updatetour(tour);
+		
 	}
 }
 

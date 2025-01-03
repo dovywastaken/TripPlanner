@@ -2,6 +2,7 @@ package com.spring.repository.post;
 
 import com.spring.domain.Likes;
 import com.spring.domain.Post;
+import com.spring.domain.Tour;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,6 +24,8 @@ public class PostRepositoryImpl implements PostRepository {
     @Override
     public Post getPostById(int postId) {
         String sql = "SELECT * FROM Post WHERE p_unique = ?";
+        String updateSQL="UPDATE post set view= view+1 WHERE p_unique=?";
+        template.update(updateSQL,postId);
         return template.queryForObject(sql, new PostRowMapper(), postId);
     }
 
@@ -44,22 +47,29 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     @Override
-    public void updatePost(Post post, int postId) {
-        String sql = "UPDATE Post SET title = ?, contents = ?, region = ?, isprivate = ?, Satisfaction = ? WHERE p_unique = ?";
+    public void updatePost(Post post) {
+        String sql = "UPDATE Post SET title = ?, contents = ?, region = ?, isprivate = ?,CommentIsAllowed=?, Satisfaction = ?,image_names = ? WHERE p_unique = ?";
+        String imageNames = String.join(",", post.getFileImage());
         template.update(sql,
                 post.getTitle(),
                 post.getContents(),
                 post.getRegion(),
                 post.getIsPrivate(),
+                post.isCommentIsAllowed(),
                 post.getSatisfaction(),
-                postId
+                imageNames,
+                post.getP_unique()
         );
+        String toursql="delete from tour WHERE p_unique = ?";
+        template.update(toursql,post.getP_unique());
     }
 
     @Override
     public void deletePost(int postId) {
         String sql = "DELETE FROM Post WHERE p_unique = ?";
         template.update(sql, postId);
+        String tourdeletSQL="DELETE FROM tour where p_unique = ?";
+        template.update(tourdeletSQL,postId);
     }
 
     @Override
@@ -108,13 +118,49 @@ public class PostRepositoryImpl implements PostRepository {
 
 	@Override
 	public Map<String, Object> getMainPost(String id) {
+		System.out.println("getMainPost 메서드 호출");
 		System.out.println(id);
 		PostRowMapper postRowMapper=new PostRowMapper();
+		System.out.println("매퍼 까지는 생성");
 		String mainSQL="SELECT * FROM POST WHERE id = ? ORDER BY publishDate DESC LIMIT 3";
+		System.out.println("SQL문 까지는 작성");
 		Map<String,Object> result=new HashMap<String, Object>();
+		System.out.println("MAP 객체 까지는 작성");
 		List<Post> post=template.query(mainSQL,postRowMapper,id);
-		result.put("Post",post);                                                                                                     
+		System.out.println("list 객체에 post 들고온거 넣기 성공");
+		result.put("Post",post);        
+		System.out.println("result에 리스트 넣기 성공");
 		return result;
 	}
+
+	@Override
+	public int pageserch(int p_unique) {
+		String pageserch= "WITH RankedPosts AS (SELECT p_unique, ROW_NUMBER() OVER (ORDER BY publishdate DESC, p_unique DESC) as row_num FROM Post WHERE isprivate = 1) SELECT CEILING(row_num / 10) as page_number FROM RankedPosts WHERE p_unique = ?";
+		int rownum=template.queryForObject(pageserch, Integer.class,p_unique);
+		System.out.println(rownum);
+	return rownum;
+	}
+
+	@Override
+	public void updatetour(Tour tour) {
+			String insertSQL="INSERT INTO tour (p_unique,contentid, contenttypeid, title, firstimage, addr1, cat2, cat3, mapx, mapy, created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+			template.update(insertSQL,
+					tour.getP_unique(),
+					tour.getContentid(),
+					tour.getContenttypeid(),
+					tour.getTitle(),
+					tour.getFirstimage(),
+					tour.getAddr1(),
+					tour.getCat2(),
+					tour.getCat3(),
+					tour.getMapx(),
+					tour.getMapy(),
+					tour.getCreated_at()
+					);
+		
+		
+	}
+	
 }
+
 

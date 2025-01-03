@@ -90,50 +90,31 @@ public class MemberController {
 
     //로그인 폼 전송
     @PostMapping("/signIn") 
-    public String fromLoginPage(@ModelAttribute("member") Member member, HttpSession session, Model model,
-                                @RequestParam(value = "dummy", required = false) String dummy) {
+    public String fromLoginPage(@ModelAttribute("member") Member member, HttpSession session, Model model) 
+    {
         System.out.println("===========================================================================================");
         System.out.println("MemberController : members/signIn(POST)으로 매핑되었습니다");
         
         // 로그인을 위한 회원 정보 조회
         Member loginMb = memberService.findById(member.getId());
         
-        if ("1".equals(dummy)) {  // dummy가 1일 때 로그인 시도
-            if (loginMb != null && loginMb.getPw().equals(member.getPw())) {
-                session.setAttribute("user", loginMb);
-                System.out.println("로그인 성공, 메인페이지로 리다이렉션");
-                return "redirect:/"; // 로그인 성공 시 메인페이지로 리다이렉션
-            } else if (member.getId() == null || member.getId().isEmpty()) {
-                model.addAttribute("EmptyForm", "아이디를 입력해주세요");
-                System.out.println("아이디가 빈 경우");
-                return "mainPage"; // 아이디가 빈 경우 로그인 페이지로 이동
-            } else if (member.getPw() == null || member.getPw().isEmpty()) {
-                model.addAttribute("EmptyForm", "비밀번호를 입력해주세요");
-                System.out.println("비밀번호가 빈 경우");
-                return "mainPage"; // 비밀번호가 빈 경우 로그인 페이지로 이동
-            } else {
-                model.addAttribute("loginError", "아이디 또는 비밀번호가 일치하지 않습니다.");
-                System.out.println("아이디 또는 비밀번호가 틀린 경우");
-                return "mainPage"; // 아이디 또는 비밀번호가 일치하지 않는 경우 로그인 페이지로 이동
-            }
-        } else {  // dummy가 없을 경우, 로그인 페이지에서 정상적으로 시도
-            if (loginMb != null && loginMb.getPw().equals(member.getPw())) {
-                session.setAttribute("user", loginMb);
-                System.out.println("로그인 성공, 메인페이지로 리다이렉션");
-                return "redirect:/"; // 로그인 성공 시 메인페이지로 리다이렉션
-            }else if (member.getId() == null || member.getId().isEmpty()) {
-                model.addAttribute("EmptyForm", "아이디를 입력해주세요");
-                System.out.println("아이디가 빈 경우");
-                return "member/signIn"; // 아이디가 빈 경우 로그인 페이지로 이동
-            } else if (member.getPw() == null || member.getPw().isEmpty()) {
-                model.addAttribute("EmptyForm", "비밀번호를 입력해주세요");
-                System.out.println("비밀번호가 빈 경우");
-                return "member/signIn"; // 비밀번호가 빈 경우 로그인 페이지로 이동
-            } else {
-                model.addAttribute("loginError", "아이디 또는 비밀번호가 일치하지 않습니다.");
-                System.out.println("아이디 또는 비밀번호가 일치하지 않는 경우");
-                return "member/signIn"; // 아이디 또는 비밀번호가 일치하지 않는 경우 로그인 페이지로 이동
-            }
+        if (loginMb != null && loginMb.getPw().equals(member.getPw())) 
+        {
+            session.setAttribute("user", loginMb);
+            System.out.println("로그인 성공, 메인페이지로 리다이렉션");
+            return "redirect:/"; // 로그인 성공 시 메인페이지로 리다이렉션
+        }else if (member.getId() == null || member.getId().isEmpty()) {
+            model.addAttribute("EmptyForm", "아이디를 입력해주세요");
+            System.out.println("아이디가 빈 경우");
+            return "member/signIn"; // 아이디가 빈 경우 로그인 페이지로 이동
+        } else if (member.getPw() == null || member.getPw().isEmpty()) {
+            model.addAttribute("EmptyForm", "비밀번호를 입력해주세요");
+            System.out.println("비밀번호가 빈 경우");
+            return "member/signIn"; // 비밀번호가 빈 경우 로그인 페이지로 이동
+        } else {
+            model.addAttribute("loginError", "아이디 또는 비밀번호가 일치하지 않습니다.");
+            System.out.println("아이디 또는 비밀번호가 일치하지 않는 경우");
+            return "member/signIn"; // 아이디 또는 비밀번호가 일치하지 않는 경우 로그인 페이지로 이동
         }
     }
 

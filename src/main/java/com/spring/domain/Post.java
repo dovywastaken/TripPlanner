@@ -23,10 +23,7 @@ public class Post
 	private boolean commentIsAllowed;
 	private int satisfaction;
 	private List<String> fileImage;
-
-	
-	
-
+	private int commentCount;
 	
 	
 	public List<String> getFileImage() {
@@ -106,6 +103,12 @@ public class Post
 	}
 	public void setSatisfaction(int satisfaction) {
 		this.satisfaction = satisfaction;
+	}
+	public int getCommentCount() {
+		return commentCount;
+	}
+	public void setCommentCount(int commentCount) {
+		this.commentCount = commentCount;
 	}	
 	
 }

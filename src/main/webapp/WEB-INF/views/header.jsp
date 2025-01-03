@@ -16,18 +16,22 @@
 		    <a href="${pageContext.request.contextPath}" id="logo" class="aTag">
 		        <img src="/TripPlanner/resources/img/logo.png" id="logoImg">
 		    </a>
-		    <a href="/TripPlanner/postform" class="headerLeft">글쓰기</a>
+		    <c:if test="${not empty user}">
+		    <a href="/TripPlanner/Myboard" class="headerLeft">내 글 보기</a>
 		    <a href="/TripPlanner/hotPlanners" class="headerLeft">인기 여행 계획</a>
+		    </c:if>
 		</div>
         <div id="headerRight">
 	        <c:if test="${empty user}">
 	            <a href="/TripPlanner/members/signIn" id="login" class="headerRight">로그인</a>
 	        </c:if>
 	        <c:if test="${not empty user}">
-		        <a href="/TripPlanner/admin/dashboard" class="headerRight">관리자 페이지</a>
+	        	<c:if test="${user.id == 'admin'}">
+	        		<a href="/TripPlanner/admin/dashboard" class="headerRight">관리자 페이지</a>
+	        	</c:if>
 		        <a href="/TripPlanner/members/myPage" class="headerRight">내 정보</a>
 	            <a href="/TripPlanner/members/signOut" id="logout" class="headerRight">로그아웃</a>
-	            <p> ${user.name}님</p>
+	            <p>&nbsp &nbsp ${user.name}님</p>
 	        </c:if>
         </div>
     </div>

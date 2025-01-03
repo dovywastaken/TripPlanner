@@ -26,56 +26,25 @@
 	<div class="container-fluid">
 	    <main>
 	        <div class="mainContainer">
-				<!-- <div id="banner"></div> -->
 	            <div class="section">
 	                <div class="title">
 	                    <span>인기 여행 계획</span>
 	                    <a href="/TripPlanner/hotPlanners" class="morePost">더보기</a>
 	                </div>
 	                <div id="planner">
-	                    <div class="plannerCard">
-	                        <div class="imgFrame">
-	                            <img src="/TripPlanner/resources/img/logo.png" class="pImg">
-	                        </div>
-	                        <div class="plannerCol" id="pText">
-	                            <h3 class="plannerTitle">불국사...</h3>
-	                            <p class="hashtag">#겨울여행 #경주</p>
-	                            <p class="plannerContents">갔는데 머시기 갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기</p>
-	                        </div>
-	                    </div>
-	
-	                    <div class="plannerCard">
-	                        <div class="imgFrame">
-	                            <img src="/TripPlanner/resources/img/logo.png" class="pImg">
-	                        </div>
-	                        <div class="plannerCol" id="pText">
-	                            <h3 class="plannerTitle">불국사...</h3>
-	                            <p class="hashtag">#겨울여행 #경주</p>
-	                            <p class="plannerContents">갔는데 머시기 갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기</p>
-	                        </div>
-	                    </div>
-	
-	                    <div class="plannerCard">
-	                        <div class="imgFrame">
-	                            <img src="/TripPlanner/resources/img/logo.png" class="pImg">
-	                        </div>
-	                        <div class="plannerCol" id="pText">
-	                            <h3 class="plannerTitle">불국사...</h3>
-	                            <p class="hashtag">#겨울여행 #경주</p>
-	                            <p class="plannerContents">갔는데 머시기 갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기</p>
-	                        </div>
-	                    </div>
-	
-	                    <div class="plannerCard">
-	                        <div class="imgFrame">
-	                            <img src="/TripPlanner/resources/img/logo.png" class="pImg">
-	                        </div>
-	                        <div class="plannerCol" id="pText">
-	                            <h3 class="plannerTitle">불국사...</h3>
-	                            <p class="hashtag">#겨울여행 #경주</p>
-	                            <p class="plannerContents">갔는데 머시기 갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기갔는데 머시기</p>
-	                        </div>
-	                    </div>
+					<c:forEach var="post" items="${result.Allpost}">
+				        <div class="plannerCard">
+				            <div class="imgFrame">
+				                <img src="/TripPlanner/resources/upload/${post.fileImage[0]}" class="pImg">
+				            </div>
+				            <div class="plannerCol" id="pText">
+				            	<h4>${post.id} 님의</h4> 
+				                <h3 class="plannerTitle">${post.title}</h3>
+								<span>#좋아요 ${post.likes}</span>
+								<p>조회수 : ${post.view}</p>
+				            </div>
+				        </div>
+					</c:forEach>
 	                </div>
 	            </div>
 	
@@ -217,7 +186,6 @@
 				                    <form:input path="pw" id="pw" placeholder="비밀번호" type="password" />
 				                </div>
 				                <!-- hidden 필드 추가 -->
-			        			<input type="hidden" name="dummy" value="1" />
 				                <div class="form-group">
 				                    <input type="submit" id="submitButton" value="로그인">
 				                </div>

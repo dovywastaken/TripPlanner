@@ -42,12 +42,12 @@ function fetchTourApiAreaBased(areaCode, sigunguCode, contentTypeId, callback) {
 
 
 
-function detailintro(long,sots, callback) {
+function detailintro(contentTypeId,contentId, callback) {
   const url = "http://apis.data.go.kr/B551011/KorService1/detailIntro1";
   const params = 
   "?ServiceKey="+TOUR_API_KEY+
-  "&contentTypeId="+encodeURIComponent(sots)+
-  "&contentId="+encodeURIComponent(long)+
+  "&contentTypeId="+encodeURIComponent(contentTypeId)+
+  "&contentId="+encodeURIComponent(contentId)+
   "&MobileOS=ETC"+
   "&MobileApp=AppTest"+
   "&_type=json";

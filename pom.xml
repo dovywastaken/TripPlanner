@@ -109,6 +109,20 @@
         <version>1</version>
     </dependency>
 
+<!-- 1/2일 추가 -->
+   <dependency>
+    <groupId>org.jsoup</groupId>
+    <artifactId>jsoup</artifactId>
+    <version>1.15.3</version>
+  </dependency>
+  
+  <dependency>
+   <groupId>org.json</groupId>
+   <artifactId>json</artifactId>
+   <version>20231013</version>
+</dependency>
+
+
   </dependencies>
   
   

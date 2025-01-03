@@ -84,19 +84,21 @@ public class BoardController {
 		 model.addAttribute("Allpost", Allpost);
 	}
 	
+
+	
 	@GetMapping("/hotPlanners")
-	public String toHotPlanners(@RequestParam(value = "page",defaultValue = "1")int page, Model model)
-	{
-		Map<String,Object> result=boardService.AllboardRead(page); //
+	public String hotboard(@RequestParam(value = "page",defaultValue = "1")int page, Model model) {
+		int size = 10;
+		Map<String,Object> result=boardService.hotboardRead(size, page); //
 		setBoardModelAttributes(result,page,model);
 		
 		int totalPosts = (int) result.get("Allpostgetnum");
 		Map<String, Object> pagination = paginationHelper.getPagination(page, totalPosts, 10, 5);
 		model.addAttribute("currentPage", page);
 		model.addAttribute("pagination", pagination);
-
 		return "board/hotPlanners";
 	}
+	
 	
 	
 	@GetMapping("/boardFestival")

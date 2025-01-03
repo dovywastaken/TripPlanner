@@ -9,7 +9,8 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -119,5 +120,50 @@ public class CommentController {
     	}
        
     }
+    
+    @PostMapping("/{c_unique}/update")
+    public ResponseEntity<Map<String, Object>> updateComment(
+            @PathVariable int c_unique,
+            @RequestParam String content,
+            HttpSession session) {
+        
+        Map<String, Object> response = new HashMap<>();
+        
+        // 세션 체크
+        Member member = (Member) session.getAttribute("member");
+        if (member == null) {
+            response.put("message", "unauthorized");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+
+        try {
+            // 댓글 존재 여부 및 작성자 확인
+            Comment comment = commentService.getCommentById(c_unique);
+            if (comment == null) {
+                response.put("message", "not_found");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+
+            // 작성자 본인 확인
+            if (!comment.getId().equals(member.getId())) {
+                response.put("message", "forbidden");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
+            }
+
+            // 댓글 내용 업데이트
+            comment.setComments(content);
+            //commentService.updateComment(c_unique,comment);
+
+            response.put("message", "updated");
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            response.put("message", "error");
+            response.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
 }
+   
+
 

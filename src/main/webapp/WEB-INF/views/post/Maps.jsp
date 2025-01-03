@@ -149,6 +149,40 @@
     border-radius: 5px;
     cursor: pointer;
 }
+
+ #searchBar{
+ 	 position: absolute;    /* 지도 위에 겹치도록 */
+      top: 700px; 
+      right: 20px;
+      z-index: 999;          /* 지도의 다른 요소보다 위로 */
+      
+      width: 330px;          /* 원하는 너비 */
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+      padding: 10px;
+      
+      transition: all 0.3s ease; 
+ 
+ }
+ 
+ #search-List{
+   	 position: absolute;    /* 지도 위에 겹치도록 */
+      top: 30px; 
+      left: 500px;
+      z-index: 998;          /* 지도의 다른 요소보다 위로 */
+      
+      width: 20%; 
+      height: 900px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+      
+    
+    }
+ 
   </style>
 </head>
 <body>
@@ -204,17 +238,19 @@
     <button class="reset-btn" id="resetBtn">초기화</button>
   </div>
   
-  <div id="myList">
-	</div>
+  
 	<button id="myList-submit">저장</button>
   <div id="searchBar">
     <input type="text" id="searchKeyword" placeholder="검색어를 입력하세요">
     <button id="searchButton">검색</button>
   </div>
-  <div id="serch-List">
-  <p>안녕하세요</p>
+  <div id="search-List">
   </div>
+  <div id="myList">
+	</div>
+	<button id="serch-Listbtn">검색창</button>
+	<button id="myListbtn">마이리스트</button>
   <!-- Kakao Maps SDK (YOUR_APP_KEY 부분에 실제 앱 키를 넣으세요) -->
-  <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=6c46d3ceb006f99f0537b7a3928c66fb&libraries=services"></script>
+  <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=21c423a4331e55883c3eb46115b12e02&libraries=services"></script>
 </body>
 </html>

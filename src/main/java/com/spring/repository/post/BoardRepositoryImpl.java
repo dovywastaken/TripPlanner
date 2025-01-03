@@ -9,10 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.spring.domain.Member;
 import com.spring.domain.Post;
 import com.spring.domain.Tour;
-import com.spring.repository.member.MemberMapper;
 @Repository
 public class BoardRepositoryImpl implements BoardRepository {
 	
@@ -82,7 +80,7 @@ public class BoardRepositoryImpl implements BoardRepository {
 
 	@Override
 	public Map<String, Object> mysearchPosts(String id,String keyword, int page) {
-		   int pageSize = 10; 
+		    int pageSize = 10; 
 	        int startIndex = (page - 1) * pageSize; 
 
 	        
@@ -101,14 +99,58 @@ public class BoardRepositoryImpl implements BoardRepository {
 	        return result;
 	}
 
-	@Override
-	public List<Tour> hotSpots(String type, int limit, int offset) { //12 , 0로 들어옴
-	    // 1. 데이터 조회
-	    String sql = "SELECT * FROM tour Where contenttypeid = ? ORDER BY citation_count DESC LIMIT ? OFFSET ?";
-	    System.out.println("hotspots 함수로 " + limit+  ", "+ offset + " 파라미터를 가지고 db에서 데이터 fetch 시도합니다");
-	    System.out.println("[BoardRepository : hotSpots 메서드 종료]");
-	    return template.query(sql, new TourMapper(), type, limit, offset);
-	}
-}
 
+		@Override
+		public Map<String, Object> hotboardRead(int size, int page) { 
+			int pageSize = size; 
+	        int startIndex = (page - 1) * pageSize; 
+			
+			PostRowMapper postRowMapper=new PostRowMapper();
+			List<Post> Allpost=new ArrayList<Post>(); //게시글 목록 저장할 리스트 객체
+			
+			String sql = "SELECT * FROM post where (likes * 5) + (view * 0.1) + (commentCount * 1) >= 100 ORDER BY publishDate DESC LIMIT ?, ?";
+			String countSql = "SELECT count(*) FROM post where (likes * 5) + (view * 0.1) + (commentCount * 1) >= 100"; 
+			
+			Allpost=template.query(sql,postRowMapper,new Object[] {startIndex,pageSize});
+			int Allpostgetnum=template.queryForObject(countSql, Integer.class); 
+			
+			Map<String, Object> result=new HashMap<String, Object>();
+			result.put("Allpost", Allpost);
+			result.put("Allpostgetnum", Allpostgetnum);
+
+			return result;
+		}
+		
+		@Override
+		public List<Tour> hotSpots(String type, int limit, int offset) { //12 , 0로 들어옴
+			String rankSql = "SELECT contentid FROM (SELECT contentid, COUNT(*) AS count FROM tour WHERE contenttypeid = ? GROUP BY contentid HAVING COUNT(*) > 5) filtered_data ORDER BY filtered_data.count DESC LIMIT ? offset ?";
+			List<String> rank = template.queryForList(rankSql, String.class, type,limit,offset);
+			// 결과 담을 리스트
+			List<Tour> result = new ArrayList<>();
+			// 2) 위에서 얻은 contentid 리스트를 돌면서 상세 정보 조회(limit 1)
+			String detailSql = "SELECT * FROM tour WHERE contentid = ? LIMIT 1";
+			for (String contentId : rank) {
+			    Tour tour = template.queryForObject(detailSql, new TourMapper(), contentId);
+			    result.add(tour);
+			}
+
+			// 이제 result 리스트에 "순위권(contentid별) 중 1건"씩 데이터가 쌓임
+			return result;
+		}
+		
+		@Override
+		public List<Map<String, Object>> getTourInfoByPostId(int p_unique) {
+		    System.out.println("getTourInfoByPostId 리파지터리 함수 호출됨");
+		    String sql = "select * from tour where p_unique = ?";
+		    List<Map<String, Object>> tourList = template.queryForList(sql, p_unique);
+		    
+		    if (tourList == null) 
+		    {
+		        tourList = new ArrayList<>();
+		    }
+		    
+		    System.out.println(tourList);
+		    return tourList;
+		}
+}
 
