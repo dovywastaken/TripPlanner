@@ -17,9 +17,10 @@
 		</a>
         <div id="headerLeft">
 		    <c:if test="${not empty user}">
-				<a href="/TripPlanner/Myboard" class="headerLeft">내 여행</a>
-				<a href="/TripPlanner/hotPlanners" class="headerLeft">추천 여행</a>
+				<a href="/TripPlanner/Myboard" class="headerLeft">내 여행 계획</a>
 		    </c:if>
+		    <a href="/TripPlanner/Allboard" class="headerLeft">전체 게시판</a>
+		    <a href="/TripPlanner/hotPlanners" class="headerLeft">추천 여행 계획</a>
 		</div>
         <div id="headerRight">
 	        <c:if test="${empty user}">
@@ -27,7 +28,7 @@
 	        </c:if>
 	        <c:if test="${not empty user}">
 	        	<c:if test="${user.id == 'admin'}">
-	        		<a href="/TripPlanner/admin/dashboard" class="headerRight">관리자 페이지</a>
+	        		<a href="/TripPlanner/admin/dashboard" class="headerRight">회원 조회</a>
 	        	</c:if>
 		        <a href="/TripPlanner/members/myPage" class="headerRight">내 정보</a>
 	            <a href="/TripPlanner/members/signOut" id="logout" class="headerRight">로그아웃</a>

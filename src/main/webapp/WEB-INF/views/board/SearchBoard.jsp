@@ -105,16 +105,39 @@
                         <h1>${user.name}</h1>
                         <h2>${user.id}</h2>
                     </div>
-                    <p id="currentDate" style="text-align: center; width: 100%;"></p>
+                    <p id="currentDate" style="text-align: center; width: 100%; color: #2C3F3C;"></p>
+                    <c:if test="${user.emailCheck == 0}">
+                    <p style="text-align : center; margin-top : 12px; width: 100%;">아직 이메일 인증이 안됐어요!</p>
+                    	<a href="/TripPlanner/members/myPage" 
+                    		style="outline: 2px solid #313339; 
+					        background-color: #ffffff;
+					        line-height: 0;
+					        height: 21px;
+					        width: 50%;
+					        margin : 15px auto 0;
+					        border: none;
+					        border-radius: 34px;
+					        font-size: 13px;
+					        font-weight: bold;
+					        display: flex;
+					        justify-content: center;
+					        align-items: center;
+					        color: #313339;
+					        text-align: center;">인증하러 가기
+					    </a>
+                    </c:if>
                     </c:if>
                     <hr style="border: 1px solid #F1F3F9; margin : 34px auto 10px auto; width: 80%;">
 
                     <div id="links"> 
-                        <a href="">메인 페이지</a>
-                        <a href="">내 여행</a>
-                        <a href="">인기 축제</a>
-                        <a href="">인기 관광지</a>
-                        <a href="">인기 음식점</a>
+                    	<c:if test="${not empty user}">
+                    	<a href="/TripPlanner/Myboard">• 내 여행 계획</a>
+                    	</c:if>
+                        <a href="/TripPlanner/hotPlanners">• 추천 여행 계획</a>
+                        <a href="/TripPlanner/Allboard">• 전체 게시판</a>
+                        <a href="/TripPlanner/boardFestival">• 인기 축제</a>
+                        <a href="/TripPlanner/boardTour">• 인기 관광지</a>
+                        <a href="/TripPlanner/boardRestaurant">• 인기 음식점</a>
                     </div>
                     <a href="/TripPlanner/members/signOut" class="signOutButton">로그아웃</a>
             </div>

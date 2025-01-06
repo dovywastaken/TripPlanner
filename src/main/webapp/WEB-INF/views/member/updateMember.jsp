@@ -102,7 +102,7 @@
             left: 20px;
             z-index: 999;
             transition: top 0.2s ease-out; /* 위치 변경 시 부드러운 애니메이션 */
-            background-color: #007bff; 
+            background-color: #313339; 
             color: white;
             padding: 10px 20px; 
             border-radius: 34px; 
@@ -116,13 +116,13 @@
         }
 
         #backButton:hover {
-            background-color: #0056b3; 
+            background-color: #616369;
             box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); 
             transform: translateY(-2px); 
         }
 
         #backButton:active {
-            background-color: #003f7f; 
+            background-color: #003f7f;
             box-shadow: 0 3px 4px rgba(0, 0, 0, 0.1); 
             transform: translateY(0); 
         }
@@ -132,7 +132,7 @@
 	<%@ include file="../header.jsp" %>
 	
 	<div class="form-container">
-        <div id="backButton">뒤로 가기</div>
+        <div id="backButton" onclick='goBack()'>뒤로 가기</div>
         <h2>회원 정보 수정</h2>
         <c:choose>
             <c:when test="${not empty user}">
@@ -162,4 +162,5 @@
     </div>
 	<%@ include file="../footer.jsp" %>
 </body>
+<script>function goBack(){window.history.back();}</script>
 </html>

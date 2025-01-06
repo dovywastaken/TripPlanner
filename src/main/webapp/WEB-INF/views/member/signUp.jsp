@@ -207,6 +207,6 @@
 	        <div id="resultMessage"></div>
 	    </form:form>
 	</div>
-    <%@ include file="../footer.jsp" %>
+    <%@ include file="../footerCompact.jsp" %>
 </body>
 </html>

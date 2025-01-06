@@ -176,70 +176,84 @@
 <body>
 
 	<%@ include file="../header.jsp" %>
-
-    <div id="container">
-    <h2 id="titleBanner">회원 목록</h2>
-    <div id="boardContainer"> 
-        <div class="searchAndTableContainer">
-            <form name="search" id="search" method="get" action="dashboard">
-                <input type="submit" id="searchButton" value="" />
-                <input type="text" name="keyword" id="keyword" placeholder="회원 검색하기" />
-            </form>
-        
-            <table id="table">
-                <thead>
-                    <tr>
-                        <th class="tableHead">ID</th>
-                        <th class="tableHead">닉네임</th>
-                        <th class="tableHead">생년월일</th>
-                        <th class="tableHead" id="phone">전화번호</th>
-                        <th class="tableHead">가입일</th>
-                        <th class="tableHead">최근로그인</th>
-                        <th class="tableHead">인증</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:choose>
-                        <c:when test="${not empty memberList}">
-                            <c:forEach var="member" items="${memberList}">
-                                <tr>
-                                    <td class="tableContent">${member.name}</td>
-                                    <td class="tableContent">${member.id}</td>
-                                    <td class="tableContent">${member.birthday}</td>
-                                    <td class="tableContent">${member.phone1}-${member.phone2}-${member.phone3}</td>
-                                    <td class="tableContent">${member.registerDate}</td>
-                                    <td class="tableContent">${member.loginDate}</td>
-                                    <td class="tableContent">
-                                        <c:choose>
-                                            <c:when test="${member.emailCheck == 1}">
-                                                <p>o</p>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <p>x</p>
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                        </c:when>
-                        <c:otherwise>
-                            <tr>
-                                <td colspan="10" class="no-data">회원 정보가 없습니다.</td>
-                            </tr>
-                        </c:otherwise>
-                    </c:choose>
-                </tbody>
-            </table>
-        </div>
-        <div id="pagination">
-            <div class="pagination">
-                <c:forEach var="i" begin="1" end="${totalPages}">
-                    <a href="/TripPlanner/admin/dashboard?page=${i}&keyword=${keyword}">${i}</a>
-                </c:forEach>
-            </div>
-        </div>
-    </div>
-</div>
+<c:if test="${not empty user}">
+	<c:if test="${user.id == 'admin'}">
+		<div id="container">
+		    <h2 id="titleBanner">회원 목록</h2>
+		    <div id="boardContainer"> 
+		        <div class="searchAndTableContainer">
+		            <form name="search" id="search" method="get" action="dashboard">
+		                <input type="submit" id="searchButton" value="" />
+		                <input type="text" name="keyword" id="keyword" placeholder="회원 검색하기" />
+		            </form>
+		        
+		            <table id="table">
+		                <thead>
+		                    <tr>
+		                        <th class="tableHead">ID</th>
+		                        <th class="tableHead">닉네임</th>
+		                        <th class="tableHead">생년월일</th>
+		                        <th class="tableHead" id="phone">전화번호</th>
+		                        <th class="tableHead">가입일</th>
+		                        <th class="tableHead">최근로그인</th>
+		                        <th class="tableHead">인증</th>
+		                    </tr>
+		                </thead>
+		                <tbody>
+		                    <c:choose>
+		                        <c:when test="${not empty memberList}">
+		                            <c:forEach var="member" items="${memberList}">
+		                                <tr>
+		                                    <td class="tableContent">${member.name}</td>
+		                                    <td class="tableContent">${member.id}</td>
+		                                    <td class="tableContent">${member.birthday}</td>
+		                                    <td class="tableContent">${member.phone1}-${member.phone2}-${member.phone3}</td>
+		                                    <td class="tableContent">${member.registerDate}</td>
+		                                    <td class="tableContent">${member.loginDate}</td>
+		                                    <td class="tableContent">
+		                                        <c:choose>
+		                                            <c:when test="${member.emailCheck == 1}">
+		                                                <p>o</p>
+		                                            </c:when>
+		                                            <c:otherwise>
+		                                                <p>x</p>
+		                                            </c:otherwise>
+		                                        </c:choose>
+		                                    </td>
+		                                </tr>
+		                            </c:forEach>
+		                        </c:when>
+		                        <c:otherwise>
+		                            <tr>
+		                                <td colspan="10" class="no-data">회원 정보가 없습니다.</td>
+		                            </tr>
+		                        </c:otherwise>
+		                    </c:choose>
+		                </tbody>
+		            </table>
+		        </div>
+		        <div id="pagination">
+		            <div class="pagination">
+		                <c:forEach var="i" begin="1" end="${totalPages}">
+		                    <a href="/TripPlanner/admin/dashboard?page=${i}&keyword=${keyword}">${i}</a>
+		                </c:forEach>
+		            </div>
+		        </div>
+		    </div>
+		</div>
+	</c:if>
+</c:if>
+<c:if test="${empty user}">
+	<div id="container">
+		    <div id="boardContainer">
+		    	<div style ="display : flex; flex-direction: column">
+			    	<h1>잘못된 접근입니다.</h1>
+			    	<a href="/TripPlanner" style="text-align : center">메인페이지로 돌아가기</a>
+		    	</div>
+		    </div>
+		</div>
+</c:if>
+    
     
     <%@ include file="../footerCompact.jsp" %>
     

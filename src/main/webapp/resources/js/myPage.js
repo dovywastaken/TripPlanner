@@ -20,14 +20,14 @@ function emailCheck() {
 				loading.style.display = "none";
 				timer(); // 타이머 시작
             } else {
-                alert("이메일 전송에 실패했습니다.");
+                alert("이메일 전송에 실패했습니다. 이메일을 형식을 확인해주세요.");
 				loading.style.display = "none";
                 checkButton.disabled = false; // 이메일 전송 실패 시 버튼 다시 활성화
             }
         },
         error: function() {
             console.error('이메일 전송 중 오류 발생');
-            alert('이메일 전송에 실패했습니다.');
+            alert('이메일 서버에 문제가 생겼습니다 다시 시도 해주세요.');
 			loading.style.display = "none";
             checkButton.disabled = false; // 오류 발생 시 버튼 다시 활성화
         }

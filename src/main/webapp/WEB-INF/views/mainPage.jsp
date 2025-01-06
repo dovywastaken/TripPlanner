@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/TripPlanner/resources/css/normalize.css">
     <link rel="stylesheet" href="/TripPlanner/resources/css/mainPage.css">
     <link href="https://cdn.jsdelivr.net/gh/sun-typeface/SUITE@2/fonts/static/woff2/SUITE.css" rel="stylesheet">
+    
 	<script src="https://kit.fontawesome.com/96b1ce314a.js"></script>
 
 </head>
@@ -54,23 +55,25 @@
 	                    <span>추천 축제</span>
 	                    <a href="/TripPlanner/boardFestival" class="morePost">더보기</a>
 	                </div>
-	                <c:choose>
-               			<c:when test="${not empty festival}">
-               				<c:forEach var="festival" items="${festival}">
-		                      <div class="recommandCard">
-		                          <div class="imgFrame">
-		                              <img src="${festival.firstimage}" class="pImg">
-		                          </div>
-		                          <div class="plannerCol" id="pText">
-									<div>
-		                            	<h3 class="plannerTitle">${festival.title}</h3>
-		                            	<p class="hashtag">#경산시 #문화관광축제</p>
-		                            </div>
-									</div>
-		                      </div>
-	                     	 </c:forEach>
-                    	</c:when>
-   					</c:choose>
+		            <div id="planner">
+		                <c:choose>
+	               			<c:when test="${not empty festival}">
+	               				<c:forEach var="festival" items="${festival}">
+				                      <div class="recommandCard">
+				                          <div class="imgFrame">
+				                              <img src="${festival.firstimage}" class="pImg">
+				                          </div>
+				                          <div class="plannerCol" id="pText">
+											<div>
+				                            	<h3 class="plannerTitle">${festival.title}</h3>
+				                            	<span class="hashtag">#${festival.addr1}</span>
+				                            </div>
+											</div>
+				                      </div>
+		                     	 </c:forEach>
+	                    	</c:when>
+	   					</c:choose>
+	   				</div>
 	            </div>
 	
 				 <div class="section">
@@ -89,7 +92,7 @@
 					                          <div class="plannerCol" id="pText">
 					                            <div>
 													<h3 class="plannerTitle">${tourSpots.title}</h3>
-					                            	<p class="hashtag">#성산구 #국립공원</p>  
+					                            	<p class="hashtag">#${tourSpots.addr1}</p>  
 												</div>
 												</div>
 					                      </div>
@@ -98,7 +101,8 @@
 	      					</c:choose>
 	                  </div>
 	              </div>
-	              <div class="section">
+	              
+	             <div class="section">
 	                  <div class="title">
 	                      <span>추천 맛집</span>
 	                      <a href="/TripPlanner/boardRestaurant" class="morePost">더보기</a>
@@ -114,7 +118,7 @@
 					                          <div class="plannerCol" id="pText">
 												<div>
 					                            	<h3 class="plannerTitle">${restaurants.title}</h3>
-					                            	<p class="hashtag">#경산시 #한식</p>       
+					                            	<p class="hashtag">#${restaurants.addr1}</p>       
 												</div>
 												</div>
 					                      </div>
@@ -205,6 +209,6 @@
 	</div>
 	<%@ include file="footer.jsp" %>
 </body>
-
+<script src="/TripPlanner/resources/js/mainPage.js" defer></script>
 </html>
 
