@@ -8,21 +8,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>트립플래너</title>
-    
     <link rel="stylesheet" href="/TripPlanner/resources/css/normalize.css">
     <link rel="stylesheet" href="/TripPlanner/resources/css/mainPage.css">
     <link href="https://cdn.jsdelivr.net/gh/sun-typeface/SUITE@2/fonts/static/woff2/SUITE.css" rel="stylesheet">
-
-	<style>
-	    body {font-family: 'SUITE', sans-serif;}
-	</style>
-
 	<script src="https://kit.fontawesome.com/96b1ce314a.js"></script>
 
 </head>
-
-	<%@ include file="header.jsp" %>
-
+<%@ include file="header.jsp" %>
 	<div class="container-fluid">
 	    <main>
 	        <div class="mainContainer">
@@ -33,17 +25,23 @@
 	                </div>
 	                <div id="planner">
 					<c:forEach var="post" items="${result.Allpost}">
-				        <div class="plannerCard">
-				            <div class="imgFrame">
-				                <img src="/TripPlanner/resources/upload/${post.fileImage[0]}" class="pImg">
-				            </div>
-				            <div class="plannerCol" id="pText">
-				            	<h4>${post.id} 님의</h4> 
-				                <h3 class="plannerTitle">${post.title}</h3>
-								<span>#좋아요 ${post.likes}</span>
-								<p>조회수 : ${post.view}</p>
-				            </div>
-				        </div>
+						<div class="plannerDoubling">
+				        	<div class="plannerCard">
+					            <div class="imgFrame">
+					                <img src="/TripPlanner/resources/upload/${post.fileImage[0]}" class="pImg">
+					            </div>
+					            <div class="plannerCol" id="pText">
+					            	<div>
+										<h4>${post.id} 님의</h4> 
+					                	<h3 class="plannerTitle">${post.title}</h3>
+									</div>
+									<div class="plannerStatus">
+										<span>좋아요: ${post.likes}</span>
+										<p>조회수: ${post.view}</p>
+									</div>
+					            </div>
+				        	</div>
+						</div>
 					</c:forEach>
 	                </div>
 	            </div>
@@ -59,16 +57,18 @@
 	                <c:choose>
                			<c:when test="${not empty festival}">
                				<c:forEach var="festival" items="${festival}">
-		                      <div class="plannerCard">
+		                      <div class="recommandCard">
 		                          <div class="imgFrame">
 		                              <img src="${festival.firstimage}" class="pImg">
 		                          </div>
 		                          <div class="plannerCol" id="pText">
-		                              <h3 class="plannerTitle">${festival.title}</h3>
-		                              <p class="hashtag">#경산시 #문화관광축제</p>
-		                          </div>
+									<div>
+		                            	<h3 class="plannerTitle">${festival.title}</h3>
+		                            	<p class="hashtag">#경산시 #문화관광축제</p>
+		                            </div>
+									</div>
 		                      </div>
-	                     	</c:forEach>
+	                     	 </c:forEach>
                     	</c:when>
    					</c:choose>
 	            </div>
@@ -82,14 +82,16 @@
 	                  		<c:choose>
 	                  			<c:when test="${not empty tourSpots}">
 	                  				<c:forEach var="tourSpots" items="${tourSpots}">
-					                      <div class="plannerCard">
+					                      <div class="recommandCard">
 					                          <div class="imgFrame">
 					                              <img src="${tourSpots.firstimage}" class="pImg">
 					                          </div>
 					                          <div class="plannerCol" id="pText">
-					                              <h3 class="plannerTitle">${tourSpots.title}</h3>
-					                              <p class="hashtag">#성산구 #국립공원</p>  
-					                          </div>
+					                            <div>
+													<h3 class="plannerTitle">${tourSpots.title}</h3>
+					                            	<p class="hashtag">#성산구 #국립공원</p>  
+												</div>
+												</div>
 					                      </div>
 			                      	</c:forEach>
 		                      	</c:when>
@@ -105,14 +107,16 @@
 	                      <c:choose>
 	                  			<c:when test="${not empty restaurants}">
 	                  				<c:forEach var="restaurants" items="${restaurants}">
-					                      <div class="plannerCard">
+					                      <div class="recommandCard">
 					                          <div class="imgFrame">
 					                              <img src="${restaurants.firstimage}" class="pImg">
 					                          </div>
 					                          <div class="plannerCol" id="pText">
-					                              <h3 class="plannerTitle">${restaurants.title}</h3>
-					                              <p class="hashtag">#경산시 #한식</p>       
-					                          </div>
+												<div>
+					                            	<h3 class="plannerTitle">${restaurants.title}</h3>
+					                            	<p class="hashtag">#경산시 #한식</p>       
+												</div>
+												</div>
 					                      </div>
 			                      	</c:forEach>
 		                      	</c:when>
@@ -151,7 +155,7 @@
 							                        <span>내 여행 계획 </span>
 							                        <span id="postCount">${count}</span>
 							                    </div>
-							                    <a href='/TripPlanner/Myboard'>더보기</a>
+							                    <a class="postMore" href='/TripPlanner/Myboard'>더보기</a>
 							                </div>
 							            </div>
 							        </c:when>
@@ -191,19 +195,6 @@
 				                </div>
 				                <a href="/TripPlanner/members/signUp" id="signUpButton">가입하기</a>
 				            </form:form>
-				            
-				
-				            <!-- 에러 메시지 표시 -->
-				            <c:if test="${not empty EmptyForm}">
-				                <script>
-				                    alert("${EmptyForm}");
-				                </script>
-				            </c:if>
-				            <c:if test="${not empty loginError}">
-				                <script>
-				                    alert("${loginError}");
-				                </script>
-				            </c:if>
 				        </div>
 					</c:if>
 				</div>

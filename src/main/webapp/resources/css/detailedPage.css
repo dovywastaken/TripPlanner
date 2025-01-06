@@ -1,0 +1,113 @@
+	.container
+	{
+        padding: 89px 300px 0 300px;
+        display: flex;
+        justify-content: flex-start;
+	}
+
+    #containerPanel{
+        background-color: #ffffff;
+        box-sizing: border-box;
+        border-radius: 34px;
+        box-shadow: 0px 7px 30px rgba(33,55,55,0.1);
+        display: flex;
+        width: 1050px;
+        min-width: 1050px;
+        height: fit-content;
+
+    }
+
+    #containerPanel_A{
+        background-color: #ffffff;
+        box-sizing: border-box;
+        border-radius: 13px;
+        margin: 21px;
+
+    }
+    
+    #containerPanel_B{
+        background-color: #ffffff;
+        box-sizing: border-box;
+        border-radius: 13px;
+        margin: 21px 21px 21px 0;
+        padding: 21px 21px 34px 21px;
+        box-shadow: 0px 5px 25px rgba(33,55,55,0.2);
+        width: 377px;
+        height:fit-content;
+        position: sticky;
+        position: -webkit-sticky;
+        top:21px;
+
+    }
+    
+    #title{
+        color: #009988;
+        font-size: 32px;
+        margin-bottom: 13px;
+    }
+
+    #overview{
+        font-size: 16px;
+        line-height: 26px;
+        color: #2C3c3f;
+    }
+
+    .imgBox{
+        border-radius: 13px;
+        overflow: hidden;
+        width: 610px;
+        height: 400px;
+        margin-bottom: 21px;
+        }
+    
+    #image{
+        width: 100%;
+    }
+
+    .info{
+        padding: 0 8px;
+    }
+
+    #infoHeader{
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+    }   
+    #infoHeader h3{
+        font-size: 21px;
+    }
+
+    #modifiedtime{
+        font-size: 13px;
+        color: #717379;
+    }
+
+    #detailedInfo{
+        margin-bottom: 34px;
+    }    
+    
+    #detailedInfo p{
+        font-size: 16px;
+        line-height: 26px;
+        color: #2C3c3f;
+    }
+
+    #detailedInfo p b{
+        color: #009988;
+    }
+
+    #accessibilityInfo h3{
+        font-size: 21px;
+        margin-bottom: 8px;
+
+    }
+    
+    #accessibilityInfo p{
+        font-size: 16px;
+        line-height: 26px;
+        color: #2C3c3f;
+    } 
+
+    #accessibilityInfo p b{
+        color: #009988;
+    }

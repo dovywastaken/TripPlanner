@@ -45,7 +45,7 @@ function pwCheck(value)
 				pwcheck = 1;
                 return true;
             } else if (response.none) {
-                message.innerHTML = "value가 없습니다"
+                message.innerHTML = ""
                 return false;
             } else {
                 message.innerHTML = '<span style="color:red;">비밀번호가 틀렸습니다.</span>';

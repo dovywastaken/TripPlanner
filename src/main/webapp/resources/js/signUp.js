@@ -1,5 +1,4 @@
 let checkedId = '';
-let checkedEmail ='';
 let idField = document.getElementById("id");
 let nameField = document.getElementById("name");
 let pwField = document.getElementById("pw1");
@@ -7,10 +6,7 @@ let pwCheck = document.getElementById("pw2");
 let phoneField = document.getElementById("phone1");
 let birthdayField = document.getElementById("birthday");
 let submitButton = document.getElementById("signUp_form");
-let emailSelect = document.getElementById("emailSelect"); //이메일 직접입력 선택창
-let confirmIdButton = document.getElementById("confirmId"); //아이디 중복체크 버튼
-let emailField = document.getElementById("emailId");
-let domainField = document.getElementById("emailDomain");
+let confirmIdButton; //아이디 중복체크 버튼 //쿼리셀렉터로 클래스로 잡아서 써. checkButton뭐 이런걸로
 
 document.addEventListener('DOMContentLoaded', function() {
 	//아이디 이름 비밀번호 이메일 휴대폰 생년월일 제출버튼 문서 로딩 시 매핑
@@ -18,24 +14,19 @@ document.addEventListener('DOMContentLoaded', function() {
     nameField = document.getElementById("name");
     pwField = document.getElementById("pw1");
 	pwCheck = document.getElementById("pw2");
-    emailField = document.getElementById("emailId");
-	domainField = document.getElementById("emailDomain");
     phoneField = document.getElementById("phone1");
     birthdayField = document.getElementById("birthday");
     submitButton = document.getElementById("signUp_form");
-	emailSelect = document.getElementById("emailSelect"); //이메일 직접입력 선택창
-	confirmIdButton = document.getElementById("confirmId"); //아이디 중복체크 버튼
+	confirmIdButton = document.querySelector(".checkButton");
 	
     // 아이디, 이름, 비밀번호, 이메일도메인, 휴대폰번호, 생년월일, 제출버튼 이벤트리스너
     idField.addEventListener('input', idChecknValidation);
     nameField.addEventListener('input', NameValidator);
     pwField.addEventListener('input', pwValidator);
-    domainField.addEventListener('input', domainValidator);
     phoneField.addEventListener('input', phoneValidator);
     birthdayField.addEventListener('input', birthdayValidator);
     submitButton.addEventListener('submit', function(event)
 	{
-		emailCheck(emailField.value, domainField.value);
 		submit(event);
 	});
 	confirmIdButton.addEventListener("click", function() 
@@ -44,10 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 	pwCheck.addEventListener("input", passwordCheck);
 		
-    emailSelect.value = "custom"; //이메일 입력방식 초기값 custom으로 설정 //이거 안해주면 custom 해놔도 직접입력 placeholder만 보이고 실제론 입력 안 됨
-    updateDomainInput(emailSelect); //이메일 직접 입력시 입력창 활성화 시켜주는 코드
     confirmIdButton.disabled = true; //아직 아이디 입력 안했으므로 중복체크 버튼 비활성화로 시작
-	confirmIdButton.style.backgroundColor = "gray"; //중복체크 버튼 초기 스타일 값
 });
 
 
@@ -56,7 +44,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function idChecknValidation()
 {
-	let confirmIdButton = document.getElementById("confirmId");
 	confirmIdButton.disabled = true; // 중복 체크 버튼 비활성화
     let messageElement = document.getElementById('message_id');
     messageElement.innerHTML = ""; //메세지 초기화
@@ -76,12 +63,14 @@ function idCheck(value) {
 			console.log("컨트롤러를 지나 다시 ajax코드로 들어왔음");
             let messageElement = document.getElementById('message_id');
             let resultMessage = document.getElementById("resultMessage");
-
+			confirmIdButton = document.querySelector(".checkButton");
             if (!response.notAvailable) //available 이라면
 			{
 				console.log("if문 안이요");
+				
                 messageElement.innerHTML = '<span style="color:green;">사용 가능한 ID입니다.</span>';
                 resultMessage.innerHTML = '';
+				confirmIdButton.id="buttonConfirmed";
 				checkedId = value;
 				console.log(checkedId);
                 alert("사용 가능한 ID 입니다");
@@ -107,60 +96,19 @@ function idCheck(value) {
     });
 }
 
-
-//이메일 중복검사 하는 함수
-function emailCheck(emailId,domain) {
-    $.ajax({
-        url: contextPath + '/members/emailCheckDuplicate',
-        method: 'GET',
-        data: {emailId: emailId, domain:domain},
-        success: function(response) {
-			console.log("컨트롤러를 지나 다시 이메일 체크 ajax코드로 들어왔음");
-            let messageElement = document.getElementById('message_email');
-            let resultMessage = document.getElementById("resultMessage");
-
-            if (!response.notAvailable) //available 이라면
-			{
-				console.log("이메일 사용 가능 if문으로 들어옴");
-                messageElement.innerHTML = '<span style="color:green;">사용 가능한 이메일입니다.</span>';
-                resultMessage.innerHTML = '';
-				checkedEmail = emailId + "@" + domain;
-				console.log(checkedEmail);
-                alert("사용 가능한 이메일 입니다");
-				
-                return true;
-            } 
-			else
-			{
-				console.log("이메일 사용 불가능 if문으로 들어옴");
-                messageElement.innerHTML = '<span style="color:red;">이미 사용 중인 이메일입니다.</span>';
-                resultMessage.innerHTML = '이메일 입력란을 다시 확인해주세요!';
-                resultMessage.style.color = "red";
-				checkedEmail = emailId + "@" + domain;
-				console.log(checkedEmail);
-                alert("이미 사용 중인 이메일입니다");
-                return false;
-			}
-        },
-        error: function() {
-            console.error('ID 중복 확인 중 오류 발생');
-			checkedEmail = ''
-        }
-    });
-}
 function IDValidator() // 아이디 유효성 검사 함수
 {
     let idValue = document.getElementById("id").value.trim(); // 아이디 값 가져오기
     let idPattern = /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{5,15}$/; // 정규식: 글자+숫자, 5~15글자
     
     let messageElement = document.getElementById('message_id'); 
-    const confirmIdButton = document.getElementById("confirmId"); //아이디 중복체크 이벤트 매핑
+    confirmIdButton = document.querySelector(".checkButton"); //아이디 중복체크 이벤트 매핑
     let resultMessage = document.getElementById("resultMessage");
     
     if (idValue === '') {
         messageElement.innerHTML = '';
         confirmIdButton.disabled = true;
-		confirmIdButton.style.backgroundColor = "gray";
+		confirmIdButton.id = "buttonDisabled";
         resultMessage.innerHTML = '';
         return false;
     }
@@ -168,15 +116,15 @@ function IDValidator() // 아이디 유효성 검사 함수
     if (/[^a-zA-Z0-9]/.test(idValue)) {
         messageElement.innerHTML = '<span style="color:red;">아이디는 알파벳과 숫자만 포함해야 합니다.</span>';
         confirmIdButton.disabled = true;
-		confirmIdButton.style.backgroundColor = "gray";
+		confirmIdButton.id = "buttonDisabled";
         resultMessage.innerHTML = '<span style="color:red;">회원 가입란을 다시 확인 부탁드립니다!</span>';
         return false;
     }
 
     if (!idPattern.test(idValue)) {
         messageElement.innerHTML = '<span style="color:red;">아이디는 최소 5글자 이상, 최대 15글자 이하로, 알파벳과 숫자를 포함해야 합니다.</span>';
-        confirmIdButton.disabled = true;
-		confirmIdButton.style.backgroundColor = "gray";
+		confirmIdButton.disabled = true;
+		confirmIdButton.id = "buttonDisabled";
         resultMessage.innerHTML = '<span style="color:red;">회원 가입란을 다시 확인 부탁드립니다!</span>';
         return false;
     }
@@ -184,7 +132,7 @@ function IDValidator() // 아이디 유효성 검사 함수
     messageElement.innerHTML = '<span style="color:green;">아이디가 유효합니다</span>';
     confirmIdButton.disabled = false;
     resultMessage.innerHTML = '';
-	confirmIdButton.style.backgroundColor = "#28a745";
+	confirmIdButton.id = "buttonActive";
 	
     return true;
 }
@@ -195,7 +143,7 @@ function NameValidator() {
     let resultMessage = document.getElementById("resultMessage");
 
     if (nameValue.length == 1) {
-        messageElement.innerHTML = '<span style="color:red;">이름은 2글자 이상</span>';
+        messageElement.innerHTML = '<span style="color:red;">닉네임은 2글자 이상</span>';
         resultMessage.innerHTML = '<span style="color:red;">회원 가입란을 다시 확인 부탁드립니다!</span>';
         return false;
     } else if (nameValue.length == 0) {
@@ -228,26 +176,6 @@ function pwValidator() {
         pwValidationMessage.innerHTML = '<span style="color:green;">비밀번호가 유효합니다.</span>';
         return true;
     }
-}
-
-function domainValidator() {
-    let emailDomain = document.getElementById("emailDomain").value;
-    let domainPattern = /^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-
-    var messageElement = document.getElementById('message_email');
-	if(emailDomain === ''){
-			messageElement.innerHTML = '';
-			return false;
-	}
-    if (!domainPattern.test(emailDomain)) {
-        messageElement.innerHTML = '<span style="color:red;">유효한 이메일 도메인 형식이 아닙니다.</span>';
-        return false;
-    } else {
-        messageElement.innerHTML = '<span style="color:green;">이메일 도메인이 유효합니다.</span>';
-        return true;
-    }
-	
-	
 }
 
 function phoneValidator() {
@@ -324,41 +252,13 @@ function checkFormValidity() { //유효성 모두 통과하면 true 반환하는
     const isIdValid = IDValidator();
     const isNameValid = NameValidator();
     const isPwValid = pwValidator();
-    const isDomainValid = domainValidator();
     const isPhoneValid = phoneValidator();
     const isBirthdayValid = birthdayValidator();
 
-    if (isIdValid && isNameValid && isPwValid && isDomainValid && isPhoneValid && isBirthdayValid) {
+    if (isIdValid && isNameValid && isPwValid && isPhoneValid && isBirthdayValid) {
         return true;
     } else {
         return false;
-    }
-}
-
-function updateDomainInput(selectElement) { //
-    const domainInput = document.getElementById("emailDomain");
-    const messageElement = document.getElementById('message_email');
-    if (selectElement.value === "custom") {
-        domainInput.readOnly = false;
-        domainInput.value = "";
-        domainInput.placeholder = "직접 입력";
-    } else {
-        messageElement.innerHTML = '';
-        domainInput.readOnly = true;
-        domainInput.value = selectElement.value;
-    }
-}
-
-function combineEmail() { //
-    const emailId = document.getElementById("emailId").value.trim();
-    const emailDomain = document.getElementById("emailDomain").value.trim();
-    const emailField = document.getElementById("email");
-
-    if (emailId && emailDomain) {
-        emailField.value = emailId + "@" + emailDomain;
-        return true;
-    } else {
-        return false; // 폼 제출 중단
     }
 }
 
@@ -380,12 +280,6 @@ function passwordCheck() { //입력한 비밀번호 2개가 모두 일치하는�
     }
 }
 
-
-
-
-
-
-
 function submit(event)
 {
 	if(checkedId !== idField.value.trim()) //존재 확인된 id와 입력창에 입력한 아이디가 다르다면
@@ -402,29 +296,11 @@ function submit(event)
         alert("작성 다시 하세요");
         return;
     }
-    if (!combineEmail()) {
-		console.log("이메일 합치기 통과 못함");
-        event.preventDefault();
-        alert("이메일을 정확히 입력해주세요");
-        return;
-    }
-
     if (!passwordCheck()) {
 		console.log("새로운 비밀번호 확인 통과 못함");
         event.preventDefault();
         return;
     }
-
-	if(checkedEmail !== emailField.value.trim() + "@" + domainField.value.trim())
-		{
-			console.log("이메일 중복 검사 통과못함");
-			console.log("체크된 이메일 주소 : "+checkedEmail);
-			console.log("입력창에 입력한 이메일 주소 : "+ emailField.value.trim() + "@" + domainField.value.trim());
-			console.log("체크된 이메일 주소 : "+checkedEmail);
-			event.preventDefault();
-			return;	
-		}
-
     alert("회원 가입 완료");// 유효성 검사 모두 통과하면 얼러트
 }
 

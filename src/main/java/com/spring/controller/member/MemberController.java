@@ -166,6 +166,7 @@ public class MemberController {
     	}
     	catch(Exception e) 
     	{
+    		System.out.println(e.getMessage());
     		response.put("status", "fail");
     		response.put("message", "이메일 전송에 실패했습니다.");
     	}
@@ -268,7 +269,8 @@ public class MemberController {
         
         System.out.println("기존 비밀번호 " + mb.getPw() + "에서 "+ member.getPw() + "로 수정합니다");
     	memberService.updatePw(pw,id);
-        
+    	Member updatedMember = memberService.findById(id);
+    	session.setAttribute("user", updatedMember);
         System.out.println("메인페이지로 리다렉션합니다");
     	return "redirect:/";
     }
@@ -284,7 +286,7 @@ public class MemberController {
     	Map<String, String> response = new HashMap<>();
     	Member member = (Member)session.getAttribute("user");
     	String pw = member.getPw();
-    	System.out.println(pw);
+    	System.out.println("현재 비밀번호" + pw);
     	if(pw.equals(value)) {response.put("true", "true");}else if(value.equals("")) {response.put("none", "none");}else {response.put("false", "false");}
     	System.out.println(response);
     	

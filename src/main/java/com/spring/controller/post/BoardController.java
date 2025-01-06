@@ -102,16 +102,16 @@ public class BoardController {
 	
 	
 	@GetMapping("/boardFestival")
-	public String toBoardFestival(@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
+	public String toBoardFestival(@RequestParam(value = "page", defaultValue = "1") int page, Model model, HttpSession session) {
 	    int limit = 12; // 한 페이지당 표시할 관광지 수
 	    int offset = (page - 1) * limit;
 	    String type = "15";
 	    // DB에서 전체 관광지 리스트를 가져옴
 	    List<Tour> festivals = boardService.hotSpots(type,limit, offset);
-	    
 	    System.out.println("축제(15): " + festivals.size() + "개");
 	    
 	    // 모델에 각 카테고리별 리스트 추가
+	    model.addAttribute("member", new Member());
 	    model.addAttribute("festivals", festivals);
 	    model.addAttribute("totalCount", festivals.size());
 	    
