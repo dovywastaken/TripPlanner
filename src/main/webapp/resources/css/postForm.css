@@ -8,14 +8,12 @@
 body {
     background-color: #f8f9fa;
     color: #333;
-    font-family: 'Nanum Gothic', sans-serif;
-    line-height: 1.6;
 }
 
 /* 컨테이너 레이아웃 */
 .container {
     display: flex;
-    max-width: 1600px;
+    max-width: 1280px;
     margin: 0 auto;
     padding: 20px;
     gap: 30px;
