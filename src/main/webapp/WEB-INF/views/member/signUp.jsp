@@ -8,12 +8,12 @@
 <script>var contextPath = '${pageContext.request.contextPath}';</script>
 <script src="${pageContext.request.contextPath}/resources/js/signUp.js"></script>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-<link rel="stylesheet" href="/TripPlanner/resources//css/normalize.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources//css/normalize.css">
 <link href="https://cdn.jsdelivr.net/gh/sun-typeface/SUITE@2/fonts/static/woff2/SUITE.css" rel="stylesheet">
 <style>
     body
     {
-        background-image: url("/TripPlanner/resources/img/Wallpaper.png");
+        background-image: url("${pageContext.request.contextPath}/resources/img/Wallpaper.png");
     }
 
     .form-container 
@@ -207,6 +207,6 @@
 	        <div id="resultMessage"></div>
 	    </form:form>
 	</div>
-    <%@ include file="../footer.jsp" %>
+    <%@ include file="../footerCompact.jsp" %>
 </body>
 </html>

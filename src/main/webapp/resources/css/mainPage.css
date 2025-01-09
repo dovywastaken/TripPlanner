@@ -15,7 +15,7 @@
     {
         width: 100vw;
         margin : 0 auto;
-        padding: 89px 34px 0 300px;
+        padding: 61px 34px 0 300px;
         background-color: #f1f3f9;
     }
 
@@ -200,7 +200,7 @@
 
     aside{
         position: fixed;
-        top: 89px;
+        top: 129px;
         left: 34px;
         z-index: 999;
         transition: top 0.2s ease-out; /* 위치 변경 시 부드러운 애니메이션 */

@@ -7,8 +7,8 @@
 <head>
 <meta charset="UTF-8">
 <title>트립플래너</title>
-<link rel="stylesheet" href="/TripPlanner/resources/css/normalize.css">
-<link rel="stylesheet" href="/TripPlanner/resources/css/boardTours.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/normalize.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/boardTours.css">
 <link href="https://cdn.jsdelivr.net/gh/sun-typeface/SUITE@2/fonts/static/woff2/SUITE.css" rel="stylesheet">
 </head>
 
@@ -21,15 +21,15 @@
         <div id="planner">
 			<c:choose>
 				<c:when test="${not empty restaurants}">
-					<c:forEach var="festivals" items="${restaurants}">
+					<c:forEach var="restaurants" items="${restaurants}">
 			            <div class="recommandCard">
 			            	<div class="imgFrame">
-				                <a href="/TripPlanner/detailedInfo?contentTypeId=${restaurants.contenttypeid}&contentId=${restaurants.contentid}"">
+				                <a href="${pageContext.request.contextPath}/detailedInfo?contentTypeId=${restaurants.contenttypeid}&contentId=${restaurants.contentid}"">
 				                    <img src="${restaurants.firstimage}" class="pImg">
 				                </a>
 				            </div>
 			                <div class="plannerCol" id="pText">
-			                    <a href="/TripPlanner/detailedInfo?contentTypeId=${restaurants.contenttypeid}&contentId=${restaurants.contentid}" class="plannerTitle">${festivals.title}</a>
+			                    <a href="${pageContext.request.contextPath}/detailedInfo?contentTypeId=${restaurants.contenttypeid}&contentId=${restaurants.contentid}" class="plannerTitle">${restaurants.title}</a>
 			                    <p class="hashtag">#${restaurants.addr1}</p>
 			                </div>
 			            </div>
@@ -46,52 +46,47 @@
 	<aside>
         <div class="sidePanelContainer">
             <div id="myPanel">
-                <c:if test="${not empty user}">
                     <!-- 로그인한 사용자가 있을 때 보여줄 내용 -->
                     <div id="userInfo">
                         <h1>${user.name}</h1>
                         <h2>${user.id}</h2>
                     </div>
-                    <p id="currentDate" style="text-align: center; width: 100%;"></p>
-                
+                    <p id="currentDate" style="text-align: center; width: 100%; color: #2C3F3C;"></p>
+					<c:if test="${user.emailCheck == 0}">
+                    <p style="text-align : center; margin-top : 12px; width: 100%;">아직 이메일 인증이 안됐어요!</p>
+                    	<a href="${pageContext.request.contextPath}/members/myPage" 
+                    		style="outline: 2px solid #313339; 
+					        background-color: #ffffff;
+					        line-height: 0;
+					        height: 21px;
+					        width: 50%;
+					        margin : 15px auto 0;
+					        border: none;
+					        border-radius: 34px;
+					        font-size: 13px;
+					        font-weight: bold;
+					        display: flex;
+					        justify-content: center;
+					        align-items: center;
+					        color: #313339;
+					        text-align: center;">인증하러 가기
+					    </a>
+                    </c:if>
                     <hr style="border: 1px solid #F1F3F9; margin : 34px auto 10px auto; width: 80%;">
-
+    
                     <div id="links"> 
-                        <a href="">• 내 여행 계획</a>
-                        <a href="">• 전체 게시판</a>
-                        <a href="">• 인기 축제</a>
-                        <a href="">• 인기 관광지</a>
-                        <a href="">• 인기 음식점</a>
+                    	<c:if test="${not empty user}">
+                    	<a href="${pageContext.request.contextPath}/Myboard">• 내 여행 계획</a>
+                    	</c:if>
+                        <a href="${pageContext.request.contextPath}/hotPlanners">• 추천 여행 계획</a>
+                        <a href="${pageContext.request.contextPath}/Allboard">• 전체 게시판</a>
+                        <a href="${pageContext.request.contextPath}/boardFestival">• 인기 축제</a>
+                        <a href="${pageContext.request.contextPath}/boardTour">• 인기 관광지</a>
+                        <a href="${pageContext.request.contextPath}/boardRestaurant">• 인기 음식점</a>
                     </div>
-                    <a href="/TripPlanner/members/signOut" class="signOutButton">로그아웃</a>
-                  </c:if>
-                  <c:if test="${empty user}">
-                  	<br>
-				    <h1 class="signInTitle" style="text-align: center; width: 100%;">로그인하고</h1>
-				    <h1 class="signInTitle" style="text-align: center; width: 100%;">여정을 떠나봐요!</h1>
-				    <!-- 로그인 폼이 보이는 부분 -->
-			        <div class="form-container">
-			            
-			            <!-- 로그인 폼 -->
-			            <form:form modelAttribute="member" method="POST" action="members/signIn">
-			                <div class="form-group">
-			                    <label for="id">아이디:</label>
-			                    <form:input path="id" id="id" placeholder="아이디" />
-			                </div>
-			                <div class="form-group">
-			                    <label for="pw">비밀번호:</label>
-			                    <form:input path="pw" id="pw" placeholder="비밀번호" type="password" />
-			                </div>
-			                <!-- hidden 필드 추가 -->
-			                <div class="form-group">
-			                    <input type="submit" id="submitButton" value="로그인">
-			                </div>
-			                <a href="/TripPlanner/members/signUp" id="signUpButton">가입하기</a>
-			            </form:form>
-			        </div>
-                  </c:if>
+                    <a href="${pageContext.request.contextPath}/members/signOut" class="signOutButton">로그아웃</a>
             </div>
-            <div id="backButton">뒤로 가기</div>
+            <div id="backButton" onclick="goBack()">뒤로 가기</div>
         </div>
     </aside>
 	
@@ -99,8 +94,10 @@
 <%@ include file="../footerCompact.jsp" %>
 </body>
 
-
+<script src="${pageContext.request.contextPath}/resources/js/mainPage.js" defer></script>
 <script>
+
+function goBack(){window.history.back();}
     // 요일 이름 배열
     const dayNames = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
     

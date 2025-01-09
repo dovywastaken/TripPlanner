@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -164,19 +164,23 @@ public class BoardController {
 
 	@GetMapping("/Myboard")
 	public String getMyboard(HttpSession session,Model model, @RequestParam(value = "page", defaultValue = "1") int page) {
-		if(session!=null) {
-			
-		Member member=(Member)session.getAttribute("user");
-		Map<String,Object> result=boardService.getMyboard(member.getId(),page);
-		int Allpostgetnum=(int) result.get("Allpostgetnum");
 		
-		Map<String, Object> pagination = paginationHelper.getPagination(page, Allpostgetnum, 10, 5);
-		setBoardModelAttributes(result,page,model);
-		model.addAttribute("pagination",pagination);
-		model.addAttribute("currentPage", page);
-		return "board/Myboard";
-		}else
-		return "errorPage";
+		Member member=(Member)session.getAttribute("user");
+		if(member != null) 
+		{
+			Map<String,Object> result=boardService.getMyboard(member.getId(),page);
+			int Allpostgetnum=(int) result.get("Allpostgetnum");
+			
+			Map<String, Object> pagination = paginationHelper.getPagination(page, Allpostgetnum, 10, 5);
+			setBoardModelAttributes(result,page,model);
+			model.addAttribute("pagination",pagination);
+			model.addAttribute("currentPage", page);
+			return "board/Myboard";
+		}
+		else 
+		{
+			return "errorPage";
+		}
 	}
 	
 	

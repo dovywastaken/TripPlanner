@@ -1,0 +1,537 @@
+/***************************************
+ * 기본 설정 및 초기화 관련
+ ***************************************/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/***************************************
+ * 지도 관련
+ ***************************************/
+#map {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+/***************************************
+ * 우측 필터 패널 관련
+ ***************************************/
+#overlayPanel {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 280px;
+    background-color: #fff;
+    border-radius: 21px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    z-index: 100;
+    font-size: 14px;
+}
+
+/* 필터 섹션 내부 스타일 */
+.filter-section {
+    margin-bottom: 15px;
+}
+
+.filter-section strong {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.filter-section button {
+    padding: 4px 8px;
+    margin: 3px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 13px;
+}
+
+.filter-section button:hover {
+    background-color: #f5f5f5;
+}
+
+.filter-section button[data-area],
+.filter-section button[data-type] {
+    position: relative;
+    overflow: hidden;
+}
+
+.filter-section button[data-area].selected,
+.filter-section button[data-type].selected {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #0056b3;
+}
+
+/***************************************
+ * 좌측 리스트 패널 관련
+ ***************************************/
+#search-List,
+#myList {
+    position: absolute;
+    top: 70px;
+    bottom: 20px;
+    left: 20px;
+    width: 300px;
+    background-color: #fff;
+    border-radius: 21px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    overflow-y: auto;
+    z-index: 90;
+}
+
+/* 리스트 내부 아이템 스타일 */
+#search-List p,
+#myList p {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* 리스트 아이템 스타일 */
+.list-item {
+	height:130px;
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 21px;
+    margin: 10px 0;
+    padding: 15px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.list-item:hover {
+    background-color: #f8f9fa;
+}
+
+.place-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 8px; 
+}
+
+.place-address {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 4px;
+}
+
+.place-tel {
+    font-size: 13px;
+    color: #0068c3;
+}
+
+/***************************************
+ * 상단 토글 버튼 관련
+ ***************************************/
+#serch-Listbtn,
+#myListbtn {
+    position: absolute;
+    top: 20px;
+    padding: 8px 16px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-bottom: none;
+    border-radius: 21px;
+    cursor: pointer;
+    z-index: 95;
+    height:40px;
+    width: 150px;
+}
+
+#serch-Listbtn {
+    left: 20px;
+}
+
+#myListbtn {
+    left: 170px;
+}
+
+#serch-Listbtn.active,
+#myListbtn.active {
+    background-color: #fff;
+    border-bottom: 1px solid #fff;
+}
+
+
+
+/***************************************
+ * 하단 검색바 관련
+ ***************************************/
+#searchBar {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 280px;
+    background-color: white;
+    border-radius: 21px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    padding: 10px;
+    z-index: 100;
+}
+
+.search-input-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+#searchKeyword {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 35px;
+    font-size: 14px;
+}
+
+#searchButton {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 35px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.search-option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #666;
+}
+
+#searchButton:hover {
+    background-color: #0056b3;
+}
+
+/***************************************
+ * 스크롤바 관련
+ ***************************************/
+#search-List::-webkit-scrollbar,
+#myList::-webkit-scrollbar {
+    width: 6px;
+}
+
+#search-List::-webkit-scrollbar-thumb,
+#myList::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 3px;
+}
+
+/***************************************
+ * 리스트 버튼 관련
+ ***************************************/
+.add-to-list,
+.remove-from-list {
+	position:absolute;
+	bottom:15px;
+	right:15px;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.add-to-list {
+    background-color: #28a745;
+}
+
+.add-to-list:hover {
+    background-color: #218838;
+}
+
+.remove-from-list {
+    background-color: #dc3545;
+}
+
+.remove-from-list:hover {
+    background-color: #c82333;
+}
+
+/***************************************
+ * 시군구 버튼 관련
+ ***************************************/
+#sigunguButtons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 10px 0;
+}
+
+.sgbtn {
+    padding: 4px 8px;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 13px;
+}
+
+.sgbtn:hover {
+    background-color: #f5f5f5;
+}
+
+.sgbtn.selected {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #0056b3;
+}
+
+/***************************************
+ * 필터 표시 영역 관련
+ ***************************************/
+#selectedFilters {
+    margin: 15px 0;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #666;
+}
+
+/***************************************
+ * 태그 스타일 관련
+ ***************************************/
+.place-tag {
+    position: absolute;
+    top: 15px;
+    right: 5px;
+    background-color: #27ae60;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+/* 태그 색상 */
+.place-tag-관광지 { background-color: #1E90FF; }
+.place-tag-문화시설 { background-color: #800080; }
+.place-tag-축제공연 { background-color: #FFA500; }
+.place-tag-레포츠 { background-color: #32CD32; }
+.place-tag-쇼핑 { background-color: #FF69B4; }
+.place-tag-맛집 { background-color: #FF4500; }
+.place-tag-카카오 { background-color: #FFD700; color: black; }
+.place-tag-기타 { background-color: #A9A9A9; }
+
+/***************************************
+ * 결과 수 표시 관련
+ ***************************************/
+#search-List .box {
+    padding: 10px 15px;
+    color: #495057;
+    font-size: 14px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 10px;
+}
+#myList .list-item:first-child {
+    margin-top: 30px;  /* box와 비슷한 효과를 주기 위한 여백 */
+}
+/***************************************
+ * 페이지네이션 관련
+ ***************************************/
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 15px 0;
+    margin-top: 15px;
+    border-top: 1px solid #eee;
+    position: fixed;
+    bottom: 50px;
+    background: white;
+}
+
+.pagination button {
+    min-width: 32px;
+    height: 32px;
+    padding: 0 6px;
+    border: 1px solid #dee2e6;
+    background-color: white;
+    color: #495057;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pagination button:hover {
+    background-color: #f8f9fa;
+    color: #228be6;
+    border-color: #228be6;
+}
+
+.pagination button.active {
+    background-color: #228be6;
+    color: white;
+    border-color: #228be6;
+}
+
+/***************************************
+ * 인포윈도우 관련
+ ***************************************/
+.custom-infowindow {
+	position:relative;
+	height:150px;
+    padding: 12px;
+    background: #fff;
+    width: 340px;
+    border: 1px solid #ddd;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.additional-class{
+	position:absolute;
+	bottom: 10px; 
+	right: 1px;
+
+}
+
+.info-content {
+    display: flex;
+    gap: 15px;
+}
+
+/* 인포윈도우 이미지 */
+.info-img {
+    width: 90px;
+    height: 90px;
+    flex-shrink: 0;
+    border: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f8f8;
+}
+
+.info-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 인포윈도우 텍스트 영역 */
+.info-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.info-title {
+    font-size: 15px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+/* 인포윈도우 주소 영역 */
+.info-address {
+    margin-bottom: 8px;
+}
+
+.addr-main {
+    font-size: 12px;
+    line-height: 1.3;
+    color: #666;
+    margin-bottom: 2px;
+}
+
+.addr-zipcode {
+    font-size: 12px;
+    color: #888;
+}
+
+/* 인포윈도우 연락처 영역 */
+.info-contact {
+    font-size: 13px;
+    color: #0068c3;
+}
+
+.info-tel, 
+.info-email {
+    margin-bottom: 2px;
+}
+
+/* 인포윈도우 버튼 영역 */
+.info-button {
+    margin-top: 10px;
+}
+
+.info-button button {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background-color 0.2s;
+}
+
+.add-to-list {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.remove-from-list {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.add-to-list:hover {
+    background: #c8e6c9;
+}
+
+.remove-from-list:hover {
+    background: #ffcdd2;
+}
+
+
+
+/***************************************
+ * 저장 버튼 관련
+ ***************************************/
+#myList-submit {
+    position: absolute;
+    bottom: 40px;
+    left: 105px;
+    width: 130px;
+    border:none;
+    border-radius: 21px;
+    height: 40px;
+    display: none;
+    background-color: white;
+}
+
+/* CSS에서 show 클래스만 정의 */
+#myList-submit.show {
+	z-index:100;
+    display: block;
+}
+

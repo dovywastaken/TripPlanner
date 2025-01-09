@@ -1,343 +1,199 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const editor = document.getElementById('editor');
-    const fileInput = document.getElementById('fileImage');
-    const titleDiv = document.getElementById('titles');
-    const titleInput = document.getElementById('title');
-    const contentsInput = document.getElementById('contents');
-    const mapBtn = document.getElementById('open-map');
+
+function getTagText(contenttypeid) {
+    switch (contenttypeid) {
+        case "12": return "관광지";
+        case "14": return "문화시설";
+        case "15": return "축제공연";
+        case "28": return "레포츠";
+        case "32": return "숙박";
+        case "38": return "쇼핑";
+        case "39": return "맛집";
+        case "1": return "카카오";
+        default: return "기타";
+    }
+}
+
+function renderMyList() {
     const myListContainer = document.getElementById('myListContainer');
+    let myList = JSON.parse(sessionStorage.getItem('myList') || '[]');
 
-    // 서식 적용 함수
-    window.formatText = function(command, value = null) {
-        document.execCommand(command, false, value);
-        document.getElementById('editor').focus();
-    };
+    myListContainer.innerHTML = '';
 
-    // 이미지 리사이즈 함수
-    function makeResizable(imgContainer) {
-        const img = imgContainer.querySelector('img');
-        const handle = imgContainer.querySelector('.resize-handle');
-        let isResizing = false;
-        let startX, startY, initW, initH;
-
-        handle.addEventListener('mousedown', e => {
-            isResizing = true;
-            startX = e.clientX;
-            startY = e.clientY;
-            initW = img.offsetWidth;
-            initH = img.offsetHeight;
-            document.addEventListener('mousemove', resizing);
-            document.addEventListener('mouseup', stopResize);
-            e.preventDefault();
-        });
-
-        function resizing(e) {
-            if (!isResizing) return;
-            const dx = e.clientX - startX;
-            const ratio = initW / initH;
-            const newW = initW + dx;
-            const newH = newW / ratio;
-            img.style.width = newW + 'px';
-            img.style.height = newH + 'px';
-        }
-
-        function stopResize() {
-            isResizing = false;
-            document.removeEventListener('mousemove', resizing);
-            document.removeEventListener('mouseup', stopResize);
-        }
+    if (myList.length === 0) {
+        myListContainer.innerHTML = '<p>저장된 장소가 없습니다.</p>';
+        return;
     }
 
-    // place-info 구조 수정 함수
-	// place-info 구조 수정 함수
-	function fixPlaceInfoStructure(editor) {
-	    const placeInfos = editor.querySelectorAll('.place-info');
-	    placeInfos.forEach((info) => {
-	        info.setAttribute('contenteditable', 'false');
-	        info.draggable = true;
-	        
-	        // 드래그 이벤트 추가
-	        info.addEventListener('dragstart', ev => {
-	            ev.stopPropagation();
-	            info.classList.add('dragging');
-	            ev.dataTransfer.setData('text/plain', JSON.stringify({ type: 'place-info' }));
-	        });
+    myList.forEach((item) => {
+        const listItem = document.createElement('div');
+        listItem.className = 'mylist-wrapper';
+        const tagText = getTagText(item.contenttypeid);
+        const shortTitle = item.id.length > 11 ? item.id.substring(0, 11) + '...' : item.id;
 
-	        info.addEventListener('dragend', () => {
-	            info.classList.remove('dragging');
-	        });
-
-	        // 삭제 버튼 재초기화
-	        const locationBtn = info.querySelector('.location-btn');
-	        let deleteBtn = locationBtn.querySelector('.delete-btn'); // 위치 변경: location-btn 내부에서 찾기
-
-	        if (!deleteBtn) {
-	            deleteBtn = document.createElement('button');
-	            deleteBtn.type = 'button';
-	            deleteBtn.className = 'delete-btn';
-	            deleteBtn.textContent = '×';
-	            locationBtn.appendChild(deleteBtn);
-	        }
-
-	        // 이벤트 리스너 재설정
-	        deleteBtn.onclick = (evt) => {
-	            evt.stopPropagation();
-	            try {
-	                if (locationBtn && locationBtn.dataset.info) {
-	                    const itemData = JSON.parse(locationBtn.dataset.info);
-	                    savedMyList.push(itemData);
-	                    sessionStorage.setItem('myList', JSON.stringify(savedMyList));
-	                    const wrapper = renderMyListItem(itemData, savedMyList.length - 1);
-	                    myListContainer.appendChild(wrapper);
-	                }
-	            } catch (error) {
-	                console.warn('Error handling delete:', error);
-	            }
-	            info.remove();
-	        };
-	    });
-	}
-    // 수정 페이지 초기화 함수
-    function initializeEditPage(editor, myListContainer, savedMyList) {
-        fixPlaceInfoStructure(editor);
-
-        // 이미지 요소들 재초기화
-        const imageWrappers = editor.querySelectorAll('.image-wrapper');
-        imageWrappers.forEach(wrapper => {
-            wrapper.setAttribute('contenteditable', 'false');
-            
-            // 삭제 버튼 재초기화
-            const deleteBtn = wrapper.querySelector('.delete-btn');
-            if (deleteBtn) {
-                deleteBtn.onclick = () => wrapper.remove();
-            }
-
-            // 리사이즈 핸들 재초기화
-            const container = wrapper.querySelector('.image-container');
-            if (container) {
-                makeResizable(container);
-            }
-        });
-    }
-
-    // 마이리스트 아이템 렌더링
-    function renderMyListItem(item, index) {
-        const wrapper = document.createElement('div');
-        wrapper.className = 'mylist-wrapper';
-        wrapper.innerHTML = `
-            <button type="button" class="mylist-item" draggable="true">
-                <div class="location-marker">📍</div>
-                <div class="location-name">${item.id || '위치정보 없음'}</div>
-            </button>
-            <button type="button" class="delete-btn">×</button>
+        listItem.innerHTML = `
+            <div class="mylist-item-content" data-id="${item.contentid}">
+                <div class="place-title">${shortTitle} <p class="place-tag place-tag-${tagText}">${tagText}</p></div>
+                <div class="place-address">${item.addr || '주소 정보 없음'}</div>
+                <div class="place-tel">${item.tel || ''}</div>
+                
+                <button type="button" class="place-button">추가</button>
+            </div>
         `;
 
-        const deleteBtn = wrapper.querySelector('.delete-btn');
-        deleteBtn.onclick = (e) => {
-            e.stopPropagation();
-            const updatedList = savedMyList.filter((_, i) => i !== index);
-            sessionStorage.setItem('myList', JSON.stringify(updatedList));
-            wrapper.remove();
-        };
+        myListContainer.appendChild(listItem);
 
-        const dragBtn = wrapper.querySelector('.mylist-item');
-        dragBtn.addEventListener('dragstart', (e) => {
-            e.dataTransfer.setData('text/plain', JSON.stringify(item));
-            e.dataTransfer.setData('index', index);
+        listItem.querySelector('.place-button').addEventListener('click', function () {
+            handleButtonClick(item);
         });
+    });
+}
 
-        return wrapper;
+function handleButtonClick(item) {
+    const existingContent = $('#summernote').summernote('code');
+    if (existingContent.includes(item.id)) {
+        alert('이미 추가된 장소입니다!');
+        return;
     }
 
-    // Placeholder 처리
-    if (titleDiv.innerHTML === '제목') {
-        titleDiv.innerHTML = '';
-        titleDiv.setAttribute('placeholder', '제목을 입력하세요');
-    }
-    if (editor.innerHTML === '내용') {
-        editor.innerHTML = '';
-        editor.setAttribute('placeholder', '내용을 입력하세요');
-    }
-
-    // 세션 복원
-    const savedTitle = sessionStorage.getItem('postTitle');
-    const savedContent = sessionStorage.getItem('postContent');
-    const savedMyList = JSON.parse(sessionStorage.getItem('myList') || '[]');
-
-    if (savedTitle) {
-        titleDiv.innerHTML = savedTitle;
-        titleInput.value = savedTitle;
-    }
-    if (savedContent) {
-        editor.innerHTML = savedContent;
-        contentsInput.value = savedContent;
-    }
-
-    // 수정 페이지 초기화
-    initializeEditPage(editor, myListContainer, savedMyList);
-
-    // 마이리스트 렌더링
-    if (savedMyList.length > 0) {
-        myListContainer.innerHTML = '';
-        savedMyList.forEach((item, i) => {
-            myListContainer.appendChild(renderMyListItem(item, i));
-        });
-    }
-
-    // 지도 버튼
-    if (mapBtn) {
-        mapBtn.addEventListener('click', () => {
-            sessionStorage.setItem('postTitle', titleDiv.innerHTML);
-            sessionStorage.setItem('postContent', editor.innerHTML);
-            window.location.href = '/TripPlanner/Maps';
-        });
-    }
-
-    // 드래그앤드롭 (에디터)
-    editor.addEventListener('dragover', e => e.preventDefault());
-    editor.addEventListener('drop', e => {
-        e.preventDefault();
-        try {
-            const data = JSON.parse(e.dataTransfer.getData('text/plain'));
-            if (data.type === 'place-info') {
-                const draggingElement = document.querySelector('.dragging');
-                if (draggingElement) {
-                    editor.insertBefore(draggingElement, getDropPosition(editor, e.clientY));
-                }
-                return;
-            }
-            const item = data;
-            const itemIndex = e.dataTransfer.getData('index');
-
-            const placeInfo = document.createElement('div');
-            placeInfo.className = 'place-info';
-            placeInfo.draggable = true;
-            placeInfo.setAttribute('contenteditable', 'false');
-            placeInfo.innerHTML = `
-                <div class="location-btn" data-id="${item.id || ''}" data-info='${JSON.stringify(item)}'>
-                    <button type="button" class="location-name-btn">
-                        📍 ${item.id || ''}
-                    </button>
-                    <button type="button" class="delete-btn">×</button>
+    const tagText = getTagText(item.contenttypeid);
+    const placeHtml = `
+        <div class="place-container">
+            <button type="button" class="location-name-btn" data-info='${JSON.stringify(item)}'>
+                <div class="place-info" contenteditable="false">
+                    <h3>${item.id}</h3>
+                    <p class="p-btn" contenteditable="false">주소: ${item.addr}</p>
                 </div>
-            `;
+                <button type="button" class="remove-button">×</button>
+            </button>
+        </div>
+        <p><br></p>  <!-- contenteditable="false" 제거 -->
+    `;
 
-            placeInfo.addEventListener('dragstart', ev => {
-                ev.stopPropagation();
-                placeInfo.classList.add('dragging');
-                ev.dataTransfer.setData('text/plain', JSON.stringify({ type: 'place-info' }));
-            });
+    const node = document.createElement('div');
+    node.innerHTML = placeHtml;
+    $('#summernote').summernote('insertNode', node);
 
-            placeInfo.addEventListener('dragend', () => {
-                placeInfo.classList.remove('dragging');
-            });
-
-            const deleteBtn = placeInfo.querySelector('.delete-btn');
-            deleteBtn.onclick = (evt) => {
-                evt.stopPropagation();
-                savedMyList.push(item);
-                sessionStorage.setItem('myList', JSON.stringify(savedMyList));
-                const wrapper = renderMyListItem(item, savedMyList.length - 1);
-                myListContainer.appendChild(wrapper);
-                placeInfo.remove();
-            };
-
-            editor.insertBefore(placeInfo, getDropPosition(editor, e.clientY));
-            if (itemIndex) {
-                savedMyList.splice(parseInt(itemIndex), 1);
-                sessionStorage.setItem('myList', JSON.stringify(savedMyList));
-                const target = document.querySelector(`#myListContainer .mylist-wrapper:nth-child(${parseInt(itemIndex)+1})`);
-                if (target) target.remove();
-            }
-        } catch(err) {
-            console.error(err);
-        }
+    node.querySelector('.remove-button').addEventListener('click', function(e) {
+        e.stopPropagation();
+        node.remove();
+        addToMyList(item);
     });
 
-    function getDropPosition(container, y) {
-        const boxes = [...container.getElementsByClassName('place-info')];
-        return boxes.find(box => {
-            const rect = box.getBoundingClientRect();
-            return y < rect.top + rect.height / 2;
-        }) || null;
+    removeFromMyList(item.contentid);
+}
+
+function removeFromMyList(contentid) {
+    let myList = JSON.parse(sessionStorage.getItem('myList') || '[]');
+    myList = myList.filter(item => item.contentid !== contentid);
+    sessionStorage.setItem('myList', JSON.stringify(myList));
+
+    renderMyList();
+}
+
+
+function addToMyList(item) {
+    let myList = JSON.parse(sessionStorage.getItem('myList') || '[]');
+    
+
+    if (!myList.some(existingItem => existingItem.contentid === item.contentid)) {
+        myList.push(item);
+        sessionStorage.setItem('myList', JSON.stringify(myList));
     }
 
-    // 에디터 드래그 오버 처리
-    editor.addEventListener('dragover', e => {
-        e.preventDefault();
-        const draggingElement = document.querySelector('.dragging');
-        if (draggingElement) {
-            const afterElement = getDropPosition(editor, e.clientY);
-            if (afterElement) {
-                editor.insertBefore(draggingElement, afterElement);
-            } else {
-                editor.appendChild(draggingElement);
-            }
+
+    renderMyList();
+}
+
+
+
+$(document).ready(function () {
+ 
+    $('#titles').on('input', function() {
+        const titleText = $(this).text().trim();
+        $('#title').val(titleText);  // hidden input에 값 설정
+    });
+
+    $('#titles').on('focus', function() {
+        if ($(this).text().trim() === '제목을 입력하세요') {
+            $(this).text('');
         }
     });
 
-    // 제목 드래그 방지
-    titleDiv.addEventListener('dragover', e => e.preventDefault());
-    titleDiv.addEventListener('drop', e => e.preventDefault());
-
-    // 이미지 업로드
-    fileInput.addEventListener('change', e => {
-        const files = Array.from(e.target.files);
-        files.forEach(file => {
-            const reader = new FileReader();
-            reader.onload = function(ev) {
-                const imgWrapper = document.createElement('div');
-                imgWrapper.className = 'image-wrapper';
-                imgWrapper.setAttribute('contenteditable', 'false');
-                imgWrapper.innerHTML = `
-                    <div class="image-container">
-                        <img src="${ev.target.result}" class="resizable-image">
-                        <div class="resize-handle"></div>
-                    </div>
-                    <button type="button" class="delete-btn">×</button>
-                `;
-
-                const delBtn = imgWrapper.querySelector('.delete-btn');
-                delBtn.onclick = () => imgWrapper.remove();
-                
-                editor.appendChild(imgWrapper);
-                makeResizable(imgWrapper.querySelector('.image-container'));
-            };
-            reader.readAsDataURL(file);
-        });
+    $('#titles').on('blur', function() {
+        if ($(this).text().trim() === '') {
+            $(this).text('제목을 입력하세요');
+        }
     });
 
-    // 실시간 동기화
-    editor.addEventListener('input', () => {
-        contentsInput.value = editor.innerHTML;
-        sessionStorage.setItem('postContent', editor.innerHTML);
-    });
+    $('#postForm').on('submit', function(e) {
+        const titleText = $('#titles').text().trim();
+        
+        if (titleText === '' || titleText === '제목을 입력하세요') {
+            e.preventDefault();
+            alert('제목을 입력해주세요.');
+            $('#titles').focus();
+            return false;
+        }
+        
 
-    titleDiv.addEventListener('input', () => {
-        titleInput.value = titleDiv.innerHTML;
-        sessionStorage.setItem('postTitle', titleDiv.innerHTML);
+        $('#title').val(titleText);
     });
+});
 
-    // 내용 변경 감지
-    const observer = new MutationObserver(() => {
-        contentsInput.value = editor.innerHTML;
-        sessionStorage.setItem('postContent', editor.innerHTML);
-    });
+
+
+$(document).ready(function () {
+
+
+    const savedData = sessionStorage.getItem('tempPostData');
+    if (savedData) {
+        const tempData = JSON.parse(savedData);
+
+        if (tempData.title && tempData.title !== '제목을 입력하세요') {
+            $('#titles').text(tempData.title);
+            $('#title').val(tempData.title);
+        }
+
+        if (tempData.content) {
+            $('#summernote').summernote('code', tempData.content);
+        }
+
+        if (tempData.isPrivate) {
+            $(`input[name="isPrivate"][value="${tempData.isPrivate}"]`).prop('checked', true);
+        }
+        if (tempData.commentIsAllowed) {
+            $(`input[name="commentIsAllowed"][value="${tempData.commentIsAllowed}"]`).prop('checked', true);
+        }
+
+
+    }
+});
+
+document.addEventListener('click', function(e) {
+
+    let clickedLink = e.target.closest('a');
     
-    observer.observe(editor, { 
-        childList: true, 
-        subtree: true, 
-        characterData: true,
-        attributes: true 
-    });
+    if (clickedLink) {
+        if (!clickedLink.href.includes(contextPath+'/Maps') && 
+            !clickedLink.id.includes('open-map')) {
+            sessionStorage.clear();
+        }
+    }
+});
 
-    // form 제출
-    document.querySelector('form').addEventListener('submit', () => {
-        titleInput.value = titleDiv.innerHTML;
-        contentsInput.value = editor.innerHTML;
 
-        sessionStorage.removeItem('postTitle');
-        sessionStorage.removeItem('postContent');
-        sessionStorage.removeItem('myList');
-    });
+$('.submit-btn').click(function() {
+    sessionStorage.clear();
+});
+
+
+$('#open-map').click(function () {
+    const tempData = {
+        title: $('#titles').text().trim(),
+        content: $('#summernote').summernote('code'),
+        isPrivate: $('input[name="isPrivate"]:checked').val(),
+        commentIsAllowed: $('input[name="commentIsAllowed"]:checked').val()
+    };
+    sessionStorage.setItem('tempPostData', JSON.stringify(tempData));
+    window.location.href = contextPath+'/Maps';
 });

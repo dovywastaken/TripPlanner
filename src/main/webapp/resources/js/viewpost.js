@@ -30,9 +30,33 @@ function initializePlaceInfos() {
     });
 }
 
-// 위치로 이동하는 함수 (URL은 실제 매핑된 주소로 변경 필요)
-function navigateToLocation(placeData) {
-    // 예: 실제로는 '/TripPlanner/place?id=...' 대신
-    //     프로젝트에 맞는 URL 로직을 작성하세요.
-    window.location.href = `/TripPlanner/place?id=${placeData.id}`;
-}
+
+
+// 위치로 이동하는 함수
+document.querySelectorAll('.location-name-btn').forEach(button => {
+    button.addEventListener('click', () => {
+        // data-info 속성 가져오기
+        const dataInfo = button.getAttribute('data-info');
+
+        // 현재 화면 크기 가져오기
+        const screenWidth = window.innerWidth;
+        const screenHeight = window.innerHeight;
+
+        // 팝업 창 크기 설정 (화면의 80% 크기로 설정)
+        const popupWidth = Math.floor(screenWidth * 0.9);
+        const popupHeight = Math.floor(screenHeight * 0.9);
+
+        // 팝업 창 중앙에 위치하도록 설정
+        const left = Math.floor((screenWidth - popupWidth) / 2);
+        const top = Math.floor((screenHeight - popupHeight) / 2);
+
+        // 팝업 창 열기 (반응형 크기 설정)
+        window.open(
+            contextPath+`/Maps/map?info=${encodeURIComponent(dataInfo)}`,
+            'popupWindow',
+            `width=${popupWidth},height=${popupHeight},left=${left},top=${top}`
+        );
+    });
+});
+
+

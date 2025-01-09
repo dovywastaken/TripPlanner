@@ -8,16 +8,10 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>let contextPath = '${pageContext.request.contextPath}';</script>
     <script src="${pageContext.request.contextPath}/resources/js/myPage.js"></script>
-    <link rel="stylesheet" href="/TripPlanner/resources//css/normalize.css">
-    <link rel="stylesheet" href="/TripPlanner/resources//css/myPage.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources//css/normalize.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources//css/myPage.css">
     <link href="https://cdn.jsdelivr.net/gh/sun-typeface/SUITE@2/fonts/static/woff2/SUITE.css" rel="stylesheet">
 </head>
-
-
-<style>
-        
-</style>
-    
     
 <body>
 
@@ -25,6 +19,7 @@
 
     <div id="container">
         <div class="wrapper" id="leftWrapper">
+        <c:if test="${not empty user}">
             <h1>내 정보</h1>
             <div id="infoWrapper">
                 <div class="infoWrapperAlignment"> 
@@ -70,34 +65,41 @@
             <a href="pwChange" id="pwChange">비밀번호 변경</a>
             <a href="deleteMember" id="deleteMember">회원 탈퇴</a>
         </div>
+    </c:if>
+    <c:if test="${empty user}">
+    	<div style="display : flex; flex-direction : column; align-items: center; justify-content: center; height: 305px;">
+    	<h2>로그인이 필요합니다!</h2>
+    		<a href="${pageContext.request.contextPath}/members/signIn" id="submitButton">로그인하러 가기</a>
+    	</div>
+    </c:if>
     </div>
-
+	<c:if test="${not empty user}">
     <aside>
         <div class="sidePanelContainer">
             <div id="myPanel">
-                <c:if test="${not empty user}">
                     <!-- 로그인한 사용자가 있을 때 보여줄 내용 -->
                     <div id="userInfo">
                         <h1>${user.name}</h1>
                         <h2>${user.id}</h2>
                     </div>
-                    <p id="currentDate" style="text-align: center; width: 100%;"></p>
-                </c:if>
-                <hr style="border: 1px solid #F1F3F9; margin : 34px auto 10px auto; width: 80%;">
+                    <p id="currentDate" style="text-align: center; width: 100%; color: #2C3F3C;"></p>
+                <hr style="border: 1px solid #F1F3F9; margin : 21px auto 10px auto; width: 80%;">
 
                 <div id="links"> 
-                    <a href="">• 내 여행 계획</a>
-                    <a href="">• 전체 게시판</a>
-                    <a href="">• 인기 축제</a>
-                    <a href="">• 인기 관광지</a>
-                    <a href="">• 인기 음식점</a>
+                    <a href="${pageContext.request.contextPath}/hotPlanners">• 추천 여행 계획</a>
+                    <a href="${pageContext.request.contextPath}/Allboard">• 전체 게시판</a>
+                    <a href="${pageContext.request.contextPath}/boardFestival">• 인기 축제</a>
+                    <a href="${pageContext.request.contextPath}/boardTour">• 인기 관광지</a>
+                    <a href="${pageContext.request.contextPath}/boardRestaurant">• 인기 음식점</a>
                 </div>
-                <a href="/TripPlanner/members/signOut" class="signOutButton">로그아웃</a>
+                <a href="${pageContext.request.contextPath}/members/signOut" class="signOutButton">로그아웃</a>
             </div>
             <div id="backButton" onclick="goBack()">뒤로 가기</div>
         </div>
     </aside>
+    
     <%@ include file="../footerCompact.jsp" %>
+    </c:if>
 </body>
 
 <script>

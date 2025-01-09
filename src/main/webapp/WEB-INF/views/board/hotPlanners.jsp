@@ -6,9 +6,9 @@
 <head>
 <meta charset="UTF-8">
 <title>게시판</title>
-<link rel="stylesheet" href="/TripPlanner/resources/css/normalize.css">
-<link rel="stylesheet" href="/TripPlanner/resources/css/header.css">
-<link rel="stylesheet" href="/TripPlanner/resources/css/board.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/normalize.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/header.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/board.css">
 <link href="https://cdn.jsdelivr.net/gh/sun-typeface/SUITE@2/fonts/static/woff2/SUITE.css" rel="stylesheet">
 </head>
 <script src="https://kit.fontawesome.com/96b1ce314a.js"></script>
@@ -33,7 +33,7 @@
                 <tbody>
                 <c:forEach items="${Allpost}" var="All" varStatus="loop">
                     <tr>
-                        <td class="tableContent"><a href="/TripPlanner/postview?num=${All.p_unique}&page=${currentPage}">${All.title}</a></td>
+                        <td class="tableContent"><a href="${pageContext.request.contextPath}/postview?num=${All.p_unique}&page=${currentPage}&boardtype='S'">${All.title}</a></td>
                         <td class="tableContent">${All.id}</td>
                         <td class="tableContent">${date.get(loop.index)}</td>
                         <td class="tableContent">${All.likes}</td>
@@ -94,32 +94,54 @@
     <aside>
         <div class="sidePanelContainer">
             <div id="myPanel">
-                <c:if test="${not empty user}">
                     <!-- 로그인한 사용자가 있을 때 보여줄 내용 -->
                     <div id="userInfo">
                         <h1>${user.name}</h1>
                         <h2>${user.id}</h2>
                     </div>
-                    <p id="currentDate" style="text-align: center; width: 100%;"></p>
+                    <p id="currentDate" style="text-align: center; width: 100%; color: #2C3F3C;"></p>
+					<c:if test="${user.emailCheck == 0}">
+                    <p style="text-align : center; margin-top : 12px; width: 100%;">아직 이메일 인증이 안됐어요!</p>
+                    	<a href="${pageContext.request.contextPath}/members/myPage" 
+                    		style="outline: 2px solid #313339; 
+					        background-color: #ffffff;
+					        line-height: 0;
+					        height: 21px;
+					        width: 50%;
+					        margin : 15px auto 0;
+					        border: none;
+					        border-radius: 34px;
+					        font-size: 13px;
+					        font-weight: bold;
+					        display: flex;
+					        justify-content: center;
+					        align-items: center;
+					        color: #313339;
+					        text-align: center;">인증하러 가기
+					    </a>
                     </c:if>
                     <hr style="border: 1px solid #F1F3F9; margin : 34px auto 10px auto; width: 80%;">
     
                     <div id="links"> 
-                        <a href="">• 내 여행 계획</a>
-                        <a href="">• 전체 게시판</a>
-                        <a href="">• 인기 축제</a>
-                        <a href="">• 인기 관광지</a>
-                        <a href="">• 인기 음식점</a>
+                    	<c:if test="${not empty user}">
+                    	<a href="${pageContext.request.contextPath}/Myboard">• 내 여행 계획</a>
+                    	</c:if>
+                        <a href="${pageContext.request.contextPath}/hotPlanners">• 추천 여행 계획</a>
+                        <a href="${pageContext.request.contextPath}/Allboard">• 전체 게시판</a>
+                        <a href="${pageContext.request.contextPath}/boardFestival">• 인기 축제</a>
+                        <a href="${pageContext.request.contextPath}/boardTour">• 인기 관광지</a>
+                        <a href="${pageContext.request.contextPath}/boardRestaurant">• 인기 음식점</a>
                     </div>
-                    <a href="/TripPlanner/members/signOut" class="signOutButton">로그아웃</a>
+                    <a href="${pageContext.request.contextPath}/members/signOut" class="signOutButton">로그아웃</a>
             </div>
-            <div id="backButton">뒤로 가기</div>
+            <div id="backButton" onclick="goBack()">뒤로 가기</div>
         </div>
     </aside>
      <%@ include file="../footerCompact.jsp" %>
 </body>
 
 <script>
+	function goBack(){window.history.back();}
     // 요일 이름 배열
     const dayNames = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
     

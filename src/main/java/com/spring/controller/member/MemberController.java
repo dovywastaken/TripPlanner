@@ -3,7 +3,7 @@ package com.spring.controller.member;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
@@ -30,7 +30,7 @@ public class MemberController {
 	MailSender sender; //메일 서버에 접근해서 메일을 보내기 위해 사용하는 객체
 
     //회원가입 창 이동
-    @GetMapping("/signUp") 
+    @GetMapping("/signUp")
     public String toSignUp(Model model) { 
         // 회원 가입 폼 페이지로 이동
         System.out.println("===========================================================================================");

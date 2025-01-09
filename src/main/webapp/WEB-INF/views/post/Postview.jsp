@@ -5,46 +5,57 @@
 <head>
     <meta charset="UTF-8">
     <title>게시물 보기</title>
+    <script>
+         window.contextPath = '${pageContext.request.contextPath}';
+    </script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/viewpost.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
+  
+    
 <body>
+<%@ include file="../header.jsp" %>
+
+<div id="header-title" class="banner-title">
+    <div class="banner-content">
+        <h1 id="titles">${onepost.title}</h1>
+    </div>
+</div>
+
     <div class="container">
-        <!-- 상단 버튼 그룹 -->
-        <div class="top-button-group">
-            <a href="/TripPlanner/board" class="btn list-btn">목록</a>
-            <c:if test="${onepost != null and member != null and onepost.id == member.id}">
-                <a href="/TripPlanner/postview/update?num=${onepost.p_unique}" class="btn edit-btn">수정</a>
-                <a href="/TripPlanner/postview/delete?num=${onepost.p_unique}" class="btn delete-btn">삭제</a>
-            </c:if>
+        <div class="post-view">
+            <span class="info-item1"><i class="fa-solid fa-user"></i> ${onepost.id} </i> <i class="fa-solid fa-clock"></i> ${postdate}</span>
+            <span class="info-item2"><i class="fa-solid fa-eye"></i> 조회수: ${onepost.view}</span>
         </div>
-
-        <!-- 게시글 헤더 -->
-        <div class="post-header">
-            <h1>${onepost.title}</h1>
-            <div class="post-info">
-                <span class="info-item"><i class="user-icon"></i>${onepost.id}</span>
-                <span class="info-item">
-                    <i class="like-icon"></i>
-                    <span id="postLikes">${onepost.likes}</span>
-                    <c:if test="${onepost.id != member.id}">
-                        <button id="postLikeBtn" class="like-btn">좋아요</button>
-                    </c:if>
-                </span>
-                <span class="info-item"><i class="view-icon"></i>조회 ${onepost.view}</span>
-                <span class="info-item"><i class="date-icon"></i>${postdate}</span>
-            </div>
-        </div>
-
-        <!-- 게시글 내용 -->
+    
+        
         <div class="post-content">
             ${onepost.contents}
         </div>
 
-        <!-- 댓글 영역 -->
+        
+			<div class="like-box">
+			    <span class="info-item">
+			        <c:if test="${onepost.id != member.id}">
+			            <button id="postLikeBtn" class="like-btn">
+			                <i class="fa-solid fa-thumbs-up"></i>
+			            </button>
+			            <span id="postLikes">${onepost.likes}</span>
+			        </c:if>
+			        <c:if test="${onepost.id == member.id}">
+			            <span id="postLikes">
+			                <i class="fa-solid fa-thumbs-up"></i> ${onepost.likes}
+			            </span>
+			        </c:if>
+			    </span>
+			</div>
+        <div id="line"></div>
+        
         <div class="comment-section">
-            <h3>댓글</h3>
-            <c:choose>
+       
+            <div id="commentSection" class="comments-list"></div>
+            <div id="pagination" class="pagination"></div>
+            
+                 <c:choose>
                 <c:when test="${not empty member.id}">
                     <div class="comment-box">
                         <form id="commentForm">
@@ -55,16 +66,72 @@
                 </c:when>
                 <c:otherwise>
                     <div class="login-prompt">
-                        <textarea rows="4" placeholder="댓글을 작성하려면 로그인이 필요합니다" readonly></textarea>
+                        <textarea rows="4" id="commentContent-login" placeholder="댓글을 작성하려면 로그인이 필요합니다" readonly></textarea>
                         <button type="button" onclick="location.href='/TripPlanner/login'" class="btn login-btn">로그인</button>
                     </div>
                 </c:otherwise>
             </c:choose>
-
-            <div id="commentSection" class="comments-list"></div>
-            <div id="pagination" class="pagination"></div>
         </div>
     </div>
+
+
+	<aside>
+        <div class="sidePanelContainer">
+            <div id="myPanel">
+                    <!-- 로그인한 사용자가 있을 때 보여줄 내용 -->
+                    <div id="userInfo">
+                        <h1>${user.name}</h1>
+                        <h2>${user.id}</h2>
+                        <c:if test="${onepost.id==user.id}">
+                       <span> 
+                        <a href="${pageContext.request.contextPath}/postview/update?num=${onepost.p_unique}" class="btn edit-btn">수정</a>
+                       <a href="${pageContext.request.contextPath}/postview/delete?num=${onepost.p_unique}" class="btn delet-btn">삭제</a>
+                        </span> 
+                        </c:if>
+                    </div>
+                    <p id="currentDate" style="text-align: center; width: 100%; color: #2C3F3C;"></p>
+                    <c:if test="${user.emailCheck == 0}">
+                    <p style="text-align : center; margin-top : 12px; width: 100%;">아직 이메일 인증이 안됐어요!</p>
+                    	<a href="${pageContext.request.contextPath}/members/myPage" 
+                    		style="outline: 2px solid #313339; 
+					        background-color: #ffffff;
+					        line-height: 0;
+					        height: 21px;
+					        width: 50%;
+					        margin : 15px auto 0;
+					        border: none;
+					        border-radius: 34px;
+					        font-size: 13px;
+					        font-weight: bold;
+					        display: flex;
+					        justify-content: center;
+					        align-items: center;
+					        color: #313339;
+					        text-align: center;">인증하러 가기
+					    </a>
+                    </c:if>
+                    <hr style="border: 1px solid #F1F3F9; margin : 34px auto 10px auto; width: 80%;">
+
+                    <div id="links"> 
+                    	<c:if test="${not empty user}">
+                    	<a href="${pageContext.request.contextPath}/Myboard">• 내 여행 계획</a>
+                    	</c:if>
+                        <a href="${pageContext.request.contextPath}/hotPlanners">• 추천 여행 계획</a>
+                        <a href="${pageContext.request.contextPath}/Allboard">• 전체 게시판</a>
+                        <a href="${pageContext.request.contextPath}/boardFestival">• 인기 축제</a>
+                        <a href="${pageContext.request.contextPath}/boardTour">• 인기 관광지</a>
+                        <a href="${pageContext.request.contextPath}/boardRestaurant">• 인기 음식점</a>
+                    </div>
+                    <a href="${pageContext.request.contextPath}/members/signOut" class="signOutButton">로그아웃</a>
+            </div>
+            <div id="backButton" onclick="goBack()">뒤로 가기</div>
+        </div>
+    </aside>
+
+
+
+  
+
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -73,6 +140,10 @@
         var sessionId = "${member.id}";
         var totalPages = ${totalPages};
     </script>
+    
+    
+    
+    <%@ include file="../footerCompact.jsp" %>
     <script src="${pageContext.request.contextPath}/resources/js/comment.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/viewpost.js"></script>
 </body>

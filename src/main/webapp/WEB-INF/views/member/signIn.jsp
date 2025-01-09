@@ -6,13 +6,13 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="/TripPlanner/resources//css/normalize.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources//css/normalize.css">
     <link href="https://cdn.jsdelivr.net/gh/sun-typeface/SUITE@2/fonts/static/woff2/SUITE.css" rel="stylesheet">
     <title>TripPlanner - 로그인</title>
     <style>
         body
         {
-            background-image: url("/TripPlanner/resources/img/Wallpaper.png");
+            background-image: url("${pageContext.request.contextPath}/resources/img/Wallpaper.png");
         }
 
 
@@ -178,7 +178,7 @@
                     </div>
                 </form:form>
 
-                <a href="/TripPlanner/members/signUp">회원가입하기</a>
+                <a href="${pageContext.request.contextPath}/members/signUp">회원가입하기</a>
 
                 <!-- 에러 메시지 표시 -->
                 <c:if test="${not empty EmptyForm}">
@@ -195,7 +195,7 @@
         </div>
 
         <div id="signInRight">
-            <img src="/TripPlanner/resources/img/logo.png" id="formLogo"></img>
+            <img src="${pageContext.request.contextPath}/resources/img/logo.png" id="formLogo"></img>
         </div>
     </div>
     <%@ include file="../footerCompact.jsp" %>

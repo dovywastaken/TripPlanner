@@ -6,16 +6,29 @@
            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
     <!-- 컴포넌트 스캔을 통해 서비스 및 리포지토리 클래스 스캔 -->
-    <context:component-scan base-package="com.spring.repository.*" />
-    <context:component-scan base-package="com.spring.service.*" />
+<!--     <context:component-scan base-package="com.spring.repository.*" />
+    <context:component-scan base-package="com.spring.service.*" /> -->
+	<context:component-scan base-package="com.spring.repository.member" />
+	<context:component-scan base-package="com.spring.repository.post" />
+	<context:component-scan base-package="com.spring.service.member" />
+	<context:component-scan base-package="com.spring.service.post" />
+    
 
     <!-- 데이터베이스 연결 설정 -->
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://localhost:3306/plannerDB?serverTimezone=Asia/Seoul" />
+        <property name="url" value="jdbc:mysql://localhost:3306/plannerdb?serverTimezone=Asia/Seoul" />
         <property name="username" value="root" />
         <property name="password" value="Uisin2848!" />
     </bean>
+ 
+    <!-- <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="org.mariadb.jdbc.Driver" />
+        <property name="url" value="jdbc:mariadb://localhost:3306/dovies401?serverTimezone=Asia/Seoul" />
+        <property name="username" value="dovies401" />
+        <property name="password" value="Uisin0206!" />
+    </bean> -->
+
 
     <!-- JdbcTemplate 빈 설정 -->
     <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">

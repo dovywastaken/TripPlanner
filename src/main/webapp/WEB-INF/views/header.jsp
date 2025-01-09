@@ -5,32 +5,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>트립플래너</title>
-    <link rel="stylesheet" href="/TripPlanner/resources/css/normalize.css">
-    <link rel="stylesheet" href="/TripPlanner/resources/css/header.css">
+    <script>
+         window.contextPath = '${pageContext.request.contextPath}';
+    </script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/normalize.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/header.css">
     <link href="https://cdn.jsdelivr.net/gh/sun-typeface/SUITE@2/fonts/static/woff2/SUITE.css" rel="stylesheet">
 </head>
 
 <header>
     <div id="headerContainer">
 		<a href="${pageContext.request.contextPath}" id="logo" class="aTag">
-			<img src="/TripPlanner/resources/img/logo.png" id="logoImg">
+			<img src="${pageContext.request.contextPath}/resources/img/logo.png" id="logoImg">
 		</a>
         <div id="headerLeft">
 		    <c:if test="${not empty user}">
-				<a href="/TripPlanner/Myboard" class="headerLeft">내 여행</a>
-				<a href="/TripPlanner/hotPlanners" class="headerLeft">추천 여행</a>
+				<a href="${pageContext.request.contextPath}/Myboard" class="headerLeft">내 여행 계획</a>
 		    </c:if>
+		    <a href="${pageContext.request.contextPath}/Allboard" class="headerLeft">전체 게시판</a>
+		    <a href="${pageContext.request.contextPath}/hotPlanners" class="headerLeft">추천 여행 계획</a>
 		</div>
         <div id="headerRight">
 	        <c:if test="${empty user}">
-	            <a href="/TripPlanner/members/signIn" id="login" class="headerRight">로그인</a>
+	            <a href="${pageContext.request.contextPath}/members/signIn" id="login" class="headerRight">로그인</a>
 	        </c:if>
 	        <c:if test="${not empty user}">
 	        	<c:if test="${user.id == 'admin'}">
-	        		<a href="/TripPlanner/admin/dashboard" class="headerRight">관리자 페이지</a>
+	        		<a href="${pageContext.request.contextPath}/admin/dashboard" class="headerRight">회원 조회</a>
 	        	</c:if>
-		        <a href="/TripPlanner/members/myPage" class="headerRight">내 정보</a>
-	            <a href="/TripPlanner/members/signOut" id="logout" class="headerRight">로그아웃</a>
+		        <a href="${pageContext.request.contextPath}/members/myPage" class="headerRight">내 정보</a>
+	            <a href="${pageContext.request.contextPath}/members/signOut" id="logout" class="headerRight">로그아웃</a>
 	            <p class="headerRight">${user.name}님</p>
 	        </c:if>
         </div>

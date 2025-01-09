@@ -22,7 +22,7 @@ $(document).ready(function() {
         }
 
         $.ajax({
-            url: "/TripPlanner/api/comments",
+            url: contextPath+"/api/comments",
             method: "POST",
             dataType: "json",
             data: {
@@ -57,7 +57,7 @@ $(document).ready(function() {
         if (!confirm("댓글을 삭제하시겠습니까?")) return;
 
         $.ajax({
-            url: "/TripPlanner/api/comments/" + c_unique,
+            url: contextPath+"/api/comments/" + c_unique,
             method: "DELETE",
             dataType: "json",
             success: function(res) {
@@ -113,7 +113,7 @@ $(document).ready(function() {
         }
 
         $.ajax({
-            url: "/TripPlanner/api/comments/" + c_unique + "/update",
+            url: contextPath+"/api/comments/" + c_unique + "/update",
             method: "POST",
             data: {
                 content: updatedContent
@@ -138,7 +138,7 @@ $(document).ready(function() {
         const likeBtn = $(this);
 
         $.ajax({
-            url: `/TripPlanner/api/comments/${c_unique}/like`,
+            url: contextPath+`/api/comments/${c_unique}/like`,
             method: "POST",
             dataType: "json",
             success: function(res) {
@@ -147,11 +147,11 @@ $(document).ready(function() {
                     return;
                 }
                 if (res.islike === 1) {
-                    likeBtn.html("<i class='fa-solid fa-heart'></i>");
+                    likeBtn.html("<i class='fa-solid fa-thumbs-up'></i>");
                 } else {
-                    likeBtn.html("<i class='fa-regular fa-heart'></i>");
+                    likeBtn.html("<i class='fa-regular fa-thumbs-up'></i>");
                 }
-                commentElement.find(".likenum").text(`좋아요 ${res.totallike}`);
+                commentElement.find(".likenum").text(`${res.totallike}`);
             },
             error: function() {
                 alert("좋아요 처리 중 오류가 발생했습니다.");
@@ -176,10 +176,10 @@ $(document).ready(function() {
 	            if(likenum) {
 	                if(res.isLiked === 1) {
 	                    document.getElementById("postLikes").textContent = res.totalLikes;
-	                    document.getElementById("postLikeBtn").innerHTML = "<i class='fa-solid fa-heart'></i>";
+	                    document.getElementById("postLikeBtn").innerHTML = "<i class='fa-solid fa-thumbs-up'></i>";
 	                } else if(res.isLiked === 0) {
 	                    document.getElementById("postLikes").textContent = res.totalLikes;
-	                    document.getElementById("postLikeBtn").innerHTML = "<i class='fa-regular fa-heart'></i>";
+	                    document.getElementById("postLikeBtn").innerHTML = "<i class='fa-regular fa-thumbs-up'></i>";
 	                }
 	            }
 	        },
@@ -192,7 +192,7 @@ $(document).ready(function() {
     // 댓글 목록 로드
     function loadComments(postId, page, callback) {
         $.ajax({
-            url: "/TripPlanner/api/comments",
+            url: contextPath+"/api/comments",
             method: "GET",
             dataType: "json",
             data: { postId: postId, page: page },
@@ -203,7 +203,7 @@ $(document).ready(function() {
                     totalPages = 0;
                     currentPageNum = 1;
                 } else {
-                    renderComments(res.comments, res.commentisLike);
+                    renderComments(res.comments, res.commentisLike,res.commentDate);
                     renderPagination(res.currentPage, res.totalPage);
                     totalPages = res.totalPage;
                     currentPageNum = res.currentPage;
@@ -219,35 +219,32 @@ $(document).ready(function() {
     }
 
     // 댓글 렌더링
-    function renderComments(comments, commentisLike) {
-        var section = $("#commentSection");
-        section.empty();
+	function renderComments(comments, commentisLike,commentDate) {
+	    var section = $("#commentSection");
+	    section.empty();
 
-        comments.forEach((comment, i) => {
-            var html = `
-                <div class="comment" data-id="${comment.c_unique}">
-                    <div class="comment-text">
-                        <div class="comment-header">
-                            <span class="comment-author">${comment.id}</span>
-                            <span class="comment-date">${comment.commentDate}</span>
-                        </div>
-                        <p class="comment-content">${comment.comments}</p>
-                    </div>
-                    <div class="comment-controls">
-                        <span class="likenum">좋아요 ${comment.commentLikes}</span>
-                        ${sessionId !== comment.id ? 
-                            `<button class="likeBtn">
-                                <i class="${commentisLike[i] === 1 ? 'fa-solid' : 'fa-regular'} fa-heart"></i>
-                            </button>` : ''}
-                        ${sessionId === comment.id ? 
-                            `<button class="updateBtn">수정</button>
-                             <button class="deleteBtn">삭제</button>` : ''}
-                    </div>
-                </div>`;
-            section.append(html);
-        });
-    }
-
+	    comments.forEach((comment, i) => {
+	        var html = `
+	            <div class="comment" data-id="${comment.c_unique}">
+	                <div class="comment-header">
+	                    <span class="comment-author">${comment.id}</span>
+	                    <span class="comment-date">${commentDate[i]}</span>
+	                </div>
+	                <div class="comment-content">${comment.comments}</div>
+	                <div class="comment-controls">
+	                    ${sessionId === comment.id ? 
+	                        `<button class="updateBtn"></button>
+	                         <button class="deleteBtn"></button>` :
+	                        `<button class="likeBtn">
+	                            <i class="${commentisLike[i] === 1 ? 'fa-solid' : 'fa-regular'} fa-thumbs-up"></i>
+	                        </button>
+	                        <span class="likenum">${comment.commentLikes}</span>`
+	                    }
+	                </div>
+	            </div>`;
+	        section.append(html);
+	    });
+	}
     // 페이지네이션 렌더링
     function renderPagination(currentPage, totalPage) {
         var pagination = $("#pagination");

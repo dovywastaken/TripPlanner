@@ -5,185 +5,14 @@
 <head>
   <meta charset="UTF-8" />
   <title>지도 + 오버레이 패널</title>
-  <script  src="<%= request.getContextPath() %>/resources/js/tourApi.js"></script>
-   <script  type="module" src="<%= request.getContextPath() %>/resources/js/maps.js"></script>
+ 
+  <script  src="${pageContext.request.contextPath}/resources/js/tourApi.js"></script>
+   <script  type="module" src="${pageContext.request.contextPath}/resources/js/maps.js" defer="defer"></script>
+   <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/maps.css">
+    <script>
+         window.contextPath = '${pageContext.request.contextPath}';
+    </script>
   
-  <style>
-    /* 전체 화면을 사용하기 위해 기본 마진/패딩 제거 */
-    html, body {
-      margin: 0; 
-      padding: 0;
-      width: 100%; 
-      height: 100%;
-      font-family: sans-serif;
-    }
-
-    /* 지도 영역 */
-    #map {
-      margin-top:2%;
-      margin-left: 20%;
-      width: 80%; 
-      height: 88%;
-      position: relative; /* 오버레이 패널을 절대 위치로 배치하기 위해 */
-    }
-
-    /* 오버레이 패널 */
-    #overlayPanel {
-      position: absolute;    /* 지도 위에 겹치도록 */
-      top: 60px; 
-      right: 20px;
-      z-index: 999;          /* 지도의 다른 요소보다 위로 */
-      
-      width: 330px;          /* 원하는 너비 */
-      background-color: #fff;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-      padding: 10px;
-      
-      transition: all 0.3s ease; /* 접고 펼치기 애니메이션 */
-    }
-
-    /* 접힌 상태 클래스(너비·높이를 줄여서 숨기는 효과) */
-    #overlayPanel.collapsed {
-      width: 50px;
-      height: 50px;    
-      overflow: hidden; /* 내부 내용이 안 보이도록 */
-      padding: 0;       /* 패딩도 없애서 완전히 작게 */
-      border-radius: 50%; 
-    }
-
-    /* 접기/펼치기 버튼 */
-    .toggle-btn {
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      cursor: pointer;
-      background-color: #eee;
-      padding: 5px 8px;
-      border-radius: 4px;
-      font-size: 12px;
-    }
-
-    /* 패널 내부 구조 */
-    h2 {
-      margin-top: 0;
-      font-size: 1.1rem;
-      border-bottom: 1px solid #ccc;
-      padding-bottom: 5px;
-    }
-    .filter-section {
-      margin-bottom: 10px;
-    }
-    .filter-section button {
-      margin: 3px;
-      padding: 5px 8px;
-      border: 1px solid #ccc;
-      background-color: #f9f9f9;
-      cursor: pointer;
-      border-radius: 4px;
-    }
-
-    /* 검색 버튼, 초기화 버튼 */
-    .filter-actions {
-      text-align: center;
-    }
-    .filter-actions button {
-      margin: 5px 3px;
-      padding: 6px 12px;
-      cursor: pointer;
-      background-color: #007aff;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-    }
-    .filter-actions button.reset-btn {
-      background-color: #666;
-    }
-
-    /* 예시로 만들어본 '현재 선택 필터' 표시 영역 */
-    .selected-filters {
-      margin: 10px 0;
-      font-size: 0.9rem;
-      color: #333;
-    }
-    
-    #myList{
-   	 position: absolute;    /* 지도 위에 겹치도록 */
-      top: 30px; 
-      left: 0px;
-      z-index: 998;          /* 지도의 다른 요소보다 위로 */
-      
-      width: 20%; 
-      height: 900px;
-      background-color: #fff;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-      
-    
-    }
-    #sigunguButtons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;              
-    padding: 5px;         
-}
-
-   .sgbtn {
-    background-color: #f9f9f9;
-    border: 1px solid #ccc;  
-    border-radius: 5px;      
-    padding: 5px 5px;        
-    font-size: 12px;          
-    cursor: pointer;         
-    transition: all 0.2s ease; 
-}
-
-	#myList-submit{
-    display: block; /* 버튼이 보이도록 설정 */
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
- #searchBar{
- 	 position: absolute;    /* 지도 위에 겹치도록 */
-      top: 700px; 
-      right: 20px;
-      z-index: 999;          /* 지도의 다른 요소보다 위로 */
-      
-      width: 330px;          /* 원하는 너비 */
-      background-color: #fff;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-      padding: 10px;
-      
-      transition: all 0.3s ease; 
- 
- }
- 
- #search-List{
-   	 position: absolute;    /* 지도 위에 겹치도록 */
-      top: 30px; 
-      left: 500px;
-      z-index: 998;          /* 지도의 다른 요소보다 위로 */
-      
-      width: 20%; 
-      height: 900px;
-      background-color: #fff;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-      
-    
-    }
- 
-  </style>
 </head>
 <body>
 
@@ -192,7 +21,6 @@
 
   <!-- 지도 위 오버레이 패널 (필터 / 토글) -->
   <div id="overlayPanel">
-    <div class="toggle-btn" id="toggleBtn">접기</div>
 
     <h2>필터</h2>
 
@@ -241,16 +69,26 @@
   
 	<button id="myList-submit">저장</button>
   <div id="searchBar">
-    <input type="text" id="searchKeyword" placeholder="검색어를 입력하세요">
-    <button id="searchButton">검색</button>
-  </div>
+    <div class="search-input-wrap">
+        <input type="text" id="searchKeyword" placeholder="장소를 검색하세요">
+        <button id="searchButton">검색</button>
+    </div>
+    <div class="search-option">
+        <label>
+            <input type="checkbox" id="searchInBounds">
+            <span>현재 지도 영역에서만 검색</span>
+        </label>
+    </div>
+</div>
   <div id="search-List">
   </div>
   <div id="myList">
 	</div>
-	<button id="serch-Listbtn">검색창</button>
+	<button id="serch-Listbtn">검색바</button>
 	<button id="myListbtn">마이리스트</button>
-  <!-- Kakao Maps SDK (YOUR_APP_KEY 부분에 실제 앱 키를 넣으세요) -->
-  <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=21c423a4331e55883c3eb46115b12e02&libraries=services"></script>
+
+  <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=21c423a4331e55883c3eb46115b12e02&libraries=services">
+  </script>
+
 </body>
 </html>

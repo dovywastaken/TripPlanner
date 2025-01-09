@@ -8,9 +8,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>트립플래너</title>
-    <link rel="stylesheet" href="/TripPlanner/resources/css/normalize.css">
-    <link rel="stylesheet" href="/TripPlanner/resources/css/mainPage.css">
+    <script>
+         window.contextPath = '${pageContext.request.contextPath}';
+    </script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/normalize.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mainPage.css">
     <link href="https://cdn.jsdelivr.net/gh/sun-typeface/SUITE@2/fonts/static/woff2/SUITE.css" rel="stylesheet">
+    
 	<script src="https://kit.fontawesome.com/96b1ce314a.js"></script>
 
 </head>
@@ -21,14 +25,14 @@
 	            <div class="section">
 	                <div class="title">
 	                    <span>인기 여행 계획</span>
-	                    <a href="/TripPlanner/hotPlanners" class="morePost">더보기</a>
+	                    <a href="${pageContext.request.contextPath}/hotPlanners" class="morePost">더보기</a>
 	                </div>
 	                <div id="planner">
 					<c:forEach var="post" items="${result.Allpost}">
 						<div class="plannerDoubling">
 				        	<div class="plannerCard">
 					            <div class="imgFrame">
-					                <img src="/TripPlanner/resources/upload/${post.fileImage[0]}" class="pImg">
+					                <img src="${pageContext.request.contextPath}/resources/upload/${post.fileImage[0]}" class="pImg">
 					            </div>
 					            <div class="plannerCol" id="pText">
 					            	<div>
@@ -52,31 +56,33 @@
 	            <div class="section">
 	                <div class="title">
 	                    <span>추천 축제</span>
-	                    <a href="/TripPlanner/boardFestival" class="morePost">더보기</a>
+	                    <a href="${pageContext.request.contextPath}/boardFestival" class="morePost">더보기</a>
 	                </div>
-	                <c:choose>
-               			<c:when test="${not empty festival}">
-               				<c:forEach var="festival" items="${festival}">
-		                      <div class="recommandCard">
-		                          <div class="imgFrame">
-		                              <img src="${festival.firstimage}" class="pImg">
-		                          </div>
-		                          <div class="plannerCol" id="pText">
-									<div>
-		                            	<h3 class="plannerTitle">${festival.title}</h3>
-		                            	<p class="hashtag">#경산시 #문화관광축제</p>
-		                            </div>
-									</div>
-		                      </div>
-	                     	 </c:forEach>
-                    	</c:when>
-   					</c:choose>
+		            <div id="planner">
+		                <c:choose>
+	               			<c:when test="${not empty festival}">
+	               				<c:forEach var="festival" items="${festival}">
+				                      <div class="recommandCard">
+				                          <div class="imgFrame">
+				                              <img src="${festival.firstimage}" class="pImg">
+				                          </div>
+				                          <div class="plannerCol" id="pText">
+											<div>
+				                            	<h3 class="plannerTitle">${festival.title}</h3>
+				                            	<span class="hashtag">#${festival.addr1}</span>
+				                            </div>
+											</div>
+				                      </div>
+		                     	 </c:forEach>
+	                    	</c:when>
+	   					</c:choose>
+	   				</div>
 	            </div>
 	
 				 <div class="section">
 	                  <div class="title">
 	                      <span>추천 관광지</span>
-	                      <a href="/TripPlanner/boardTour" class="morePost">더보기</a>
+	                      <a href="${pageContext.request.contextPath}/boardTour" class="morePost">더보기</a>
 	                  </div>
 	                  <div id="planner">
 	                  		<c:choose>
@@ -89,7 +95,7 @@
 					                          <div class="plannerCol" id="pText">
 					                            <div>
 													<h3 class="plannerTitle">${tourSpots.title}</h3>
-					                            	<p class="hashtag">#성산구 #국립공원</p>  
+					                            	<p class="hashtag">#${tourSpots.addr1}</p>  
 												</div>
 												</div>
 					                      </div>
@@ -98,10 +104,11 @@
 	      					</c:choose>
 	                  </div>
 	              </div>
-	              <div class="section">
+	              
+	             <div class="section">
 	                  <div class="title">
 	                      <span>추천 맛집</span>
-	                      <a href="/TripPlanner/boardRestaurant" class="morePost">더보기</a>
+	                      <a href="${pageContext.request.contextPath}/boardRestaurant" class="morePost">더보기</a>
 	                  </div>
 	                  <div id="planner">
 	                      <c:choose>
@@ -114,7 +121,7 @@
 					                          <div class="plannerCol" id="pText">
 												<div>
 					                            	<h3 class="plannerTitle">${restaurants.title}</h3>
-					                            	<p class="hashtag">#경산시 #한식</p>       
+					                            	<p class="hashtag">#${restaurants.addr1}</p>       
 												</div>
 												</div>
 					                      </div>
@@ -155,7 +162,7 @@
 							                        <span>내 여행 계획 </span>
 							                        <span id="postCount">${count}</span>
 							                    </div>
-							                    <a class="postMore" href='/TripPlanner/Myboard'>더보기</a>
+							                    <a class="postMore" href='${pageContext.request.contextPath}/Myboard'>더보기</a>
 							                </div>
 							            </div>
 							        </c:when>
@@ -169,7 +176,7 @@
 							</c:forEach>
 						</div>
 				        <a href="postform" class="postButton">+ 새 여정 만들기</a>
-				        <a href="/TripPlanner/members/signOut" class="signOutButton">로그아웃</a>
+				        <a href="${pageContext.request.contextPath}/members/signOut" class="signOutButton">로그아웃</a>
 				    </c:if>
 				
 				    <c:if test="${empty user}">
@@ -193,7 +200,7 @@
 				                <div class="form-group">
 				                    <input type="submit" id="submitButton" value="로그인">
 				                </div>
-				                <a href="/TripPlanner/members/signUp" id="signUpButton">가입하기</a>
+				                <a href="${pageContext.request.contextPath}/members/signUp" id="signUpButton">가입하기</a>
 				            </form:form>
 				        </div>
 					</c:if>
@@ -205,6 +212,6 @@
 	</div>
 	<%@ include file="footer.jsp" %>
 </body>
-
+<script src="${pageContext.request.contextPath}/resources/js/mainPage.js" defer></script>
 </html>
 

@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <title>TripPlanner</title>
-    <link rel="stylesheet" href="/TripPlanner/resources//css/normalize.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources//css/normalize.css">
     <link href="https://cdn.jsdelivr.net/gh/sun-typeface/SUITE@2/fonts/static/woff2/SUITE.css" rel="stylesheet">
     
     <style>
         body {
-        background-image: url("/TripPlanner/resources/img/Wallpaper.png");
+        background-image: url("${pageContext.request.contextPath}/resources/img/Wallpaper.png");
         display: flex;
         flex-direction: column;
         justify-content: center;

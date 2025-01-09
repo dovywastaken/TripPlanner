@@ -24,8 +24,8 @@ public class BoardRepositoryImpl implements BoardRepository {
 		PostRowMapper postRowMapper=new PostRowMapper();
 		List<Post> Allpost=new ArrayList<Post>(); //게시글 목록 저장할 리스트 객체
 		
-		String sql = "SELECT * FROM Post WHERE isprivate = 1 ORDER BY publishdate DESC, p_unique DESC LIMIT ?, ?"; //등록일 순, 고유번호의 내림차순으로 정렬한 데이터 들고옴
-        String countSql = "SELECT COUNT(*) FROM Post WHERE isprivate = 1"; //게시물 총 갯수 세는 쿼리문
+		String sql = "SELECT * FROM post WHERE isPrivate = 1 ORDER BY publishDate DESC, p_unique DESC LIMIT ?, ?"; //등록일 순, 고유번호의 내림차순으로 정렬한 데이터 들고옴
+        String countSql = "SELECT COUNT(*) FROM post WHERE isPrivate = 1"; //게시물 총 갯수 세는 쿼리문
 		Allpost=template.query(sql,postRowMapper,new Object[] {startIndex,pageSize}); // 실제 게시글을 리스트화 시킨것
 		int Allpostgetnum=template.queryForObject(countSql, Integer.class); //게시글이 총 몇개 있는지를 알아낸 것
 		System.out.println("Executing SQL: " + sql);
@@ -46,12 +46,12 @@ public class BoardRepositoryImpl implements BoardRepository {
         String countSql = "";
 
         if ("title".equals(type)) {
-            sql = "SELECT * FROM Post WHERE title LIKE ? AND isprivate = 1 ORDER BY publishdate DESC LIMIT ?, ?";
-            countSql = "SELECT COUNT(*) FROM Post WHERE title LIKE ? AND isprivate = 1";
+            sql = "SELECT * FROM post WHERE title LIKE ? AND isPrivate = 1 ORDER BY publishDate DESC LIMIT ?, ?";
+            countSql = "SELECT COUNT(*) FROM Post WHERE title LIKE ? AND isPrivate = 1";
             keyword = "%" + keyword + "%"; 
         } else if ("id".equals(type)) {
-            sql = "SELECT * FROM Post WHERE id = ? AND isprivate = 1 ORDER BY publishdate DESC LIMIT ?, ?";
-            countSql = "SELECT COUNT(*) FROM Post WHERE id = ? AND isprivate = 1";
+            sql = "SELECT * FROM post WHERE id = ? AND isPrivate = 1 ORDER BY publishDate DESC LIMIT ?, ?";
+            countSql = "SELECT COUNT(*) FROM post WHERE id = ? AND isPrivate = 1";
         }
 
         List<Post> posts = template.query(sql, new PostRowMapper(), keyword, startIndex, pageSize);
@@ -69,8 +69,8 @@ public class BoardRepositoryImpl implements BoardRepository {
 	     int startIndex = (page - 1) * pageSize; 
 	     Map<String, Object>result = new HashMap<String,Object>();
 	     
-	    String getnumSQL="SELECT count(*) FROM POST WHERE id=?"; 
-		String myboardSQL="SELECT * FROM Post WHERE id=? ORDER BY publishdate DESC LIMIT ?, ?";
+	    String getnumSQL="SELECT count(*) FROM post WHERE id=?"; 
+		String myboardSQL="SELECT * FROM post WHERE id=? ORDER BY publishDate DESC LIMIT ?, ?";
 		List<Post> Allpost=template.query(myboardSQL, new PostRowMapper(),member, startIndex, pageSize);
 		int totalPosts=template.queryForObject(getnumSQL, Integer.class,member);
 		result.put("Allpost", Allpost);
@@ -84,8 +84,8 @@ public class BoardRepositoryImpl implements BoardRepository {
 	        int startIndex = (page - 1) * pageSize; 
 
 	        
-	        String mySearchSql = "SELECT * FROM Post WHERE id=? And title Like ? ORDER BY publishdate DESC LIMIT ?, ?";
-	        String countSql = "SELECT COUNT(*) FROM Post WHERE id=? And title LIKE ?";
+	        String mySearchSql = "SELECT * FROM post WHERE id=? And title Like ? ORDER BY publishDate DESC LIMIT ?, ?";
+	        String countSql = "SELECT COUNT(*) FROM post WHERE id=? And title LIKE ?";
 	        keyword = "%" + keyword + "%"; 
 	
 

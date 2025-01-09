@@ -23,7 +23,7 @@ public class PostRepositoryImpl implements PostRepository {
     
     @Override
     public Post getPostById(int postId) {
-        String sql = "SELECT * FROM Post WHERE p_unique = ?";
+        String sql = "SELECT * FROM post WHERE p_unique = ?";
         String updateSQL="UPDATE post set view= view+1 WHERE p_unique=?";
         template.update(updateSQL,postId);
         return template.queryForObject(sql, new PostRowMapper(), postId);
@@ -31,7 +31,7 @@ public class PostRepositoryImpl implements PostRepository {
 
     @Override
     public void createPost(Post post) {
-        String sql = "INSERT INTO Post (id, title, contents, publishDate, region, isPrivate, CommentIsAllowed, satisfaction,image_names) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?)";
+        String sql = "INSERT INTO post (id, title, contents, publishDate, region, isPrivate, commentIsAllowed, satisfaction,image_names) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?)";
         String imageNames = String.join(",", post.getFileImage());
         template.update(sql,
                 post.getId(),
@@ -48,7 +48,7 @@ public class PostRepositoryImpl implements PostRepository {
 
     @Override
     public void updatePost(Post post) {
-        String sql = "UPDATE Post SET title = ?, contents = ?, region = ?, isprivate = ?,CommentIsAllowed=?, Satisfaction = ?,image_names = ? WHERE p_unique = ?";
+        String sql = "UPDATE post SET title = ?, contents = ?, region = ?, isprivate = ?,commentIsAllowed=?, satisfaction = ?,image_names = ? WHERE p_unique = ?";
         String imageNames = String.join(",", post.getFileImage());
         template.update(sql,
                 post.getTitle(),
@@ -66,7 +66,7 @@ public class PostRepositoryImpl implements PostRepository {
 
     @Override
     public void deletePost(int postId) {
-        String sql = "DELETE FROM Post WHERE p_unique = ?";
+        String sql = "DELETE FROM post WHERE p_unique = ?";
         template.update(sql, postId);
         String tourdeletSQL="DELETE FROM tour where p_unique = ?";
         template.update(tourdeletSQL,postId);
@@ -74,7 +74,7 @@ public class PostRepositoryImpl implements PostRepository {
 
     @Override
     public void incrementViewCount(int postId) {
-        String sql = "UPDATE Post SET view = view + 1 WHERE p_unique = ?";
+        String sql = "UPDATE post SET view = view + 1 WHERE p_unique = ?";
         template.update(sql, postId);
     }
 
@@ -86,17 +86,17 @@ public class PostRepositoryImpl implements PostRepository {
     	if(check == 0) {
         String SQL = "insert postLike(id, p_unique, likesDate) values (?,?,?)";
         template.update(SQL, likes.getId(),likes.getP_unique(),likes.getLikesDate());
-        String updateLikeSQL="UPDATE Post SET likes = likes + 1 WHERE p_unique = ?";
+        String updateLikeSQL="UPDATE post SET likes = likes + 1 WHERE p_unique = ?";
         template.update(updateLikeSQL,likes.getP_unique());
         	check=1;
     	}else {
     	    String SQL = "delete from postLike where id=? and p_unique=?";
             template.update(SQL, likes.getId(),likes.getP_unique());
-            String updateLikeSQL="UPDATE Post SET likes = likes - 1 WHERE p_unique = ?";
+            String updateLikeSQL="UPDATE post SET likes = likes - 1 WHERE p_unique = ?";
             template.update(updateLikeSQL,likes.getP_unique());
             check= 0;
     	}
-    	String postLikeSQL="SELECT likes from Post where p_unique = ?";
+    	String postLikeSQL="SELECT likes from post where p_unique = ?";
     	List<Integer> result = new ArrayList<>();
     	result.add(check);
     	result.add(template.queryForObject(postLikeSQL, Integer.class,likes.getP_unique()));
@@ -112,7 +112,7 @@ public class PostRepositoryImpl implements PostRepository {
 	
 	@Override
 	public int findLatestPostIdByUser(String userId) {
-        String sql = "SELECT p_unique FROM Post WHERE id = ? ORDER BY publishDate DESC LIMIT 1";
+        String sql = "SELECT p_unique FROM post WHERE id = ? ORDER BY publishDate DESC LIMIT 1";
         return template.queryForObject(sql, Integer.class, userId);
     }
 
@@ -122,7 +122,7 @@ public class PostRepositoryImpl implements PostRepository {
 		System.out.println(id);
 		PostRowMapper postRowMapper=new PostRowMapper();
 		System.out.println("매퍼 까지는 생성");
-		String mainSQL="SELECT * FROM POST WHERE id = ? ORDER BY publishDate DESC LIMIT 3";
+		String mainSQL="SELECT * FROM post WHERE id = ? ORDER BY publishDate DESC LIMIT 3";
 		System.out.println("SQL문 까지는 작성");
 		Map<String,Object> result=new HashMap<String, Object>();
 		System.out.println("MAP 객체 까지는 작성");
@@ -135,7 +135,7 @@ public class PostRepositoryImpl implements PostRepository {
 
 	@Override
 	public int pageserch(int p_unique) {
-		String pageserch= "WITH RankedPosts AS (SELECT p_unique, ROW_NUMBER() OVER (ORDER BY publishdate DESC, p_unique DESC) as row_num FROM Post WHERE isprivate = 1) SELECT CEILING(row_num / 10) as page_number FROM RankedPosts WHERE p_unique = ?";
+		String pageserch= "WITH RankedPosts AS (SELECT p_unique, ROW_NUMBER() OVER (ORDER BY publishDate DESC, p_unique DESC) as row_num FROM post WHERE isPrivate = 1) SELECT CEILING(row_num / 10) as page_number FROM RankedPosts WHERE p_unique = ?";
 		int rownum=template.queryForObject(pageserch, Integer.class,p_unique);
 		System.out.println(rownum);
 	return rownum;

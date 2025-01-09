@@ -4,8 +4,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script>
+         window.contextPath = '${pageContext.request.contextPath}';
+</script>
 <script src="https://kit.fontawesome.com/96b1ce314a.js"></script>
-<link rel="stylesheet" href="/TripPlanner/resources/css/normalize.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/normalize.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/footer.css">
 </head>
 	<footer>
@@ -15,28 +18,27 @@
 	        <br>
 	        <div id="teammateContainer">
 	            <div class="teammate">
-	                <h1>박철곤</h1>
+	                <h1>황현제</h1>
 	                <br>
-	                <p>이멜주소 : sample511@sample.com</p>
-	                <p>연락처 : 010-1111-2222</p>
+	                <p>이메일 : guswpwkf@naver.com</p>
+	                <p>연락처 : 010-8788-3121</p>
 	                <br>
 	                <div id="icons">
-	                    <a href="https://www.naver.com"><i class="fa-brands fa-linkedin"></i></a>
-	                    <a href="https://www.naver.com"><i class="fa-brands fa-instagram"></i></a>
-	                    <a href="https://www.naver.com"><i class="fa-brands fa-github"></i></a>
+<!-- 	                    <a href="https://www.naver.com"><i class="fa-brands fa-instagram"></i></a>
+	                    <a href="https://www.naver.com"><i class="fa-brands fa-github"></i></a> -->
 	                </div>
 	            </div>
 	            
 	            <div class="teammate">
-	                <h1>쌍팔룡</h1>
+	                <h1>김의신</h1>
 	                <br>
-	                <p>이멜주소 : sample511@sample.com</p>
-	                <p>연락처 : 010-1111-2222</p>
+	                <p>이메일 : dovies401@gmail.com</p>
+	                <p>연락처 : 010-5285-8933</p>
 	                <br>
 	                <div id="icons">
-	                    <a href="https://www.naver.com"><i class="fa-brands fa-linkedin"></i></a>
-	                    <a href="https://www.naver.com"><i class="fa-brands fa-instagram"></i></a>
-	                    <a href="https://www.naver.com"><i class="fa-brands fa-github"></i></a>
+	                    <a href="https://www.naver.com/" target="blank"><i class="fa-brands fa-linkedin"></i></a>
+	                    <a href="https://www.instagram.com/tonald_drump111/" target="blank"><i class="fa-brands fa-instagram"></i></a>
+	                    <a href="https://github.com/dovywastaken" target="blank"><i class="fa-brands fa-github"></i></a>
 	                </div>
 	            </div>
 	        </div>

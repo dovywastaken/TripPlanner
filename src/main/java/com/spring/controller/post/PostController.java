@@ -1,17 +1,24 @@
 package com.spring.controller.post;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpSession;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +37,10 @@ import com.spring.domain.Post;
 import com.spring.domain.Tour;
 import com.spring.service.post.CommentService;
 import com.spring.service.post.PostService;
+
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -53,7 +64,7 @@ public class PostController {
 		
 		
 	}
-	
+		
 	@PostMapping("/saveforem")
     public String saveMyList(@RequestParam("myListData") String myListData, Model model) {
         // JSON 문자열을 필요한 형태로 파싱하거나 처리
@@ -61,95 +72,129 @@ public class PostController {
         model.addAttribute("myListData", myListData);
         return "post/PostForm"; // write.jsp로 포워딩
     }
+	
+	
+	
+	@PostMapping("/uploadImage")
+	@ResponseBody
+	public List<String> uploadImage(@RequestParam("fileImg") MultipartFile[] files, HttpServletRequest request) {
+	    List<String> uploadedImageUrls = new ArrayList<>();
+
+	    try {
+	        String uploadDir = request.getServletContext().getRealPath("/resources/img");
+	        File uploadPath = new File(uploadDir);
+
+	        if (!uploadPath.exists()) {
+	            uploadPath.mkdirs();
+	        }
+	       
+	        for (MultipartFile file : files) {
+	            String fileName = UUID.randomUUID().toString() +
+	                file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+	            file.transferTo(new File(uploadPath + File.separator + fileName));
+	            uploadedImageUrls.add(request.getContextPath() + "/resources/img/" + fileName);
+	           System.out.println();
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return Collections.emptyList();
+	    }
+
+	    return uploadedImageUrls;
+	}
+
+
+
 	@PostMapping("/postcreate")
 	public String postcreate(@ModelAttribute Post post,
 	                       HttpSession session,
-	                       @RequestParam("fileImg") List<MultipartFile> files,
 	                       RedirectAttributes redirect,
 	                       @RequestParam(required = false) String contents) {
-
 	   try {
-	       Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+	       System.out.println("[DEBUG] /postcreate 요청 시작");
+
 	       Member member = (Member) session.getAttribute("user");
+	       Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 	       post.setId(member.getId());
 	       post.setPublishDate(timestamp);
-	       List<String> savedFileNames = new ArrayList<>();
-	       String saveDir = session.getServletContext().getRealPath("/resources/upload/");
-	       File dir = new File(saveDir);
-	       if (!dir.exists()) {
-	           dir.mkdirs();
-	       }
 
-	       for (MultipartFile file : files) {
-	           if (file != null && !file.isEmpty()) {
-	               String originalFilename = file.getOriginalFilename();
-	               String savedFileName = UUID.randomUUID() + "_" + originalFilename;
-	               String savePath = saveDir + savedFileName;
-	               file.transferTo(new File(savePath));
-	               savedFileNames.add(savedFileName);
+	       // 이미지가 없을 경우를 위한 빈 리스트 초기화
+	       List<String> imageUrls = new ArrayList<>();
+
+	       // contents에서 이미지 URL과 장소 정보 추출
+	       if (contents != null && !contents.isEmpty()) {
+	           Document doc = Jsoup.parse(contents);
+	           
+	           // 이미지 URL 수집
+	           Elements images = doc.select("img");
+	           for (Element img : images) {
+	               String imageUrl = img.attr("src");
+	               if (!imageUrl.isEmpty()) {
+	                   imageUrls.add(imageUrl);
+	               }
 	           }
 	       }
 	       
-	       post.setFileImage(savedFileNames);
-	       postService.createPost(post);
-	       int postId = postService.getLatestPostId(member.getId());
-	       int page = postService.pageserch(postId);
-	       redirect.addAttribute("num", postId);
-	       redirect.addAttribute("page", page);
+	       // 이미지 URL 리스트 설정 (비어있어도 설정)
+	       post.setFileImage(imageUrls);
 
+	       postService.createPost(post);
+
+	       // 최신 게시글 ID 가져오기
+	       int postId = postService.getLatestPostId(member.getId());
+
+	       // contents에서 장소 정보 처리
 	       if (contents != null && !contents.isEmpty()) {
 	           Document doc = Jsoup.parse(contents);
-	           Elements locationButtons = doc.select(".location-btn");
+	           Elements locationButtons = doc.select(".location-name-btn");
 
 	           for (Element button : locationButtons) {
 	               String dataInfo = button.attr("data-info");
 	               if (dataInfo != null && !dataInfo.isEmpty()) {
-	                   try {
-	                       JSONObject jsonObject = new JSONObject(dataInfo);
-	                       
-	                       String itemId = jsonObject.optString("id", "");
-	                       String itemAddr = jsonObject.optString("addr", "");
-	                       Double latitude = jsonObject.optDouble("latitude", 0.0);
-	                       Double longitude = jsonObject.optDouble("longitude", 0.0);
-	                       String itemContentId = jsonObject.optString("contentid", "");
-	                       String itemContentTypeId = jsonObject.optString("contenttypeid", "");
-	                       String itemImg = jsonObject.optString("img", "");
-	                       String itemCategory2 = jsonObject.optString("catagory2", "");
-	                       String itemCategory3 = jsonObject.optString("catagory3", "");
+	                   System.out.println("[DEBUG] data-info: " + dataInfo);
 
-	                       Tour tour = new Tour();
-	                       tour.setTitle(itemId);
-	                       tour.setAddr1(itemAddr);
-	                       tour.setMapy(latitude);
-	                       tour.setMapx(longitude);
-	                       tour.setContentid(itemContentId);
-	                       tour.setContenttypeid(itemContentTypeId);
-	                       tour.setFirstimage(itemImg);
-	                       tour.setCat2(itemCategory2);
-	                       tour.setCat3(itemCategory3);
-	                       tour.setCreated_at(timestamp);
-	                       tour.setP_unique(postId);
-	                       postService.updatetour(tour);
-	                        
-	                       
-	                   } catch (JSONException e) {
-	                       System.out.println("JSON 파싱 오류: " + e.getMessage());
-	                       continue;
-	                   }
+	                   JSONObject jsonObject = new JSONObject(dataInfo);
+
+	                   Tour tour = new Tour();
+	                   tour.setTitle(jsonObject.optString("id", ""));
+	                   tour.setAddr1(jsonObject.optString("addr", ""));
+	                   tour.setMapy(jsonObject.optDouble("latitude", 0.0));
+	                   tour.setMapx(jsonObject.optDouble("longitude", 0.0));
+	                   tour.setContentid(jsonObject.optString("contentid", ""));
+	                   tour.setContenttypeid(jsonObject.optString("contenttypeid", ""));
+	                   tour.setFirstimage(jsonObject.optString("img", ""));
+	                   tour.setCat2(jsonObject.optString("catagory2", ""));
+	                   tour.setCat3(jsonObject.optString("catagory3", ""));
+	                   tour.setCreated_at(timestamp);
+	                   tour.setP_unique(postId);
+
+	                   System.out.println("[DEBUG] 저장할 Tour 객체: " + tour.getId());
+	                   postService.updatetour(tour);
+	                   System.out.println("[DEBUG] Tour 저장 완료");
 	               }
 	           }
 	       }
 
-	       
+	       // 페이지 번호 가져오기
+	       int page = postService.pageserch(postId);
+	   
+	       // 리다이렉트 속성 설정
+	       redirect.addAttribute("num", postId);
+	       redirect.addAttribute("page", page);
 
+	       System.out.println("[DEBUG] /postcreate 요청 종료");
 	       return "redirect:/postview";
 
 	   } catch (Exception e) {
+	       System.out.println("[ERROR] 예외 발생: " + e.getMessage());
 	       e.printStackTrace();
 	       return "error";
 	   }
 	}
+
 	
+
+
 	
     @Autowired
     private CommentService commentService;
@@ -225,85 +270,80 @@ public class PostController {
 		return "post/updateForm";
 	}
 	
+	
+	
+	
+	
+
+	
+	
+	
 	@PostMapping("/postview/updatePost")
 	public String postupdate(@ModelAttribute Post post,
-	                        HttpSession session,
-	                        @RequestParam("fileImg") List<MultipartFile> files,
-	                        RedirectAttributes redirect,
-	                        @RequestParam(required = false) String contents) {
-	    try {
-	        // 작성자 확인
-	    	
-	        Member member = (Member) session.getAttribute("user");
+	                       HttpSession session,
+	                       RedirectAttributes redirect,
+	                       @RequestParam(required = false) String contents) {
+	   try {
+	       
+
+		   Member member = (Member) session.getAttribute("user");
 	        if (!post.getId().equals(member.getId())) {
 	        	System.out.println("여왓냐");
 	        }
 	        System.out.println("12"+post.getContents());
 	        // 기존 게시글 정보 가져오기 
 	        Post existingPost = postService.getPostById(post.getP_unique());
-	        
-	        // 기존 파일 리스트에 새 파일 추가
-	        List<String> savedFileNames = new ArrayList<>();
-	        if (existingPost.getFileImage() != null && !existingPost.getFileImage().isEmpty()) {
-	            savedFileNames.addAll(existingPost.getFileImage());
-	        }
 
-	        // 새 파일 업로드
-	        String saveDir = session.getServletContext().getRealPath("/resources/upload/");
-	        File dir = new File(saveDir);
-	        if (!dir.exists()) {
-	            dir.mkdirs();
-	        }
+	      
+	       List<String> imageUrls = new ArrayList<>();
+	       if (contents != null && !contents.isEmpty()) {
+	           Document doc = Jsoup.parse(contents);
+	           
+	           // 이미지 URL 수집
+	           Elements images = doc.select("img");
+	           for (Element img : images) {
+	               String imageUrl = img.attr("src");
+	               if (!imageUrl.isEmpty()) {
+	                   imageUrls.add(imageUrl);
+	               }
+	           }
+	       }
+	       
+	         post.setFileImage(imageUrls);
+	         post.setPublishDate(existingPost.getPublishDate()); // 기존 작성일 유지
+	         postService.updatePost(post);
+ 
 
-	        for (MultipartFile file : files) {
-	            if (file != null && !file.isEmpty()) {
-	                String originalFilename = file.getOriginalFilename();
-	                String savedFileName = UUID.randomUUID() + "_" + originalFilename;
-	                String savePath = saveDir + savedFileName;
-	                file.transferTo(new File(savePath));
-	                savedFileNames.add(savedFileName);
-	            }
-	        }
+	       if (contents != null && !contents.isEmpty()) {
+	           Document doc = Jsoup.parse(contents);
+	           Elements locationButtons = doc.select(".location-name-btn");
 
-	        // 게시글 정보 업데이트
-	        post.setFileImage(savedFileNames);
-	        post.setPublishDate(existingPost.getPublishDate()); // 기존 작성일 유지
-	        postService.updatePost(post);
+	           for (Element button : locationButtons) {
+	               String dataInfo = button.attr("data-info");
+	               if (dataInfo != null && !dataInfo.isEmpty()) {
+	                   System.out.println("[DEBUG] data-info: " + dataInfo);
 
-	        // 투어 정보 처리 - contents에서 찾은 투어 정보로 update
-	        if (contents != null && !contents.isEmpty()) {
-	            Document doc = Jsoup.parse(contents);
-	            Elements locationButtons = doc.select(".location-btn");
+	                   JSONObject jsonObject = new JSONObject(dataInfo);
+	                   
+	                   Tour tour = new Tour();
+                       tour.setTitle(jsonObject.optString("id", ""));
+                       tour.setAddr1(jsonObject.optString("addr", ""));
+                       tour.setMapy(jsonObject.optDouble("latitude", 0.0));
+                       tour.setMapx(jsonObject.optDouble("longitude", 0.0));
+                       tour.setContentid(jsonObject.optString("contentid", ""));
+                       tour.setContenttypeid(jsonObject.optString("contenttypeid", ""));
+                       tour.setFirstimage(jsonObject.optString("img", ""));
+                       tour.setCat2(jsonObject.optString("catagory2", ""));
+                       tour.setCat3(jsonObject.optString("catagory3", ""));
+                       tour.setCreated_at(post.getPublishDate());
+                       tour.setP_unique(post.getP_unique());
 
-	            for (Element button : locationButtons) {
-	                String dataInfo = button.attr("data-info");
-	                if (dataInfo != null && !dataInfo.isEmpty()) {
-	                    try {
-	                        JSONObject jsonObject = new JSONObject(dataInfo);
+	                   postService.updatetour(tour);
+	               }
+	           }
+	       }
 
-	                        Tour tour = new Tour();
-	                        tour.setTitle(jsonObject.optString("id", ""));
-	                        tour.setAddr1(jsonObject.optString("addr", ""));
-	                        tour.setMapy(jsonObject.optDouble("latitude", 0.0));
-	                        tour.setMapx(jsonObject.optDouble("longitude", 0.0));
-	                        tour.setContentid(jsonObject.optString("contentid", ""));
-	                        tour.setContenttypeid(jsonObject.optString("contenttypeid", ""));
-	                        tour.setFirstimage(jsonObject.optString("img", ""));
-	                        tour.setCat2(jsonObject.optString("catagory2", ""));
-	                        tour.setCat3(jsonObject.optString("catagory3", ""));
-	                        tour.setCreated_at(post.getPublishDate());
-	                        tour.setP_unique(post.getP_unique());
-	                        
-	                        // update 메소드로 처리
-	                        postService.updatetour(tour);
-	                    } catch (JSONException e) {
-	                        System.out.println("JSON 파싱 오류: " + e.getMessage());
-	                        continue;
-	                    }
-	                }
-	            }
-	        }
-
+	       // 페이지 번호 가져오기
 	        int page = postService.pageserch(post.getP_unique());
 	        redirect.addAttribute("num", post.getP_unique());
 	        redirect.addAttribute("page", page);
@@ -315,6 +355,10 @@ public class PostController {
 	        return "An error occurred: " + e.getMessage(); // 에러 메시지 반환
 	    }
 	}
+	
+	
+
+
 	
 	@PostMapping(value="/submitForm",produces = "application/json")
     @ResponseBody

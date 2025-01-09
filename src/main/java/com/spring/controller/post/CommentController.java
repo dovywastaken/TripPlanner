@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +25,8 @@ import com.spring.domain.Comment;
 import com.spring.domain.Likes;
 import com.spring.domain.Member;
 import com.spring.service.post.CommentService;
+
+import jakarta.servlet.http.HttpSession;
 
 
 @RestController
@@ -52,8 +54,18 @@ public class CommentController {
         response = commentService.getCommentsByPostId(postId, page, pageSize,id);	
         }
         List<Comment> comments=(List<Comment>) response.get("comments");
-        List<Integer> commentisLike=(List<Integer>) response.get("isLike");
+        List<String> commentDate=new ArrayList<String>();
+        DateFormatter dateFormatter=new DateFormatter();
+        for(int i=0;i<comments.size();i++) {
+        String time=dateFormatter.formatBoardDate(comments.get(i).getCommentDate());
+        System.out.println(time);
+        commentDate.add(time);
         
+        }
+        List<Integer> commentisLike=(List<Integer>) response.get("isLike");
+        System.out.println(comments.size());
+        
+        response.put("commentDate", commentDate);
         response.put("commentisLike", commentisLike);
         response.put("comments", comments);
         response.put("currentPage", page);
