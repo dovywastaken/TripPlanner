@@ -19,7 +19,7 @@
         <property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
         <property name="url" value="jdbc:mysql://localhost:3306/plannerdb?serverTimezone=Asia/Seoul" />
         <property name="username" value="root" />
-        <property name="password" value="Uisin2848!" />
+        <property name="password" value="1234" />
     </bean>
  
     <!-- <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
