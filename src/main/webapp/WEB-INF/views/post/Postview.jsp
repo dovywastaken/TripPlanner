@@ -24,7 +24,7 @@
     <div class="container">
         <div class="post-view">
             <span class="info-item1"><i class="fa-solid fa-user"></i> ${onepost.id} </i> <i class="fa-solid fa-clock"></i> ${postdate}</span>
-            <span class="info-item2"><i class="fa-solid fa-eye"></i> 조회수: ${onepost.view}</span>
+            <span class="info-item2"><i class="fa-solid fa-eye"></i> 조회수: ${onepost.views}</span>
         </div>
     
         
@@ -80,7 +80,7 @@
             <div id="myPanel">
                     <!-- 로그인한 사용자가 있을 때 보여줄 내용 -->
                     <div id="userInfo">
-                        <h1>${user.name}</h1>
+                        <h1>${user.nickname}</h1>
                         <h2>${user.id}</h2>
                         <c:if test="${onepost.id==user.id}">
                        <span> 

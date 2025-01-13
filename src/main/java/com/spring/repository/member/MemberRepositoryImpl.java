@@ -34,13 +34,13 @@ public class MemberRepositoryImpl implements MemberRepository
     {
     	System.out.println("+++++++++++++++++++++++++++++++++++++++");
     	System.out.println("[MemberRepository : createMember 메서드 호출]");
-        String sql = "INSERT INTO members (name, id, pw, region, sex, phone1, phone2, phone3, birthday, emailCheck, registerDate ,loginDate) " +
+        String sql = "INSERT INTO members (nickname, id, pw,phone1, phone2, phone3, birthday, emailCheck, registerDate ,loginDate) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?)";  
         Date date = new Date(System.currentTimeMillis());
         template.update(sql, 
-        			member.getName(), member.getId(), member.getPw(), member.getRegion(), member.getSex(),
-        			member.getPhone1(), member.getPhone2(), member.getPhone3(),member.getBirthday(),
-                    date, date);
+        			member.getNickname(), member.getId(), member.getPw(),
+        			member.getPhone1(), member.getPhone2(), member.getPhone3(),
+        			member.getBirthday(), date, date);
         System.out.println("폼태그에 작성한 데이터를 dto에 넣고 그것을 db에 집어넣습니다");
         System.out.println("[MemberRepository : createMember 메서드 종료]");
     }
@@ -82,16 +82,16 @@ public class MemberRepositoryImpl implements MemberRepository
     
     //어드민 페이지에서 검색한 멤버 찾아오기
     @Override
-    public List<Member> searchMember(int limit, int offset, String name) // 검색으로 조회
+    public List<Member> searchMember(int limit, int offset, String nickname) // 검색으로 조회
     {
         System.out.println("+++++++++++++++++++++++++++++++++++++++");
         System.out.println("[MemberRepository : searchMember 메서드 호출]");
-        String sql = "SELECT * FROM members WHERE name LIKE ? ORDER BY name LIMIT ? OFFSET ?";
-        String searchName = "%" + name + "%";
+        String sql = "SELECT * FROM members WHERE nickname LIKE ? ORDER BY nickname LIMIT ? OFFSET ?";
+        String searchNickname = "%" + nickname + "%";
         System.out.println("입력한 이름에 맞는 dto 가져옵니다");
 
         System.out.println("[MemberRepository : searchMember 메서드 종료]");
-        return template.query(sql, new MemberMapper(), searchName, limit, offset);
+        return template.query(sql, new MemberMapper(), searchNickname, limit, offset);
     }
 
     //어드민 페이지 내 모든 회원 목록 가져오기
@@ -100,7 +100,7 @@ public class MemberRepositoryImpl implements MemberRepository
     {
         System.out.println("+++++++++++++++++++++++++++++++++++++++");
         System.out.println("[MemberRepository : readAllMemberPaging 메서드 호출]");
-        String sql = "SELECT * FROM members ORDER BY name LIMIT ? OFFSET ?";
+        String sql = "SELECT * FROM members ORDER BY nickname LIMIT ? OFFSET ?";
 
         System.out.println("[MemberRepository : readAllMemberPaging 메서드 종료]");
         return template.query(sql, new MemberMapper(), limit, offset);
@@ -113,7 +113,7 @@ public class MemberRepositoryImpl implements MemberRepository
 		System.out.println("+++++++++++++++++++++++++++++++++++++++");
     	System.out.println("[MemberRepository : getTotalMemberCount 메서드 호출]");
 		String sql = "select count(*) from members";
-		String sql2 = "select count(*) from members where name like ?";
+		String sql2 = "select count(*) from members where nickname like ?";
 		
 		if(keyword == null || keyword.isEmpty()) //검색어 입력 안했으면 테이블 내 모든 회원의 수 계산해서 리턴
 		{
@@ -157,8 +157,8 @@ public class MemberRepositoryImpl implements MemberRepository
 	    System.out.println("[MemberRepository : updateMember 메서드 호출]");
 
 	    // 회원 정보 업데이트 쿼리
-	    String sql = "UPDATE members SET region = ?, phone1 = ?, phone2 = ?, phone3 = ? WHERE id = ?";    
-	    template.update(sql, member.getRegion(), member.getPhone1(), member.getPhone2(), member.getPhone3(),member.getId());
+	    String sql = "UPDATE members SET nickname = ?, phone1 = ?, phone2 = ?, phone3 = ? WHERE id = ?";    
+	    template.update(sql, member.getNickname() ,member.getPhone1(), member.getPhone2(), member.getPhone3(),member.getId());
 
 	    System.out.println("[MemberRepository : updateMember 메서드 종료]");
 	}

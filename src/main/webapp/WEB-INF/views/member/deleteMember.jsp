@@ -132,7 +132,7 @@
     <div class="form-container">
         <div id="backButton" onclick="goBack()">뒤로 가기</div>
         <!-- 회원 이름을 표시하는 부분 -->
-        <h2 id="headText">${member.name}님! 잠깐만요!</h2>
+        <h2 id="headText">${member.nickname}님! 잠깐만요!</h2>
         
         <c:choose>
             <c:when test="${not empty userPosts}">
@@ -152,7 +152,7 @@
             </div>
         </form>
     </div>
-    <%@ include file="../footer.jsp" %>
+    <%@ include file="../footerCompact.jsp" %>
 </body>
 
 <script>function goBack(){window.history.back();}</script>

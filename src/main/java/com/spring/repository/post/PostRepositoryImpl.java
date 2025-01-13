@@ -24,39 +24,35 @@ public class PostRepositoryImpl implements PostRepository {
     @Override
     public Post getPostById(int postId) {
         String sql = "SELECT * FROM post WHERE p_unique = ?";
-        String updateSQL="UPDATE post set view= view+1 WHERE p_unique=?";
+        String updateSQL="UPDATE post set views = views +1 WHERE p_unique = ?";
         template.update(updateSQL,postId);
         return template.queryForObject(sql, new PostRowMapper(), postId);
     }
 
     @Override
     public void createPost(Post post) {
-        String sql = "INSERT INTO post (id, title, contents, publishDate, region, isPrivate, commentIsAllowed, satisfaction,image_names) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?)";
+        String sql = "INSERT INTO post (id, title, contents, publishDate, isPrivate, commentIsAllowed, imageNames) VALUES (?, ?, ?, ?, ?, ?, ?)";
         String imageNames = String.join(",", post.getFileImage());
         template.update(sql,
                 post.getId(),
                 post.getTitle(),
                 post.getContents(),
                 post.getPublishDate(),
-                post.getRegion(),
                 post.getIsPrivate(),
                 post.isCommentIsAllowed(),
-                post.getSatisfaction(),
                 imageNames
         );
     }
 
     @Override
     public void updatePost(Post post) {
-        String sql = "UPDATE post SET title = ?, contents = ?, region = ?, isprivate = ?,commentIsAllowed=?, satisfaction = ?,image_names = ? WHERE p_unique = ?";
+        String sql = "UPDATE post SET title = ?, contents = ?, isPrivate = ?,commentIsAllowed=?, imageNames = ? WHERE p_unique = ?";
         String imageNames = String.join(",", post.getFileImage());
         template.update(sql,
                 post.getTitle(),
                 post.getContents(),
-                post.getRegion(),
                 post.getIsPrivate(),
                 post.isCommentIsAllowed(),
-                post.getSatisfaction(),
                 imageNames,
                 post.getP_unique()
         );
@@ -74,7 +70,7 @@ public class PostRepositoryImpl implements PostRepository {
 
     @Override
     public void incrementViewCount(int postId) {
-        String sql = "UPDATE post SET view = view + 1 WHERE p_unique = ?";
+        String sql = "UPDATE post SET views = views + 1 WHERE p_unique = ?";
         template.update(sql, postId);
     }
 
@@ -105,7 +101,7 @@ public class PostRepositoryImpl implements PostRepository {
     
     @Override
 	public int getIdisLike(String id,int num) {
-		String SQL="select count(*) from postLike where id=? and p_unique=?";
+		String SQL="select count(*) from postLike where id = ? and p_unique = ?";
 		int result= template.queryForObject(SQL, Integer.class,id,num);
 		return result;
 	}
@@ -143,7 +139,7 @@ public class PostRepositoryImpl implements PostRepository {
 
 	@Override
 	public void updatetour(Tour tour) {
-			String insertSQL="INSERT INTO tour (p_unique,contentid, contenttypeid, title, firstimage, addr1, cat2, cat3, mapx, mapy, created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+			String insertSQL="INSERT INTO tour (p_unique,contentId, contentTypeId, title, firstImage, addr1, cat2, cat3, mapx, mapy, created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
 			template.update(insertSQL,
 					tour.getP_unique(),
 					tour.getContentid(),
@@ -157,8 +153,6 @@ public class PostRepositoryImpl implements PostRepository {
 					tour.getMapy(),
 					tour.getCreated_at()
 					);
-		
-		
 	}
 	
 }

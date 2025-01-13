@@ -188,7 +188,7 @@
 	
 	        <div class="form-group">
 	            <label for="name" class="formName">닉네임</label>
-	            <form:input path="name" id="name" class="textBox" onchange="NameValidator()" placeholder="이름"/>
+	            <form:input path="nickname" id="name" class="textBox" onchange="NameValidator()" placeholder="이름"/>
 	            <div id="message_name"></div>
 	        </div>
 	

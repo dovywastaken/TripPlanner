@@ -36,12 +36,12 @@
 					            </div>
 					            <div class="plannerCol" id="pText">
 					            	<div>
-										<h4>${post.id} 님의</h4> 
+										<h4>${post.nickname} 님의</h4> 
 					                	<h3 class="plannerTitle">${post.title}</h3>
 									</div>
 									<div class="plannerStatus">
 										<span>좋아요: ${post.likes}</span>
-										<p>조회수: ${post.view}</p>
+										<p>조회수: ${post.views}</p>
 									</div>
 					            </div>
 				        	</div>
@@ -141,7 +141,7 @@
 	            <div id="myPanel">
 				    <c:if test="${not empty user}">
 				        <!-- 로그인한 사용자가 있을 때 보여줄 내용 -->
-				        <h1>${user.name} 님, <br>떠날 준비 되셨나요?</h1>
+				        <h1>${user.nickname} 님, <br>떠날 준비 되셨나요?</h1>
 				        <div class="myPost">
 				            <div class="myPostTitle">
 				                <div class="postTitle">최근 작성 글</div>
@@ -205,7 +205,7 @@
 				        </div>
 					</c:if>
 				</div>
-				
+
 	        </div>
 	    </aside>
 	    

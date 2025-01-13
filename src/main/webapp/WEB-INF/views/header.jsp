@@ -35,7 +35,7 @@
 	        	</c:if>
 		        <a href="${pageContext.request.contextPath}/members/myPage" class="headerRight">내 정보</a>
 	            <a href="${pageContext.request.contextPath}/members/signOut" id="logout" class="headerRight">로그아웃</a>
-	            <p class="headerRight">${user.name}님</p>
+	            <p class="headerRight">${user.nickname}님</p>
 	        </c:if>
         </div>
     </div>

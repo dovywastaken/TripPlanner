@@ -8,6 +8,11 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/normalize.css">
 
 <link href="https://cdn.jsdelivr.net/gh/sun-typeface/SUITE@2/fonts/static/woff2/SUITE.css" rel="stylesheet">
+
+<script>
+	const key = "${tourAPIKey}"
+</script>
+
 <script src="${pageContext.request.contextPath}/resources/js/boardTours.js" defer></script>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 </head>
@@ -82,7 +87,7 @@
             <div id="myPanel">
                     <!-- 로그인한 사용자가 있을 때 보여줄 내용 -->
                     <div id="userInfo">
-                        <h1>${user.name}</h1>
+                        <h1>${user.nickname}</h1>
                         <h2>${user.id}</h2>
                     </div>
                     <p id="currentDate" style="text-align: center; width: 100%; color: #2C3F3C;"></p>

@@ -15,25 +15,26 @@ public class PostRowMapper implements RowMapper<Post>{
 	@Override
 	public Post mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Post post=new Post();
+		post.setP_unique(rs.getInt("p_unique"));
         post.setId(rs.getString("id"));
         post.setTitle(rs.getString("title"));
         post.setContents(rs.getString("contents"));
-        post.setPublishDate(rs.getTimestamp("publishdate"));
-        post.setView(rs.getInt("view"));
+        post.setPublishDate(rs.getTimestamp("publishDate"));
+        post.setViews(rs.getInt("views"));
         post.setLikes(rs.getInt("likes"));
-        post.setRegion(rs.getString("region"));
-        post.setIsPrivate(rs.getString("isprivate"));
-        post.setCommentIsAllowed(rs.getString("CommentIsAllowed"));
-        post.setP_unique(rs.getInt("p_unique"));
-        post.setSatisfaction(rs.getInt("Satisfaction"));
+        post.setIsPrivate(rs.getString("isPrivate"));
+        post.setCommentIsAllowed(rs.getString("commentIsAllowed"));
+        String imageNames = rs.getString("imageNames");
         post.setCommentCount(rs.getInt("commentCount"));
-        String fileImageString = rs.getString("image_names"); // 데이터베이스 컬럼명 확인 필요
-        if (fileImageString != null && !fileImageString.isEmpty()) {
-            List<String> fileImageList = Arrays.asList(fileImageString.split(",")); // 쉼표로 구분된 문자열 처리
-            post.setFileImage(fileImageList);
+        
+        if (imageNames != null && !imageNames.isEmpty()) 
+        {
+            List<String> imageNameList = Arrays.asList(imageNames.split(",")); // 쉼표로 구분된 문자열 처리
+            post.setFileImage(imageNameList);
         } else {
             post.setFileImage(List.of()); // 빈 리스트 설정
         }
+        
         return post;
 	}
 

@@ -2,7 +2,8 @@ package com.spring.domain;
 
 import java.sql.Timestamp;
 
-public class Comment {
+public class Comment 
+{
 	private String id;
 	private String comments;
 	private Timestamp commentDate;
@@ -36,6 +37,7 @@ public class Comment {
 	public int getP_unique() {
 		return p_unique;
 	}
+	
 	public void setP_unique(int p_unique) {
 		this.p_unique = p_unique;
 	}
@@ -48,7 +50,4 @@ public class Comment {
 	public void setC_unique(int c_unique) {
 		this.c_unique = c_unique;
 	}
-	
-	
-	
 }

@@ -13,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.spring.controller.post.DateFormatter;
 import com.spring.domain.Member;
@@ -65,7 +64,6 @@ public class MainController
 	            
 	            Map<String, Object> count = boardService.getMyboard(member2.getId(), 1);
 	            
-	            
 	            System.out.println(days);
 	            System.out.println(posts);
 	            // 모델에 게시물과 날짜 데이터 추가
@@ -74,7 +72,6 @@ public class MainController
 	            model.addAttribute("posts", posts);
 	        }
 	    }
-	    
 	    
 	    returnTourList(model);
 	    hotboard(model);

@@ -160,7 +160,7 @@
             </c:when>
         </c:choose>
     </div>
-	<%@ include file="../footer.jsp" %>
+	<%@ include file="../footerCompact.jsp" %>
 </body>
 <script>function goBack(){window.history.back();}</script>
 </html>

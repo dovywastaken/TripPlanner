@@ -18,6 +18,6 @@
 </div>
 <div id="map" data-info='${info}'></div>
 
-  <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=21c423a4331e55883c3eb46115b12e02&libraries=services"></script>
+  <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=${mapAPIKey}&libraries=services"></script>
 </body>
 </html>

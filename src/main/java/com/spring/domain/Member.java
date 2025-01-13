@@ -5,7 +5,7 @@ import java.sql.Date;
 public class Member 
 {
     private String id;       // 사용자 ID
-    private String name;     // 이름
+    private String nickname;     // 이름
     private String pw;       // 비밀번호
     private String region;   // 지역
     private String sex;      // 성별
@@ -19,11 +19,11 @@ public class Member
     
     // 생성자, 게터, 세터들
 
-    public String getName() {
-        return name;
+    public String getNickname() {
+        return nickname;
     }
-    public void setName(String name) {
-        this.name = name;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
     public String getId() {
         return id;

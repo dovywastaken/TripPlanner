@@ -204,8 +204,8 @@
 		                        <c:when test="${not empty memberList}">
 		                            <c:forEach var="member" items="${memberList}">
 		                                <tr>
-		                                    <td class="tableContent">${member.name}</td>
 		                                    <td class="tableContent">${member.id}</td>
+		                                    <td class="tableContent">${member.nickname}</td>
 		                                    <td class="tableContent">${member.birthday}</td>
 		                                    <td class="tableContent">${member.phone1}-${member.phone2}-${member.phone3}</td>
 		                                    <td class="tableContent">${member.registerDate}</td>

@@ -44,7 +44,7 @@
                             <td class="tableContent">${All.id}</td>
                             <td class="tableContent">${date.get(loop.index)}</td>
                             <td class="tableContent">${All.likes}</td>
-                            <td class="tableContent">${All.view}</td>
+                            <td class="tableContent">${All.views}</td>
                             <!-- <td class="tableContent">${getpostnumber.get(loop.index)}</td> -->
                         </tr>
                     </c:forEach>
@@ -102,7 +102,7 @@
                 <c:if test="${not empty user}">
                     <!-- 로그인한 사용자가 있을 때 보여줄 내용 -->
                     <div id="userInfo">
-                        <h1>${user.name}</h1>
+                        <h1>${user.nickname}</h1>
                         <h2>${user.id}</h2>
                     </div>
                     <p id="currentDate" style="text-align: center; width: 100%; color: #2C3F3C;"></p>

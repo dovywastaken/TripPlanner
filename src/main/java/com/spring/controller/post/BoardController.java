@@ -7,6 +7,8 @@ import java.util.Map;
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +20,7 @@ import com.spring.domain.Tour;
 import com.spring.service.post.BoardService;
 
 @Controller
+@PropertySource("classpath:properties/API.key.properties") 
 public class BoardController {
 	PaginationHelper paginationHelper=new PaginationHelper();
 	
@@ -152,11 +155,14 @@ public class BoardController {
 	    return "board/boardRestaurant";
 	}
 	
-	
+	@Value("${TourAPI.key}")
+	private String tourAPIKey;
 	
 	@GetMapping("/detailedInfo")
 	public String toDetailedPage(@RequestParam String contentTypeId, @RequestParam String contentId, Model model) 
 	{
+		
+		model.addAttribute("tourAPIKey", tourAPIKey);
 		model.addAttribute("contenttypeid", contentTypeId);
 		model.addAttribute("contentid", contentId);
 		return "board/detailedPage";
