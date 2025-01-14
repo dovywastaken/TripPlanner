@@ -2,10 +2,6 @@
 let contentTypeId;
 let contentId;
 
-/*API 키*/
-// const key = "WrDDwyS8ewwsZtX%2Bw9POHX4r8rVWShuslpdt7%2Bv0hEZhVvlddHkM0eFnIi2DYxfltV0h9zHXlW6mgecGdjXqvw%3D%3D";
-
-
 /*공통적으로 받아올 데이터들*/
 /*detailCommon*/
 let firstimage = document.getElementById('firstimage');
