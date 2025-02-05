@@ -10,7 +10,9 @@ public class DateFormatter {
     private SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
     private SimpleDateFormat datetimeFormat = new SimpleDateFormat("yy.MM.dd.HH:mm");
 
-    public String formatBoardDate(Date postDate) {
+    
+    public String formatBoardDate(Date postDate) 
+    {
         Date currentDate = new Date();
         Date todayMidnight = getMidnight(currentDate);
         Date tomorrowMidnight = getNextMidnight(todayMidnight);
@@ -25,14 +27,13 @@ public class DateFormatter {
         }
     }
     
-    public String formatPostDate(Date postDate) {
-       
-            return datetimeFormat.format(postDate);
- 
-    }
+    //년,월,일,시간:분 형태로 Date객체의 데이터를 가공해주는 함수 (Post DTO에서는 Timestamp 객체를 쓰고있음)
+    public String formatPostDate(Date postDate) {return datetimeFormat.format(postDate);} 
+    
 
-    private Date getMidnight(Date date) {
-        Calendar calendar = Calendar.getInstance();
+    private Date getMidnight(Date date) 
+    {
+    	Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
@@ -41,7 +42,8 @@ public class DateFormatter {
         return calendar.getTime();
     }
 
-    private Date getNextMidnight(Date date) {
+    private Date getNextMidnight(Date date) 
+    {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         calendar.add(Calendar.DAY_OF_MONTH, 1);

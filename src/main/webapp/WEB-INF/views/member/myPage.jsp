@@ -31,7 +31,7 @@
                         <span id="emailCheck" class="green-text">인증 완료</span>
                     </c:if>
                     </p>
-                    <p class="dataBox">${user.id}</p>
+                    <p class="dataBox">${user.email}</p>
                 </div>
                 <c:if test="${user.emailCheck == 0}">
 	                <div class="email-verification">
@@ -80,7 +80,7 @@
                     <!-- 로그인한 사용자가 있을 때 보여줄 내용 -->
                     <div id="userInfo">
                         <h1>${user.nickname}</h1>
-                        <h2>${user.id}</h2>
+                        <h2>${user.email}</h2>
                     </div>
                     <p id="currentDate" style="text-align: center; width: 100%; color: #2C3F3C;"></p>
                 <hr style="border: 1px solid #F1F3F9; margin : 21px auto 10px auto; width: 80%;">

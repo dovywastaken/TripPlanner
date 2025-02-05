@@ -7,7 +7,6 @@
 <meta charset="UTF-8">
 <title>게시판</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/normalize.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/header.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/board.css">
 <link href="https://cdn.jsdelivr.net/gh/sun-typeface/SUITE@2/fonts/static/woff2/SUITE.css" rel="stylesheet">
 </head>
@@ -32,13 +31,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                <c:forEach items="${Allpost}" var="All" varStatus="loop">
+                <c:forEach items="${postList}" var="postList" varStatus="loop">
                     <tr>
-                        <td class="tableContent"><a href="${pageContext.request.contextPath}/postview?num=${All.p_unique}&page=${currentPage}">${All.title}</a></td>
-                        <td class="tableContent">${All.id}</td>
+                        <td class="tableContent"><a href="${pageContext.request.contextPath}/postview?num=${postList.p_unique}&page=${currentPage}">${postList.title}</a></td>
+                        <td class="tableContent">${postList.id}</td>
                         <td class="tableContent">${date.get(loop.index)}</td>
-                        <td class="tableContent">${All.likes}</td>
-                        <td class="tableContent">${All.views}</td>
+                        <td class="tableContent">${postList.likes}</td>
+                        <td class="tableContent">${postList.views}</td>
                         <!-- <td>${getpostnumber.get(loop.index)}</td> -->
                     </tr>
                 </c:forEach> 

@@ -17,35 +17,31 @@ public class BoardServiceImpl implements BoardService{
 	private BoardRepository boardRepository;
 
 	@Override
-	public Map<String, Object> AllboardRead(int page) {
-		Map<String, Object> result=boardRepository.AllboardRead(page);
-		return result;
+	public Map<String, Object> allBoard(int page) {
+		return boardRepository.allBoard(page);
 	}
 
 	@Override
-    public Map<String, Object> searchPosts(String type, String keyword, int page) {
-        return boardRepository.searchPosts(type, keyword, page);
+    public Map<String, Object> allBoardSearch(String type, String keyword, int page) {
+        return boardRepository.allBoardSearch(type, keyword, page);
     }
 	@Override
-	public Map<String, Object> getMyboard(String member, int page) {
+	public Map<String, Object> myBoard(String member, int page) {
 		
-		return boardRepository.getMyboard(member,page);
+		return boardRepository.myBoard(member,page);
 	}
 
 	@Override
-	public Map<String, Object> mysearchPosts(String id,String keyword, int page) {
-		// TODO Auto-generated method stub
-		return boardRepository.mysearchPosts(id,keyword, page);
+	public Map<String, Object> myBoardSearch(String id,String keyword, int page) {
+		return boardRepository.myBoardSearch(id,keyword, page);
 	}
 
 	@Override
-	public Map<String, Object> hotboardRead(int size, int page) {
-		// TODO Auto-generated method stub
-		return boardRepository.hotboardRead(size , page);
+	public Map<String, Object> hotBoard(int size, int page) {
+		return boardRepository.hotBoard(size , page);
 	}
 	@Override
 	public List<Tour> hotSpots(String type, int limit, int offset) {
-		System.out.println("서비스에서 limit,offset값을 들고 갑니다" + limit + offset);
 		return boardRepository.hotSpots(type, limit, offset);
 	}
 

@@ -4,11 +4,9 @@ import java.sql.Date;
 
 public class Member 
 {
-    private String id;       // 사용자 ID
-    private String nickname;     // 이름
+    private String email;       // 사용자 ID
+    private String nickname;     // 닉네임 
     private String pw;       // 비밀번호
-    private String region;   // 지역
-    private String sex;      // 성별
     private String phone1;   // 전화번호 앞부분
     private String phone2;   // 전화번호 중간부분
     private String phone3;   // 전화번호 뒷부분
@@ -25,29 +23,17 @@ public class Member
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
-    public String getId() {
-        return id;
+    public String getEmail() {
+        return email;
     }
-    public void setId(String id) {
-        this.id = id;
+    public void setEmail(String email) {
+        this.email = email;
     }
     public String getPw() {
         return pw;
     }
     public void setPw(String pw) {
         this.pw = pw;
-    }
-    public String getRegion() {
-        return region;
-    }
-    public void setRegion(String region) {
-        this.region = region;
-    }
-    public String getSex() {
-        return sex;
-    }
-    public void setSex(String sex) {
-        this.sex = sex;
     }
     public String getPhone1() {
         return phone1;

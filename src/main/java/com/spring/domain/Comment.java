@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 public class Comment 
 {
-	private String id;
+	private String email;
 	private String comments;
 	private Timestamp commentDate;
 	private int commentLikes;
@@ -19,11 +19,11 @@ public class Comment
 	public void setComments(String contents) {
 		this.comments = contents;
 	}
-	public String getId() {
-		return id;
+	public String getEmail() {
+		return email;
 	}
-	public void setId(String id) {
-		this.id = id;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	public Timestamp getCommentDate() {
 		return commentDate;

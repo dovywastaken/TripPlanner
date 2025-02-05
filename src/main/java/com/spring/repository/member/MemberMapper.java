@@ -13,7 +13,7 @@ public class MemberMapper implements RowMapper<Member>
 	{
 		Member member = new Member();
 		member.setNickname(rs.getString(1));
-		member.setId(rs.getString(2));
+		member.setEmail(rs.getString(2));
 		member.setPw(rs.getString(3));
 		member.setPhone1(rs.getString(4));
 		member.setPhone2(rs.getString(5));

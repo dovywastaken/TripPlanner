@@ -12,116 +12,123 @@ import org.springframework.stereotype.Repository;
 import com.spring.domain.Post;
 import com.spring.domain.Tour;
 
-	@Repository
-	public class BoardRepositoryImpl implements BoardRepository {
+@Repository
+public class BoardRepositoryImpl implements BoardRepository 
+{
 	
 	@Autowired
     private JdbcTemplate template;
 	
 	@Override
-	public Map<String, Object> AllboardRead(int page) { //공개 게시글 페이지네이션 및 데이터 반환 메서드
+	public Map<String, Object> allBoard(int page) 
+	{ //공개 게시글 페이지네이션 및 데이터 반환 메서드
+		System.out.println("+++++++++++++++++++++++++++++++++++++++");
+    	System.out.println("[BoardRepository : allBoardRead 메서드 호출]");
 		int pageSize = 10; //총 10개의 글을 불러오는데
-        int startIndex = (page - 1) * pageSize; //페이지네이션 시작점
+        int offset = (page - 1) * pageSize; //페이지네이션 시작점 page의 값이 1이면 0번 글부터 2면 10번 글부터
 		
-		PostRowMapper postRowMapper=new PostRowMapper();
-		List<Post> Allpost=new ArrayList<Post>(); //게시글 목록 저장할 리스트 객체
+		PostRowMapper postRowMapper = new PostRowMapper();
+		String postListSQL = "SELECT * FROM post WHERE isPrivate = 0 ORDER BY publishDate DESC, p_unique DESC LIMIT ?, ?"; //등록일 순, 고유번호의 내림차순으로 정렬한 데이터 들고옴
+		List<Post> postList = template.query(postListSQL,postRowMapper,new Object[] {offset,pageSize}); // 실제 게시글을 리스트화 시킨것
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("postList", postList);
+		result.put("postSize", postList.size());
+		System.out.println("[총 " + postList.size() + "개의 게시글을 반환합니다]");
+		System.out.println("[BoardRepository : allBoardRead 메서드 종료]");
 		
-		String sql = "SELECT * FROM post WHERE isPrivate = 1 ORDER BY publishDate DESC, p_unique DESC LIMIT ?, ?"; //등록일 순, 고유번호의 내림차순으로 정렬한 데이터 들고옴
-        String countSql = "SELECT COUNT(*) FROM post WHERE isPrivate = 1"; //게시물 총 갯수 세는 쿼리문
-		Allpost=template.query(sql,postRowMapper,new Object[] {startIndex,pageSize}); // 실제 게시글을 리스트화 시킨것
-		int Allpostgetnum=template.queryForObject(countSql, Integer.class); //게시글이 총 몇개 있는지를 알아낸 것
-		System.out.println("Executing SQL: " + sql);
-	    System.out.println("startIndex: " + startIndex + ", pageSize: " + pageSize);
-		Map<String, Object> result=new HashMap<String, Object>();
-		result.put("Allpost", Allpost);
-		result.put("Allpostgetnum", Allpostgetnum);
-
 		return result;
 	}
 	
 	@Override
-    public Map<String, Object> searchPosts(String type, String keyword, int page) {
+    public Map<String, Object> allBoardSearch(String type, String keyword, int page) 
+	{
         int pageSize = 10; 
-        int startIndex = (page - 1) * pageSize; 
+        int offset = (page - 1) * pageSize; 
 
-        String sql = "";
-        String countSql = "";
+        String postListSQL = "";
+        String postSizeSQL = "";
 
         if ("title".equals(type)) {
-            sql = "SELECT * FROM post WHERE title LIKE ? AND isPrivate = 1 ORDER BY publishDate DESC LIMIT ?, ?";
-            countSql = "SELECT COUNT(*) FROM post WHERE title LIKE ? AND isPrivate = 1";
+        	postListSQL = "SELECT * FROM post WHERE title LIKE ? AND isPrivate = 0 ORDER BY publishDate DESC LIMIT ?, ?";
+        	postSizeSQL = "SELECT COUNT(*) FROM post WHERE title LIKE ? AND isPrivate = 0";
             keyword = "%" + keyword + "%"; 
         } else if ("id".equals(type)) {
-            sql = "SELECT * FROM post WHERE id = ? AND isPrivate = 1 ORDER BY publishDate DESC LIMIT ?, ?";
-            countSql = "SELECT COUNT(*) FROM post WHERE id = ? AND isPrivate = 1";
+        	postListSQL = "SELECT * FROM post WHERE id = ? AND isPrivate = 0 ORDER BY publishDate DESC LIMIT ?, ?";
+        	postSizeSQL = "SELECT COUNT(*) FROM post WHERE id = ? AND isPrivate = 0";
         }
 
-        List<Post> posts = template.query(sql, new PostRowMapper(), keyword, startIndex, pageSize);
-        int totalPosts = template.queryForObject(countSql, Integer.class, keyword);
+        List<Post> postList = template.query(postListSQL, new PostRowMapper(), keyword, offset, pageSize);
+        int postSize = template.queryForObject(postSizeSQL, Integer.class, keyword);
 
         
         Map<String, Object> result = new HashMap<>();
-        result.put("Allpost", posts);
-        result.put("Allpostgetnum", totalPosts);
+        result.put("postList", postList);
+        result.put("postSize", postSize);
         return result;
     }
+	
 	@Override
-	public Map<String, Object> getMyboard(String member, int page) {
-		 int pageSize = 10; 
-	     int startIndex = (page - 1) * pageSize; 
-	     Map<String, Object>result = new HashMap<String,Object>();
+	public Map<String, Object> myBoard(String member, int page) 
+	{
+		int pageSize = 10; 
+	    int offset = (page - 1) * pageSize; 
+	    Map<String, Object>result = new HashMap<String,Object>();
 	     
-	    String getnumSQL="SELECT count(*) FROM post WHERE id=?"; 
-		String myboardSQL="SELECT * FROM post WHERE id=? ORDER BY publishDate DESC LIMIT ?, ?";
-		List<Post> Allpost=template.query(myboardSQL, new PostRowMapper(),member, startIndex, pageSize);
-		int totalPosts=template.queryForObject(getnumSQL, Integer.class,member);
-		result.put("Allpost", Allpost);
-		result.put("Allpostgetnum",totalPosts);
+	    String postListSQL="SELECT * FROM post WHERE id=? ORDER BY publishDate DESC LIMIT ?, ?";
+	    String postSizeSQL="SELECT count(*) FROM post WHERE id=?"; 
+	    
+		List<Post> postList = template.query(postListSQL, new PostRowMapper(),member, offset, pageSize);
+		int postSize = template.queryForObject(postSizeSQL, Integer.class,member);
+		result.put("postList", postList);
+		result.put("postSize",postSize);
+		
 		return result;
 	}
 
 	@Override
-	public Map<String, Object> mysearchPosts(String id,String keyword, int page) {
+	public Map<String, Object> myBoardSearch(String id,String keyword, int page) 
+	{
 		    int pageSize = 10; 
-	        int startIndex = (page - 1) * pageSize; 
+	        int offset = (page - 1) * pageSize; 
 
-	        String mySearchSql = "SELECT * FROM post WHERE id=? And title Like ? ORDER BY publishDate DESC LIMIT ?, ?";
-	        String countSql = "SELECT COUNT(*) FROM post WHERE id=? And title LIKE ?";
+	        String postListSQL = "SELECT * FROM post WHERE id=? And title Like ? ORDER BY publishDate DESC LIMIT ?, ?";
+	        String postSizeSQL = "SELECT COUNT(*) FROM post WHERE id=? And title LIKE ?";
 	        keyword = "%" + keyword + "%"; 
 	
-	        List<Post> posts = template.query(mySearchSql, new PostRowMapper(),id, keyword, startIndex, pageSize);
-	        int totalPosts = template.queryForObject(countSql, Integer.class,id,keyword);
+	        List<Post> postList = template.query(postListSQL, new PostRowMapper(),id, keyword, offset, pageSize);
+	        int postSize = template.queryForObject(postSizeSQL, Integer.class,id,keyword);
 	        
 	        Map<String, Object> result = new HashMap<>();
-	        result.put("Allpost", posts);
-	        result.put("Allpostgetnum", totalPosts);
+	        result.put("postList", postList);
+	        result.put("postSize", postSize);
+	        
 	        return result;
 	}
 
 
 		@Override
-		public Map<String, Object> hotboardRead(int size, int page) { 
+		public Map<String, Object> hotBoard(int size, int page) 
+		{ 
 			int pageSize = size; 
-	        int startIndex = (page - 1) * pageSize; 
+	        int offset = (page - 1) * pageSize; 
 			
-			PostRowMapper postRowMapper=new PostRowMapper();
-			List<Post> Allpost=new ArrayList<Post>(); //게시글 목록 저장할 리스트 객체
+			PostRowMapper postRowMapper = new PostRowMapper();
+			String postListSQL = "SELECT * FROM post where (likes * 5) + (views * 0.1) + (commentCount * 1) >= 100 ORDER BY publishDate DESC LIMIT ?, ?";
+			String postSizeSQL = "SELECT count(*) FROM post where (likes * 5) + (views * 0.1) + (commentCount * 1) >= 100";
 			
-			String sql = "SELECT * FROM post where (likes * 5) + (views * 0.1) + (commentCount * 1) >= 100 ORDER BY publishDate DESC LIMIT ?, ?";
-			String countSql = "SELECT count(*) FROM post where (likes * 5) + (views * 0.1) + (commentCount * 1) >= 100";
-			
-			Allpost=template.query(sql,postRowMapper,new Object[] {startIndex,pageSize});
-			int Allpostgetnum=template.queryForObject(countSql, Integer.class); 
+			List<Post> postList =template.query(postListSQL,postRowMapper,offset,pageSize);
+			int postSize = template.queryForObject(postSizeSQL, Integer.class); 
 			
 			Map<String, Object> result=new HashMap<String, Object>();
-			result.put("Allpost", Allpost);
-			result.put("Allpostgetnum", Allpostgetnum);
+			result.put("postList", postList);
+			result.put("postSize", postSize);
 
 			return result;
 		}
 		
 		@Override
-		public List<Tour> hotSpots(String type, int limit, int offset) { //12 , 0로 들어옴
+		public List<Tour> hotSpots(String type, int limit, int offset) 
+		{ //12 , 0로 들어옴
 			String rankSql = "SELECT contentId FROM (SELECT contentId, COUNT(*) AS count FROM tour WHERE contentTypeId = ? GROUP BY contentId HAVING COUNT(*) >= 1) filtered_data ORDER BY filtered_data.count DESC LIMIT ? offset ?";
 			List<String> rank = template.queryForList(rankSql, String.class, type,limit,offset);
 			// 결과 담을 리스트
@@ -138,7 +145,8 @@ import com.spring.domain.Tour;
 		}
 		
 		@Override
-		public List<Map<String, Object>> getTourInfoByPostId(int p_unique) {
+		public List<Map<String, Object>> getTourInfoByPostId(int p_unique) 
+		{
 		    System.out.println("getTourInfoByPostId 리파지터리 함수 호출됨");
 		    String sql = "select * from tour where p_unique = ?";
 		    List<Map<String, Object>> tourList = template.queryForList(sql, p_unique);
@@ -148,7 +156,6 @@ import com.spring.domain.Tour;
 		        tourList = new ArrayList<>();
 		    }
 		    
-		    System.out.println(tourList);
 		    return tourList;
 		}
 }

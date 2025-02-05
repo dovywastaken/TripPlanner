@@ -34,11 +34,12 @@ public class MemberRepositoryImpl implements MemberRepository
     {
     	System.out.println("+++++++++++++++++++++++++++++++++++++++");
     	System.out.println("[MemberRepository : createMember 메서드 호출]");
-        String sql = "INSERT INTO members (nickname, id, pw,phone1, phone2, phone3, birthday, emailCheck, registerDate ,loginDate) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?)";  
+        String sql = "INSERT INTO members (nickname, id, pw, phone1, phone2, phone3, birthday, emailCheck, registerDate ,loginDate) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, 0, ?, ?)";  
         Date date = new Date(System.currentTimeMillis());
+        System.out.println("getEmail - Repository : " + member.getEmail());
         template.update(sql, 
-        			member.getNickname(), member.getId(), member.getPw(),
+        			member.getNickname(), member.getEmail(), member.getPw(),
         			member.getPhone1(), member.getPhone2(), member.getPhone3(),
         			member.getBirthday(), date, date);
         System.out.println("폼태그에 작성한 데이터를 dto에 넣고 그것을 db에 집어넣습니다");
@@ -158,7 +159,7 @@ public class MemberRepositoryImpl implements MemberRepository
 
 	    // 회원 정보 업데이트 쿼리
 	    String sql = "UPDATE members SET nickname = ?, phone1 = ?, phone2 = ?, phone3 = ? WHERE id = ?";    
-	    template.update(sql, member.getNickname() ,member.getPhone1(), member.getPhone2(), member.getPhone3(),member.getId());
+	    template.update(sql, member.getNickname() ,member.getPhone1(), member.getPhone2(), member.getPhone3(),member.getEmail());
 
 	    System.out.println("[MemberRepository : updateMember 메서드 종료]");
 	}
@@ -194,7 +195,7 @@ public class MemberRepositoryImpl implements MemberRepository
     	System.out.println("+++++++++++++++++++++++++++++++++++++++");
     	System.out.println("[MemberRepository : deleteMember 메서드 호출]");
         String sql = "DELETE FROM members WHERE id = ?";
-        template.update(sql, member.getId());
+        template.update(sql, member.getEmail());
         System.out.println("로그인한 사용자의 정보를 삭제합니다");
         System.out.println("[MemberRepository : deleteMember 메서드 종료]");
     }

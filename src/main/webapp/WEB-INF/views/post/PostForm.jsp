@@ -46,7 +46,6 @@
                 </div>
                 <input type="hidden" id="title" name="title" class="title-input" placeholder="제목을 입력하세요">
                 <textarea id="summernote" name="contents"></textarea>
-            
         </div>
 
         <div class="right">
@@ -55,11 +54,11 @@
                     <h4>공개 설정</h4>
                     <div class="radio-group">
                         <div class="radio-item">
-                            <input type="radio" name="isPrivate" id="public" value="1" checked>
+                            <input type="radio" name="isPrivate" id="public" value="0" checked>
                             <label for="public">공개</label>
                         </div>
                         <div class="radio-item">
-                            <input type="radio" name="isPrivate" id="private" value="0">
+                            <input type="radio" name="isPrivate" id="private" value="1">
                             <label for="private">비공개</label>
                         </div>
                     </div>

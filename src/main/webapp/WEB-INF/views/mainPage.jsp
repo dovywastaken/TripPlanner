@@ -28,25 +28,29 @@
 	                    <a href="${pageContext.request.contextPath}/hotPlanners" class="morePost">더보기</a>
 	                </div>
 	                <div id="planner">
-					<c:forEach var="post" items="${result.Allpost}">
-						<div class="plannerDoubling">
-				        	<div class="plannerCard">
-					            <div class="imgFrame">
-					                <img src="${pageContext.request.contextPath}/resources/upload/${post.fileImage[0]}" class="pImg">
-					            </div>
-					            <div class="plannerCol" id="pText">
-					            	<div>
-										<h4>${post.nickname} 님의</h4> 
-					                	<h3 class="plannerTitle">${post.title}</h3>
+	                <c:choose>
+	               			<c:when test="${not empty result.AllPost}">
+								<c:forEach var="post" items="${result.Allpost}">
+									<div class="plannerDoubling">
+							        	<div class="plannerCard">
+								            <div class="imgFrame">
+								                <img src="${pageContext.request.contextPath}/resources/upload/${post.fileImage[0]}" class="pImg">
+								            </div>
+								            <div class="plannerCol" id="pText">
+								            	<div>
+													<h4>${post.nickname} 님의</h4> 
+								                	<h3 class="plannerTitle">${post.title}</h3>
+												</div>
+												<div class="plannerStatus">
+													<span>좋아요: ${post.likes}</span>
+													<p>조회수: ${post.views}</p>
+												</div>
+								            </div>
+							        	</div>
 									</div>
-									<div class="plannerStatus">
-										<span>좋아요: ${post.likes}</span>
-										<p>조회수: ${post.views}</p>
-									</div>
-					            </div>
-				        	</div>
-						</div>
-					</c:forEach>
+								</c:forEach>
+							</c:when>
+					</c:choose>
 	                </div>
 	            </div>
 	
@@ -190,7 +194,7 @@
 				            <form:form modelAttribute="member" method="POST" action="members/signIn">
 				                <div class="form-group">
 				                    <label for="id">아이디:</label>
-				                    <form:input path="id" id="id" placeholder="아이디" />
+				                    <form:input path="email" id="id" placeholder="아이디" />
 				                </div>
 				                <div class="form-group">
 				                    <label for="pw">비밀번호:</label>

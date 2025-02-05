@@ -177,7 +177,7 @@
 
 	<%@ include file="../header.jsp" %>
 <c:if test="${not empty user}">
-	<c:if test="${user.id == 'admin'}">
+	<c:if test="${user.email == 'admin'}">
 		<div id="container">
 		    <h2 id="titleBanner">회원 목록</h2>
 		    <div id="boardContainer"> 
@@ -190,7 +190,7 @@
 		            <table id="table">
 		                <thead>
 		                    <tr>
-		                        <th class="tableHead">ID</th>
+		                        <th class="tableHead">이메일</th>
 		                        <th class="tableHead">닉네임</th>
 		                        <th class="tableHead">생년월일</th>
 		                        <th class="tableHead" id="phone">전화번호</th>
@@ -204,7 +204,7 @@
 		                        <c:when test="${not empty memberList}">
 		                            <c:forEach var="member" items="${memberList}">
 		                                <tr>
-		                                    <td class="tableContent">${member.id}</td>
+		                                    <td class="tableContent">${member.email}</td>
 		                                    <td class="tableContent">${member.nickname}</td>
 		                                    <td class="tableContent">${member.birthday}</td>
 		                                    <td class="tableContent">${member.phone1}-${member.phone2}-${member.phone3}</td>

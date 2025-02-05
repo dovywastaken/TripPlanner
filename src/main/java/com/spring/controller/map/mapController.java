@@ -18,24 +18,26 @@ public class mapController {
 	private String mapAPIKey;
 	
 	
-	 @GetMapping
-	    public String Maps(Model model) 
-	 	{
-		 	System.out.println("apikey "+ mapAPIKey);
-		 	model.addAttribute("mapAPIKey", mapAPIKey);
-	        return "post/Maps"; // JSP 파일 경로
-	    }
+	@GetMapping
+    public String Maps(Model model) 
+ 	{
+	 	System.out.println("maps로 들어옴");
+	 	System.out.println("apikey "+ mapAPIKey);
+	 	model.addAttribute("mapAPIKey", mapAPIKey);
+        return "post/Maps"; // JSP 파일 경로
+    }
 	
 
 	
-	 @GetMapping("/map")
-	    public String mapPage(@RequestParam("info") String info, Model model) 
-	 	{
-		 	System.out.println("apikey "+ mapAPIKey);
-		 	model.addAttribute("mapAPIKey", mapAPIKey);
-	        model.addAttribute("info", info);
-	        
-	        return "post/map"; 
-	    }
+	@GetMapping("/map")
+    public String mapPage(@RequestParam("info") String info, Model model) 
+ 	{
+		System.out.println("map으로 들어옴");
+	 	System.out.println("apikey "+ mapAPIKey);
+	 	model.addAttribute("mapAPIKey", mapAPIKey);
+        model.addAttribute("info", info);
+        
+        return "post/map"; 
+    }
 	
 }

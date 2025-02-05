@@ -1,7 +1,6 @@
 package com.spring.controller.post;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,24 +12,27 @@ public class PaginationHelper {
 	{
 	    int totalPages = (int) Math.ceil((double) totalPosts / pageSize);
 	    ArrayList<Integer> pageList = new ArrayList<>();
-	    for (int i = 1; i <= totalPages; i++) {
+	    for (int i = 1; i <= totalPages; i++) 
+	    {
 	        pageList.add(i);
 	    }
 	    
 	    return pageList;  
 	}
+	
+	//pageSize는 10으로 고정
+	public ArrayList<Integer> getpostnumber(int totalPosts,int page,int pageSize)
+	{
+		ArrayList<Integer> postNumbers = new ArrayList<>();
+	   	int startPost = totalPosts - (page - 1) * pageSize; 
+	   	int endPost = startPost - pageSize + 1;
+	   	for (int i = startPost; i >= endPost && i > 0; i--) 
+	   	{
+	       postNumbers.add(i);
+	   	}
 	    
-	   public ArrayList<Integer> getpostnumber(int totalPosts,int page,int pageSize)
-	   {
-		   ArrayList<Integer> postNumbers = new ArrayList<>();
-		   int startPost = totalPosts - (page - 1) * pageSize; 
-		   int endPost = startPost - pageSize + 1;
-		    for (int i = startPost; i >= endPost && i > 0; i--) {
-		        postNumbers.add(i);
-		    }
-		    
-		   return postNumbers;
-	   }
+	   	return postNumbers;
+	}
 	   
 	   
 	    // 새로운 페이지네이션 계산 메서드

@@ -66,7 +66,7 @@ public class CommentRepositoryImpl implements CommentRepository {
 	        String sql = "INSERT INTO comments (p_unique, id, comments, commentDate, commentLikes) VALUES (?,?,?,?,?)";
 	        template.update(sql,
 	                comment.getP_unique(),
-	                comment.getId(),
+	                comment.getEmail(),
 	                comment.getComments(),
 	                comment.getCommentDate(),
 	                comment.getCommentLikes()

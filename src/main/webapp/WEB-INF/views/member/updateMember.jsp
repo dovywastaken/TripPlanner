@@ -138,13 +138,13 @@
             <c:when test="${not empty user}">
                 <form method="POST" action="${pageContext.request.contextPath}/members/updateMember">
                     <div class="form-group">
-                        <label for="id" class="formName">아이디</label>
-                        <input type="text" value="${user.id}" placeholder="아이디" class="textBox" disabled />
-                        <input type="hidden" name="id" id="id" value="${user.id}" />
+                        <label for="id" class="formName">이메일</label>
+                        <input type="text" value="${user.email}" placeholder="아이디" class="textBox" disabled />
+                        <input type="hidden" name="id" id="id" value="${user.email}" />
                     </div>
                     <div class="form-group">
                         <label for="name" class="formName">닉네임</label>
-                        <input type="text" name="name" value="${user.name}" id="name" placeholder="닉네임" class="textBox" />
+                        <input type="text" name="name" value="${user.nickname}" id="name" placeholder="닉네임" class="textBox" />
                         <div id="message_name"></div>
                     </div>
                     
