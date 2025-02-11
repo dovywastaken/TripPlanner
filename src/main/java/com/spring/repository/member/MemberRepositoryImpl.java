@@ -77,22 +77,23 @@ public class MemberRepositoryImpl implements MemberRepository
             return template.queryForObject(sql, new MemberMapper(), new Object[]{id});
         } catch (Exception e) {
         	System.out.println("[MemberRepository : findById 메서드 예외발생]");
+        	e.printStackTrace();
             return null; // 예외가 발생하면 null 반환
         }
     }
     
     //어드민 페이지에서 검색한 멤버 찾아오기
     @Override
-    public List<Member> searchMember(int limit, int offset, String nickname) // 검색으로 조회
+    public List<Member> searchMember(int limit, int offset, String email) // 검색으로 조회
     {
         System.out.println("+++++++++++++++++++++++++++++++++++++++");
         System.out.println("[MemberRepository : searchMember 메서드 호출]");
-        String sql = "SELECT * FROM members WHERE nickname LIKE ? ORDER BY nickname LIMIT ? OFFSET ?";
-        String searchNickname = "%" + nickname + "%";
-        System.out.println("입력한 이름에 맞는 dto 가져옵니다");
+        String sql = "SELECT * FROM members WHERE id LIKE ? ORDER BY id LIMIT ? OFFSET ?";
+        String searchEmail = "%" + email + "%";
+        System.out.println("입력한 이메일에 맞는 dto 가져옵니다");
 
         System.out.println("[MemberRepository : searchMember 메서드 종료]");
-        return template.query(sql, new MemberMapper(), searchNickname, limit, offset);
+        return template.query(sql, new MemberMapper(), searchEmail, limit, offset);
     }
 
     //어드민 페이지 내 모든 회원 목록 가져오기

@@ -61,7 +61,7 @@ function pwCheck(value)
 function pwValidator() { //비밀번호 유효성 체크
     pw1 = document.getElementById("pw1").value;
     const pwValidationMessage = document.getElementById('pwValidationMessage');
-    const pwPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d!@#$%^&*()_+]{10,}$/;
+    const pwPattern = /^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{10,}$/;
 
     pwValidationMessage.innerHTML = '';
     
@@ -71,7 +71,7 @@ function pwValidator() { //비밀번호 유효성 체크
     }
     
     if (!pwPattern.test(pw1)) {
-        pwValidationMessage.innerHTML = '<span style="color:red;">비밀번호는 대문자, 소문자, 숫자가 포함되어야 하며 최소 10글자 이상이어야 합니다.</span>';
+        pwValidationMessage.innerHTML = '<span style="color:red;">알파벳, 숫자 그리고 특수문자가 포함되어야 하며 최소 10글자 이상이어야 합니다.</span>';
         return false;
     } else if (pwPattern.test(pw1)) {
         pwValidationMessage.innerHTML = '<span style="color:green;">비밀번호가 유효합니다.</span>';

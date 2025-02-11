@@ -36,7 +36,7 @@
 			           	</c:forEach>
 			        </c:when>
 			        <c:otherwise>
-			        	<div>아직 웹사이트가 응애라 추천할 축제 정보가 없어요 :( </div>
+			        	<div></div>
 			        </c:otherwise>
 				</c:choose>
 	        </div>
@@ -49,7 +49,7 @@
                     <!-- 로그인한 사용자가 있을 때 보여줄 내용 -->
                     <div id="userInfo">
                         <h1>${user.nickname}</h1>
-                        <h2>${user.id}</h2>
+                        <h2>${user.email}</h2>
                     </div>
                     <p id="currentDate" style="text-align: center; width: 100%; color: #2C3F3C;"></p>
 					<c:if test="${user.emailCheck == 0}">

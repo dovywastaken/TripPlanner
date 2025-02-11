@@ -98,7 +98,7 @@
                     <!-- 로그인한 사용자가 있을 때 보여줄 내용 -->
                     <div id="userInfo">
                         <h1>${user.nickname}</h1>
-                        <h2>${user.id}</h2>
+                        <h2>${user.email}</h2>
                     </div>
                     <p id="currentDate" style="text-align: center; width: 100%; color: #2C3F3C;"></p>
                     <c:if test="${user.emailCheck == 0}">

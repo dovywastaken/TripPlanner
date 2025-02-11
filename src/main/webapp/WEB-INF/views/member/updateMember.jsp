@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <!DOCTYPE html>
 <html>
@@ -136,27 +137,27 @@
         <h2>회원 정보 수정</h2>
         <c:choose>
             <c:when test="${not empty user}">
-                <form method="POST" action="${pageContext.request.contextPath}/members/updateMember">
+                <form:form modelAttribute="member" method="POST" action="${pageContext.request.contextPath}/members/updateMember">
                     <div class="form-group">
-                        <label for="id" class="formName">이메일</label>
-                        <input type="text" value="${user.email}" placeholder="아이디" class="textBox" disabled />
-                        <input type="hidden" name="id" id="id" value="${user.email}" />
+                        <label class="formName">이메일</label>
+                        <input type="text" value="${user.email}" class="textBox" disabled />
+                        <form:input path="email" type="hidden" name="id" id="id" value="${user.email}" />
                     </div>
                     <div class="form-group">
                         <label for="name" class="formName">닉네임</label>
-                        <input type="text" name="name" value="${user.nickname}" id="name" placeholder="닉네임" class="textBox" />
+                        <form:input path="nickname" type="text" name="name" value="${user.nickname}" id="name" placeholder="새로운 닉네임" class="textBox" />
                         <div id="message_name"></div>
                     </div>
                     
                     <div class="form-group">
                         <label for="phone1" class="formName">전화번호</label>
-                        <input type="text" name="phone1" value="${user.phone1}-${user.phone2}-${user.phone3}" id="phone" placeholder="전화번호" class="textBox" />
+                        <form:input path= "phone1" type="text" name="phone1" value="${user.phone1}-${user.phone2}-${user.phone3}" id="phone" placeholder="010-1234-5678" class="textBox" />
                         <div id="message_phone"></div>
                     </div>
                     <div class="form-group">
                         <input type="submit" id="submit" value="회원 정보 수정" />
                     </div>
-                </form>
+                </form:form>
             </c:when>
         </c:choose>
     </div>

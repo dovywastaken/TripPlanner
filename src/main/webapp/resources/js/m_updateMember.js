@@ -57,7 +57,13 @@ function nameValidator() {
     } else if (nameValue.length == 0) {
         messageElement.innerHTML = '';
         return false;
-    } else {
+    }
+	else if(nameValue.trim().length >= 8)
+	{
+		messageElement.innerHTML = '<span style="color:red;">최대 글자수는 7자 입니다</span>';
+		return false;
+	}
+	else {
         messageElement.innerHTML = '<span style="color:green;">닉네임이 유효합니다.</span>';
         return true;
     }

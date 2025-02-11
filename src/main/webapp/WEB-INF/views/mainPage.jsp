@@ -29,21 +29,21 @@
 	                </div>
 	                <div id="planner">
 	                <c:choose>
-	               			<c:when test="${not empty result.AllPost}">
-								<c:forEach var="post" items="${result.Allpost}">
+	               			<c:when test="${not empty result.postList}">
+								<c:forEach var="postList" items="${result.postList}">
 									<div class="plannerDoubling">
 							        	<div class="plannerCard">
 								            <div class="imgFrame">
-								                <img src="${pageContext.request.contextPath}/resources/upload/${post.fileImage[0]}" class="pImg">
+								                <img src="${pageContext.request.contextPath}/resources/upload/${postList.fileImage[0]}" class="pImg">
 								            </div>
 								            <div class="plannerCol" id="pText">
 								            	<div>
-													<h4>${post.nickname} 님의</h4> 
-								                	<h3 class="plannerTitle">${post.title}</h3>
+													<h4>${postList.id} 님의</h4> 
+								                	<h3 class="plannerTitle">${postList.title}</h3>
 												</div>
 												<div class="plannerStatus">
-													<span>좋아요: ${post.likes}</span>
-													<p>조회수: ${post.views}</p>
+													<span>좋아요: ${postList.likes}</span>
+													<p>조회수: ${postList.views}</p>
 												</div>
 								            </div>
 							        	</div>
@@ -150,10 +150,10 @@
 				            <div class="myPostTitle">
 				                <div class="postTitle">최근 작성 글</div>
 				            </div>
-				            <c:if test="${posts.size() == 0}">
+				            <c:if test="${postList.size() == 0}">
 				            	<h3>최근 작성글이 없어요!</h3>
 				            </c:if>
-				            <c:forEach var="post" items="${posts}" varStatus="status">
+				            <c:forEach var="post" items="${postList}" varStatus="status">
 							    <c:choose>
 							        <c:when test="${status.index == 0}">
 							            <div class="post">

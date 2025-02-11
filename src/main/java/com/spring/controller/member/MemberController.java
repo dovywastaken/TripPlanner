@@ -215,22 +215,31 @@ public class MemberController {
 
     // 회원 정보 수정 요청 처리
     @PostMapping("/updateMember")
-    public String fromUpdateMember(@ModelAttribute("user") Member member , HttpSession session, Model model) {
+    public String fromUpdateMember(@ModelAttribute("member") Member member, HttpSession session, Model model) {
         System.out.println("===========================================================================================");
         System.out.println("MemberController : members/updateMember(POST)으로 매핑되었습니다");
-    
         
-        // 이메일 설정
-        String id = member.getEmail();
+        Member loginMember = (Member)session.getAttribute("user");
+        String email = loginMember.getEmail();
+        
+        System.out.println("세션에 담긴 정보 : " + loginMember.getEmail() + loginMember.getNickname() + loginMember.getPhone1() + loginMember.getPhone2() + loginMember.getPhone3());
+        
+        //이메일도 dto에 넣어줘야함
+        member.setEmail(email);
+        
+        // 휴대폰 나누고 다시 dto에 넣는게 필요
         String phone = member.getPhone1();
         String[] phoneList = phone.split("-");
     	member.setPhone1(phoneList[0]);
         member.setPhone2(phoneList[1]);
         member.setPhone3(phoneList[2]);
         
+        System.out.println("새로 업데이트 할 정보 : " + member.getEmail() + member.getNickname() + member.getPhone1() + member.getPhone2() + member.getPhone3());
+        //여기까지 왔으면 새로 수정한 이메일, 휴대폰 번호가 들어간 member dto가 만들어짐
+        
         // 회원 정보 업데이트
         memberService.updateMember(member);
-        Member updatedMember = memberService.findById(id);
+        Member updatedMember = memberService.findById(email);
         System.out.println("파인드바이아이디 통과 ");
         
 

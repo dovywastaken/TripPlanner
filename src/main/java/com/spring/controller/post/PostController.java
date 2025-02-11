@@ -198,7 +198,7 @@ public class PostController {
     	int isLike=0;
     	if(member !=null) 
     	{
-    		isLike=postService.getIdisLike(member.getEmail(),num);
+    		isLike = postService.getIdisLike(member.getEmail(),num);
     	}
     	Post onepost = postService.getPostById(num);
         

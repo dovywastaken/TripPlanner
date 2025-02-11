@@ -115,16 +115,18 @@ public class PostRepositoryImpl implements PostRepository {
 	public Map<String, Object> getMainPost(String id) {
 		System.out.println("getMainPost 메서드 호출");
 		PostRowMapper postRowMapper=new PostRowMapper();
-		String mainSQL="SELECT * FROM post WHERE id = ? ORDER BY publishDate DESC LIMIT 3";
-		Map<String,Object> result=new HashMap<String, Object>();
-		List<Post> post=template.query(mainSQL,postRowMapper,id);
-		result.put("Post",post);        
+		String mainSQL = "SELECT * FROM post WHERE id = ? ORDER BY publishDate DESC LIMIT 3";
+		Map<String,Object> result = new HashMap<String, Object>();
+		List<Post> postList = template.query(mainSQL,postRowMapper,id);
+		result.put("postList",postList);    
 		return result;
 	}
 
 	@Override
 	public int pageserch(int p_unique) {
-		String pageserch= "WITH RankedPosts AS (SELECT p_unique, ROW_NUMBER() OVER (ORDER BY publishDate DESC, p_unique DESC) as row_num FROM post WHERE isPrivate = 1) SELECT CEILING(row_num / 10) as page_number FROM RankedPosts WHERE p_unique = ?";
+		String pageserch= 
+				"WITH RankedPosts AS (SELECT p_unique, ROW_NUMBER() OVER (ORDER BY publishDate DESC, p_unique DESC) as row_num FROM post WHERE isPrivate = 1) SELECT CEILING(row_num / 10) as page_number"
+				+ " FROM RankedPosts WHERE p_unique = ?";
 		int rownum=template.queryForObject(pageserch, Integer.class,p_unique);
 	return rownum;
 	}

@@ -29,13 +29,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                <c:forEach items="${Allpost}" var="All" varStatus="loop">
+                <c:forEach items="${postList}" var="postList" varStatus="loop">
                     <tr>
-                        <td class="tableContent"><a href="${pageContext.request.contextPath}/postview?num=${All.p_unique}&page=${currentPage}">${All.title}</a></td>
-                        <td class="tableContent">${All.id}</td>
+                        <td class="tableContent"><a href="${pageContext.request.contextPath}/postview?num=${postList.p_unique}&page=${currentPage}">${postList.title}</a></td>
+                        <td class="tableContent">${postList.id}</td>
                         <td class="tableContent">${date.get(loop.index)}</td>
-                        <td class="tableContent">${All.likes}</td>
-                        <td class="tableContent">${All.views}</td>
+                        <td class="tableContent">${postList.likes}</td>
+                        <td class="tableContent">${postList.views}</td>
                         <!-- <td class="tableContent">${getpostnumber.get(loop.index)}</td> -->
                     </tr>
                 </c:forEach> 
@@ -90,7 +90,7 @@
                     <!-- 로그인한 사용자가 있을 때 보여줄 내용 -->
                     <div id="userInfo">
                         <h1>${user.nickname}</h1>
-                        <h2>${user.id}</h2>
+                        <h2>${user.email}</h2>
                     </div>
                     <p id="currentDate" style="text-align: center; width: 100%; color: #2C3F3C;"></p>
 					<c:if test="${user.emailCheck == 0}">

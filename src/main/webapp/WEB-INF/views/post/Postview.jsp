@@ -35,13 +35,13 @@
         
 			<div class="like-box">
 			    <span class="info-item">
-			        <c:if test="${onepost.id != member.id}">
+			        <c:if test="${onepost.id != member.email}">
 			            <button id="postLikeBtn" class="like-btn">
 			                <i class="fa-solid fa-thumbs-up"></i>
 			            </button>
 			            <span id="postLikes">${onepost.likes}</span>
 			        </c:if>
-			        <c:if test="${onepost.id == member.id}">
+			        <c:if test="${onepost.id == member.email}">
 			            <span id="postLikes">
 			                <i class="fa-solid fa-thumbs-up"></i> ${onepost.likes}
 			            </span>
@@ -56,7 +56,7 @@
             <div id="pagination" class="pagination"></div>
             
                  <c:choose>
-                <c:when test="${not empty member.id}">
+                <c:when test="${not empty member.email}">
                     <div class="comment-box">
                         <form id="commentForm">
                             <textarea id="commentContent" rows="4" placeholder="댓글을 입력해주세요" required></textarea>
@@ -81,8 +81,8 @@
                     <!-- 로그인한 사용자가 있을 때 보여줄 내용 -->
                     <div id="userInfo">
                         <h1>${user.nickname}</h1>
-                        <h2>${user.id}</h2>
-                        <c:if test="${onepost.id==user.id}">
+                        <h2>${user.email}</h2>
+                        <c:if test="${onepost.id==user.email}">
                        <span> 
                         <a href="${pageContext.request.contextPath}/postview/update?num=${onepost.p_unique}" class="btn edit-btn">수정</a>
                        <a href="${pageContext.request.contextPath}/postview/delete?num=${onepost.p_unique}" class="btn delet-btn">삭제</a>
@@ -137,7 +137,7 @@
     <script>
         var contextPath = "${pageContext.request.contextPath}";
         var postId = "${postId}";
-        var sessionId = "${member.id}";
+        var sessionId = "${member.email}";
         var totalPages = ${totalPages};
     </script>
     

@@ -148,10 +148,10 @@ function nameValidator()
         resultMessage.innerHTML = '';
         return false;
     }
-	else if(nameValue.trim().length >= 10)
+	else if(nameValue.trim().length >= 8)
 	{
 		console.log("Nickname too long");
-		messageElement.innerHTML = '<span style="color:red;">최대 글자수는 10자 입니다</span>';
+		messageElement.innerHTML = '<span style="color:red;">최대 글자수는 7자 입니다</span>';
         resultMessage.innerHTML = '<span style="color:red;">회원 가입란을 다시 확인 부탁드립니다!</span>';
 		return false;
 	}

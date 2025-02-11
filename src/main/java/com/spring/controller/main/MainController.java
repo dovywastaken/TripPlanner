@@ -51,12 +51,12 @@ public class MainController
 
 	            // 게시물 관련 데이터 준비
 	            Map<String, Object> result = postService.getMainPost(id); // 게시물 데이터 가져오기
-	            List<Post> posts = (List<Post>) result.get("Post"); // 게시물 리스트
+	            List<Post> postList = (List<Post>) result.get("postList"); // 게시물 리스트
 	            List<String> days = new ArrayList<String>(); // 게시물 날짜 리스트
 
 	            // 게시물 날짜를 포맷팅하여 리스트에 추가1
 	            DateFormatter dateFormatter = new DateFormatter();
-	            for (Post post : posts) 
+	            for (Post post : postList) 
 	            {
 	                String formattedDate = dateFormatter.formatPostDate(post.getPublishDate());
 	                days.add(formattedDate);
@@ -67,7 +67,7 @@ public class MainController
 	            // 모델에 게시물과 날짜 데이터 추가
 	            model.addAttribute("count",count.get("Allpostgetnum"));
 	            model.addAttribute("days", days);
-	            model.addAttribute("posts", posts);
+	            model.addAttribute("postList", postList);
 	        }
 	    }
 	    
@@ -99,15 +99,15 @@ public class MainController
 	    int size = 3;
 	    Map<String, Object> result = boardService.hotBoard(size, page);
 	    System.out.println("인기게시글 들고왔는지 확인하기 : " + result);
-	    if(result.get("allPost") != null) 
+	    if(result.get("postList") != null) 
 	    {
 	    	model.addAttribute("result", result);
-	    	// result에서 Allpost 리스트를 가져옴
-		    List<Post> posts = (List<Post>) result.get("allPost");
+	    	// result에서 postList 리스트를 가져옴
+		    List<Post> postList = (List<Post>) result.get("postList");
 		    List<Integer> pUniqueList = new ArrayList<>();
 
 		    // 각 Post 객체에서 p_unique 값을 가져와서 리스트에 추가
-		    for (Post post : posts) {
+		    for (Post post : postList) {
 		        pUniqueList.add(post.getP_unique());
 		    }
 		    

@@ -32,7 +32,7 @@ public class BoardController {
 	private void setBoardModelAttributes(Map<String,Object> result,int page,Model model) 
 	//게시물을 들고오고 게시물 수를 들고옴과 동시에 페이지네이션 데이터를 생성, 게시물 생성 날짜 포맷팅을 해줌
 	{
-		List<Post> postList=(List<Post>) result.get("allPost"); //모든 게시글을 result에서 들고와서 리스트에 담는다
+		List<Post> postList=(List<Post>) result.get("postList"); //모든 게시글을 result에서 들고와서 리스트에 담는다
 		int postSize= (int)result.get("postSize"); //게시글 갯수의 총 합을 result에서 들고와서 변수에 담는다
 		
 		ArrayList<Integer> getTotalPages = paginationHelper.getTotalPages(postSize, 10); //페이지네이션 만드는 코드
@@ -82,10 +82,10 @@ public class BoardController {
 	                          Model model) {
 	    
 	    Map<String, Object> result = boardService.allBoardSearch(type, keyword, page);
-
+	    System.out.println("db에서 가져온 결과 값" + result);
 	    
 	    setBoardModelAttributes(result, page, model);
-	    int totalPosts = (int) result.get("Allpostgetnum"); 
+	    int totalPosts = (int) result.get("postSize"); 
 	    Map<String, Object> pagination = paginationHelper.getPagination(page, totalPosts, 10, 5);
 	    
 	    
@@ -104,7 +104,7 @@ public class BoardController {
 		Map<String,Object> result=boardService.hotBoard(size, page); //
 		setBoardModelAttributes(result,page,model);
 		
-		int totalPosts = (int) result.get("Allpostgetnum");
+		int totalPosts = (int) result.get("postSize");
 		Map<String, Object> pagination = paginationHelper.getPagination(page, totalPosts, 10, 5);
 		model.addAttribute("currentPage", page);
 		model.addAttribute("pagination", pagination);
@@ -180,7 +180,7 @@ public class BoardController {
 		if(member != null) 
 		{
 			Map<String,Object> result=boardService.myBoard(member.getEmail(),page);
-			int Allpostgetnum=(int) result.get("Allpostgetnum");
+			int Allpostgetnum=(int) result.get("postSize");
 			
 			Map<String, Object> pagination = paginationHelper.getPagination(page, Allpostgetnum, 10, 5);
 			setBoardModelAttributes(result,page,model);
@@ -207,7 +207,7 @@ public class BoardController {
 	    String id=member.getEmail();
 	    Map<String, Object> result = boardService.myBoardSearch(id,keyword, page);
 	    setBoardModelAttributes(result, page, model);
-	    int totalPosts = (int) result.get("Allpostgetnum"); 
+	    int totalPosts = (int) result.get("postSize"); 
 	    Map<String, Object> pagination = paginationHelper.getPagination(page, totalPosts, 10, 5);
 
 	    model.addAttribute("keyword", keyword);

@@ -34,6 +34,7 @@ public class BoardRepositoryImpl implements BoardRepository
 		result.put("postList", postList);
 		result.put("postSize", postList.size());
 		System.out.println("[총 " + postList.size() + "개의 게시글을 반환합니다]");
+		System.out.println("포스트리스트 " + postList);
 		System.out.println("[BoardRepository : allBoardRead 메서드 종료]");
 		
 		return result;
