@@ -20,7 +20,7 @@
 		</a>
         <div id="headerLeft">
 		    <c:if test="${not empty user}">
-				<a href="${pageContext.request.contextPath}/board/myPlan" class="headerLeft">내 여행 계획</a>
+				<a href="${pageContext.request.contextPath}/board/myBoard" class="headerLeft">내 여행 계획</a>
 		    </c:if>
 		    <a href="${pageContext.request.contextPath}/board/all" class="headerLeft">전체 게시판</a>
 		    <a href="${pageContext.request.contextPath}/board/hot" class="headerLeft">추천 여행 계획</a>

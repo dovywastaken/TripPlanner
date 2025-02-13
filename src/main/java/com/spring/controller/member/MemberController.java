@@ -151,8 +151,8 @@ public class MemberController {
     	{
     		String host = "http://localhost:8080/TripPlanner/members/emailCheck";
     		String from = "larrydaniels751@gmail.com";
-    		String to = member.getEmail();
-    		String who = member.getEmail();
+    		String to = member.getEmail(); //메일 보내기 위한 이메일 주소로써의 이메일 주소
+    		String who = member.getEmail(); //링크 만들기 위한 아이디로써의 이메일 주소
     		String content = "클릭하여 이메일 인증을 완료해주십시요\n" + host + "?userID=" + who;
     		
     		SimpleMailMessage message = new SimpleMailMessage();

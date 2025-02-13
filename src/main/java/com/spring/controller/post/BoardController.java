@@ -23,8 +23,10 @@ import com.spring.service.post.BoardService;
 @Controller
 @RequestMapping("/board")
 @PropertySource("classpath:properties/API.key.properties") 
-public class BoardController {
-	PaginationHelper paginationHelper=new PaginationHelper();
+public class BoardController 
+{
+	
+	PaginationHelper paginationHelper = new PaginationHelper();
 	
 	@Autowired
 	BoardService boardService;
@@ -32,7 +34,7 @@ public class BoardController {
 	private void setBoardModelAttributes(Map<String,Object> result,int page,Model model) 
 	//게시물을 들고오고 게시물 수를 들고옴과 동시에 페이지네이션 데이터를 생성, 게시물 생성 날짜 포맷팅을 해줌
 	{
-		List<Post> postList=(List<Post>) result.get("postList"); //모든 게시글을 result에서 들고와서 리스트에 담는다
+		List<Post> postList = (List<Post>) result.get("postList"); //모든 게시글을 result에서 들고와서 리스트에 담는다
 		int postSize= (int)result.get("postSize"); //게시글 갯수의 총 합을 result에서 들고와서 변수에 담는다
 		
 		ArrayList<Integer> getTotalPages = paginationHelper.getTotalPages(postSize, 10); //페이지네이션 만드는 코드
@@ -40,20 +42,21 @@ public class BoardController {
 		
 		DateFormatter dateFormatter = new DateFormatter(); //게시물의 날짜를 포멧에 맞춰주는 객체
 		ArrayList<String> date=new ArrayList<String>(); //
-		 for (Post post : postList) //Allpost에 있는 요소를 순회하면서 post에 담는다
-		 {
-		        date.add(dateFormatter.formatBoardDate(post.getPublishDate())); 
-		 }
+		for (Post post : postList) //Allpost에 있는 요소를 순회하면서 post에 담는다
+		{
+		       date.add(dateFormatter.formatBoardDate(post.getPublishDate())); 
+		}
 		 
-		 model.addAttribute("date", date);
-		 model.addAttribute("getTotalPages", getTotalPages);
-		 model.addAttribute("getpostnumber", getpostnumber);
-		 model.addAttribute("postList", postList);
+		model.addAttribute("date", date);
+		model.addAttribute("getTotalPages", getTotalPages);
+		model.addAttribute("getpostnumber", getpostnumber);
+		model.addAttribute("postList", postList);
 	}
 	
 	
 	@GetMapping("/all")
-	public String allBoard(@RequestParam(value = "page",defaultValue = "1")int page, Model model) { //페이지 파라미터 받아오기
+	public String allBoard(@RequestParam(value = "page",defaultValue = "1")int page, Model model) 
+	{ //페이지 파라미터 받아오기
 		System.out.println("===========================================================================================");
         System.out.println("BoardController : board/all(GET)으로 매핑되어 전체 글 목록을 표시할 준비가 되었습니다.");
 		Map<String,Object> result = boardService.allBoard(page);
@@ -63,23 +66,24 @@ public class BoardController {
 		
 		model.addAttribute("currentPage", page);
 		model.addAttribute("pagination", pagination);
+
+//		System.out.println("게시글 날짜 : " + model.getAttribute("date"));
+//		System.out.println("총 페이지 갯수 : " + model.getAttribute("getTotalPages"));
+//		System.out.println("getPostNumber로 가져온 값 : " + model.getAttribute("getpostnumber"));
+//		System.out.println("총 게시글 리스트 : " + model.getAttribute("postList"));
+//		System.out.println("페이지 번호 : " + page);
+//		System.out.println("페이지네이션 : " + pagination);
 		
-		System.out.println("게시글 날짜 : " + model.getAttribute("date"));
-		System.out.println("총 페이지 갯수 : " + model.getAttribute("getTotalPages"));
-		System.out.println("getPostNumber로 가져온 값 : " + model.getAttribute("getpostnumber"));
-		System.out.println("총 게시글 리스트 : " + model.getAttribute("postList"));
-		System.out.println("페이지 번호 : " + page);
-		System.out.println("페이지네이션 : " + pagination);
-		
-		return "board/Allboard";
+		return "board/allBoard";
 	}
 	
 	
-	@GetMapping("/search")
+	@GetMapping("/all/search")
 	public String searchBoard(@RequestParam(value = "page", defaultValue = "1") int page,
 	                          @RequestParam("type") String type,
 	                          @RequestParam("keyword") String keyword,
-	                          Model model) {
+	                          Model model) 
+	{
 	    
 	    Map<String, Object> result = boardService.allBoardSearch(type, keyword, page);
 	    System.out.println("db에서 가져온 결과 값" + result);
@@ -95,11 +99,12 @@ public class BoardController {
 	    model.addAttribute("keyword", keyword);
 	    model.addAttribute("currentPage", page);
 	    model.addAttribute("pagination", pagination);
-	    return "board/SearchBoard";
+	    return "board/allBoardSearch";
 	}
 	
 	@GetMapping("/hot")
-	public String hotboard(@RequestParam(value = "page",defaultValue = "1")int page, Model model) {
+	public String toHotBoard(@RequestParam(value = "page",defaultValue = "1")int page, Model model) 
+	{
 		int size = 10;
 		Map<String,Object> result=boardService.hotBoard(size, page); //
 		setBoardModelAttributes(result,page,model);
@@ -108,9 +113,56 @@ public class BoardController {
 		Map<String, Object> pagination = paginationHelper.getPagination(page, totalPosts, 10, 5);
 		model.addAttribute("currentPage", page);
 		model.addAttribute("pagination", pagination);
-		return "board/hotPlanners";
+		return "board/hotBoard";
 	}
 	
+	
+	@GetMapping("/myBoard")
+	public String toMyBoard(HttpSession session,Model model, @RequestParam(value = "page", defaultValue = "1") int page) 
+	{
+		
+		Member member=(Member)session.getAttribute("user");
+		if(member != null) 
+		{
+			Map<String,Object> result=boardService.myBoard(member.getEmail(),page);
+			int Allpostgetnum=(int) result.get("postSize");
+			
+			Map<String, Object> pagination = paginationHelper.getPagination(page, Allpostgetnum, 10, 5);
+			setBoardModelAttributes(result,page,model);
+			model.addAttribute("pagination",pagination);
+			model.addAttribute("currentPage", page);
+			return "board/myBoard";
+		}
+		else 
+		{
+			return "errorPage";
+		}
+	}
+	
+	
+	
+	@GetMapping("/myBoard/search")
+	public String mysearchBoard(@RequestParam(value = "page", defaultValue = "1") int page,
+	                          @RequestParam("keyword") String keyword,
+	                          HttpSession session,
+	                          Model model
+	                          ) {
+	    if(session!=null) {
+	    Member member=(Member)session.getAttribute("user");
+	    String id=member.getEmail();
+	    Map<String, Object> result = boardService.myBoardSearch(id,keyword, page);
+	    setBoardModelAttributes(result, page, model);
+	    int totalPosts = (int) result.get("postSize"); 
+	    Map<String, Object> pagination = paginationHelper.getPagination(page, totalPosts, 10, 5);
+
+	    model.addAttribute("keyword", keyword);
+	    model.addAttribute("currentPage", page);
+	    model.addAttribute("pagination", pagination);
+	    return "board/myBoardSearch";
+	    }else {
+			return "errorPage";
+		}
+	}
 	
 	
 	@GetMapping("/festival")
@@ -172,52 +224,5 @@ public class BoardController {
 		model.addAttribute("contentid", contentId);
 		return "board/detailedPage";
 	}
-
-	@GetMapping("/myPlan")
-	public String getMyboard(HttpSession session,Model model, @RequestParam(value = "page", defaultValue = "1") int page) {
-		
-		Member member=(Member)session.getAttribute("user");
-		if(member != null) 
-		{
-			Map<String,Object> result=boardService.myBoard(member.getEmail(),page);
-			int Allpostgetnum=(int) result.get("postSize");
-			
-			Map<String, Object> pagination = paginationHelper.getPagination(page, Allpostgetnum, 10, 5);
-			setBoardModelAttributes(result,page,model);
-			model.addAttribute("pagination",pagination);
-			model.addAttribute("currentPage", page);
-			return "board/Myboard";
-		}
-		else 
-		{
-			return "errorPage";
-		}
-	}
-	
-	
-	
-	@GetMapping("/board/mysearch")
-	public String mysearchBoard(@RequestParam(value = "page", defaultValue = "1") int page,
-	                          @RequestParam("keyword") String keyword,
-	                          HttpSession session,
-	                          Model model
-	                          ) {
-	    if(session!=null) {
-	    Member member=(Member)session.getAttribute("user");
-	    String id=member.getEmail();
-	    Map<String, Object> result = boardService.myBoardSearch(id,keyword, page);
-	    setBoardModelAttributes(result, page, model);
-	    int totalPosts = (int) result.get("postSize"); 
-	    Map<String, Object> pagination = paginationHelper.getPagination(page, totalPosts, 10, 5);
-
-	    model.addAttribute("keyword", keyword);
-	    model.addAttribute("currentPage", page);
-	    model.addAttribute("pagination", pagination);
-	    return "board/MySearchBoard";
-	    }else {
-			return "errorPage";
-		}
-	}
-	
 }
 

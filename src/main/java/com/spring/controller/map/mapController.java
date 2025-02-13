@@ -5,12 +5,10 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
-@RequestMapping("/Maps")
 @PropertySource("classpath:properties/API.key.properties") 
 public class mapController {
 	
@@ -18,26 +16,26 @@ public class mapController {
 	private String mapAPIKey;
 	
 	
-	@GetMapping
-    public String Maps(Model model) 
+	@GetMapping("/map")
+    public String map(Model model) 
  	{
-	 	System.out.println("maps로 들어옴");
+	 	System.out.println("map로 들어옴");
 	 	System.out.println("apikey "+ mapAPIKey);
 	 	model.addAttribute("mapAPIKey", mapAPIKey);
-        return "post/Maps"; // JSP 파일 경로
+        return "post/map";
     }
 	
 
 	
-	@GetMapping("/map")
+	@GetMapping("/map/detailed")
     public String mapPage(@RequestParam("info") String info, Model model) 
  	{
-		System.out.println("map으로 들어옴");
+		System.out.println("detailedMap으로 들어옴");
 	 	System.out.println("apikey "+ mapAPIKey);
 	 	model.addAttribute("mapAPIKey", mapAPIKey);
         model.addAttribute("info", info);
         
-        return "post/map"; 
+        return "post/detailedMap"; 
     }
 	
 }

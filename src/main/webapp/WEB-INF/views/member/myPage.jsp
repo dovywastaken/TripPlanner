@@ -86,11 +86,11 @@
                 <hr style="border: 1px solid #F1F3F9; margin : 21px auto 10px auto; width: 80%;">
 
                 <div id="links"> 
-                    <a href="${pageContext.request.contextPath}/hotPlanners">• 추천 여행 계획</a>
-                    <a href="${pageContext.request.contextPath}/Allboard">• 전체 게시판</a>
-                    <a href="${pageContext.request.contextPath}/boardFestival">• 인기 축제</a>
-                    <a href="${pageContext.request.contextPath}/boardTour">• 인기 관광지</a>
-                    <a href="${pageContext.request.contextPath}/boardRestaurant">• 인기 음식점</a>
+                    <a href="${pageContext.request.contextPath}/board/hot">• 추천 여행 계획</a>
+                    <a href="${pageContext.request.contextPath}/board/allBoard">• 전체 게시판</a>
+                    <a href="${pageContext.request.contextPath}/board/festival">• 인기 축제</a>
+                    <a href="${pageContext.request.contextPath}/board/tour">• 인기 관광지</a>
+                    <a href="${pageContext.request.contextPath}/board/restaurant">• 인기 음식점</a>
                 </div>
                 <a href="${pageContext.request.contextPath}/members/signOut" class="signOutButton">로그아웃</a>
             </div>

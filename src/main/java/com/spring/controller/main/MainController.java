@@ -47,10 +47,10 @@ public class MainController
 	        if (loginMember != null) 
 	        {
 	            model.addAttribute("member", loginMember); // 모델에 사용자 정보 추가
-	            String id = loginMember.getEmail(); // 사용자 ID
+	            String userEmail = loginMember.getEmail(); // 사용자 ID
 
 	            // 게시물 관련 데이터 준비
-	            Map<String, Object> result = postService.getMainPost(id); // 게시물 데이터 가져오기
+	            Map<String, Object> result = postService.getMainPost(userEmail); // 게시물 데이터 가져오기
 	            List<Post> postList = (List<Post>) result.get("postList"); // 게시물 리스트
 	            List<String> days = new ArrayList<String>(); // 게시물 날짜 리스트
 
@@ -81,7 +81,7 @@ public class MainController
 	private void returnTourList(Model model)
 	{
 		
-		int limit = 2; // 한 페이지당 표시할 관광지 수
+		int limit = 4; // 한 페이지당 표시할 관광지 수
 	    int offset = 0;
 	    // DB에서 전체 관광지 리스트를 가져옴
 	    List<Tour> tourSpots = boardService.hotSpots("12",limit, offset);

@@ -31,7 +31,6 @@ import com.spring.domain.Tour;
 import com.spring.service.post.CommentService;
 import com.spring.service.post.PostService;
 
-import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
@@ -48,34 +47,38 @@ public class PostController {
 	private PostService postService;
 	
 	@Autowired
-	ServletContext servletContext;
-	
-	@Autowired
 	private CommentService commentService;
 	
-	
-	@GetMapping("/postform")
-	public String postform() {
-		return "post/PostForm";
+	@GetMapping("/postForm")
+	public String postForm() 
+	{
+		System.out.println("postForm 으로 매핑되어 postForm으로 이동 ");
+		
+		return "post/postForm";
 		
 		
 	}
 		
-	@PostMapping("/saveforem")
-    public String saveMyList(@RequestParam("myListData") String myListData, Model model) {
+	@PostMapping("/saveForm")
+    public String saveForm(@RequestParam("myListData") String myListData, Model model) 
+	{
         // JSON 문자열을 필요한 형태로 파싱하거나 처리
         // 여기서는 단순히 모델에 추가
+		System.out.println("saveForm 으로 매핑되어 myListData를 모델에 담고 postForm으로 이동 ");
         model.addAttribute("myListData", myListData);
-        return "post/PostForm"; // write.jsp로 포워딩
+        return "post/postForm"; // write.jsp로 포워딩
     }
+	
 	
 	@PostMapping("/uploadImage")
 	@ResponseBody
 	public List<String> uploadImage(@RequestParam("fileImg") MultipartFile[] files, HttpServletRequest request) {
 	    List<String> uploadedImageUrls = new ArrayList<>();
-
+	    System.out.println(files);
+	    
 	    try {
 	        String uploadDir = request.getServletContext().getRealPath("/resources/img");
+	        System.out.println(uploadDir);
 	        File uploadPath = new File(uploadDir);
 
 	        if (!uploadPath.exists()) 
@@ -100,8 +103,20 @@ public class PostController {
 	    return uploadedImageUrls;
 	}
 
-	@PostMapping("/postcreate")
-	public String postcreate(@ModelAttribute Post post,
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	@PostMapping("/postCreate")
+	public String postCreate(@ModelAttribute Post post,
 	                       HttpSession session,
 	                       RedirectAttributes redirect,
 	                       @RequestParam(required = false) String contents) 
@@ -177,7 +192,7 @@ public class PostController {
 	       redirect.addAttribute("num", postId);
 	       redirect.addAttribute("page", page);
 
-	       return "redirect:/postview";
+	       return "redirect:/postView";
 
 	   }
 	   catch (Exception e) 
@@ -189,7 +204,15 @@ public class PostController {
 	   }
 	}
     
-    @GetMapping("/postview")
+	
+	
+	
+	
+	
+	
+	
+	
+    @GetMapping("/postView")
     public String postview(@RequestParam int num,
                            @RequestParam int page,
                            Model model, HttpSession session) 
@@ -215,9 +238,17 @@ public class PostController {
         model.addAttribute("currentPage", page); // 현재 페이지 번호 유지
         model.addAttribute("member",member);
         
-        return "post/Postview";
+        return "post/postView";
     }
 
+    
+    
+    
+    
+    
+    
+    
+    
     @PostMapping(value= "/{postId}/like",produces = "application/json")
     @ResponseBody
     public Map<String, Object> likePost(@PathVariable int postId, HttpSession session) 
@@ -252,17 +283,16 @@ public class PostController {
         
         
     }
-	
-	@GetMapping("/postview/delete")
-	public String postDelete(@RequestParam int num, Model model) 
-	{
-	    postService.deletePost(num);
-	    
-	    return "redirect:/Allboard?page=1";
-	}
 
-	@GetMapping("/postview/update")
-	public String postupdate(@RequestParam int num,Model model) 
+	
+	
+	
+	
+	
+	
+	
+	@GetMapping("/postView/update")
+	public String toUpdatePost(@RequestParam int num,Model model) 
 	{
 		Post result=(Post) postService.getPostById(num);
 		model.addAttribute("result",result);
@@ -270,8 +300,14 @@ public class PostController {
 		return "post/updateForm";
 	}
 	
-	@PostMapping("/postview/updatePost")
-	public String postupdate(@ModelAttribute Post post,
+	
+	
+	
+	
+	
+	
+	@PostMapping("/postView/updatePost")
+	public String fromUpdatePost(@ModelAttribute Post post,
 	                       HttpSession session,
 	                       RedirectAttributes redirect,
 	                       @RequestParam(required = false) String contents) 
@@ -337,7 +373,7 @@ public class PostController {
        redirect.addAttribute("num", post.getP_unique());
        redirect.addAttribute("page", page);
 
-       return "redirect:/postview";
+       return "redirect:/postView";
 
 	   }
 	   catch (Exception e) 
@@ -355,6 +391,15 @@ public class PostController {
         return "success"; // 클라이언트로 성공 메시지 반환
     }
 	
+	
+	//Delete
+	@GetMapping("/postView/delete")
+	public String postDelete(@RequestParam int num, Model model) 
+	{
+	    postService.deletePost(num);
+	    
+	    return "redirect:/allBoard?page=1";
+	}
 }
 
 

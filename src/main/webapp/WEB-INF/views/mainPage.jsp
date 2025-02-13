@@ -25,7 +25,7 @@
 	            <div class="section">
 	                <div class="title">
 	                    <span>인기 여행 계획</span>
-	                    <a href="${pageContext.request.contextPath}/hotPlanners" class="morePost">더보기</a>
+	                    <a href="${pageContext.request.contextPath}/board/hot" class="morePost">더보기</a>
 	                </div>
 	                <div id="planner">
 	                <c:choose>
@@ -60,7 +60,7 @@
 	            <div class="section">
 	                <div class="title">
 	                    <span>추천 축제</span>
-	                    <a href="${pageContext.request.contextPath}/boardFestival" class="morePost">더보기</a>
+	                    <a href="${pageContext.request.contextPath}/board/festival" class="morePost">더보기</a>
 	                </div>
 		            <div id="planner">
 		                <c:choose>
@@ -86,7 +86,7 @@
 				 <div class="section">
 	                  <div class="title">
 	                      <span>추천 관광지</span>
-	                      <a href="${pageContext.request.contextPath}/boardTour" class="morePost">더보기</a>
+	                      <a href="${pageContext.request.contextPath}/board/tour" class="morePost">더보기</a>
 	                  </div>
 	                  <div id="planner">
 	                  		<c:choose>
@@ -112,7 +112,7 @@
 	             <div class="section">
 	                  <div class="title">
 	                      <span>추천 맛집</span>
-	                      <a href="${pageContext.request.contextPath}/boardRestaurant" class="morePost">더보기</a>
+	                      <a href="${pageContext.request.contextPath}/board/restaurant" class="morePost">더보기</a>
 	                  </div>
 	                  <div id="planner">
 	                      <c:choose>
@@ -166,7 +166,7 @@
 							                        <span>내 여행 계획 </span>
 							                        <span id="postCount">${count}</span>
 							                    </div>
-							                    <a class="postMore" href='${pageContext.request.contextPath}/Myboard'>더보기</a>
+							                    <a class="postMore" href='${pageContext.request.contextPath}/board/myBoard'>더보기</a>
 							                </div>
 							            </div>
 							        </c:when>
@@ -179,7 +179,7 @@
 							    </c:choose>
 							</c:forEach>
 						</div>
-				        <a href="postform" class="postButton">+ 새 여정 만들기</a>
+				        <a href="${pageContext.request.contextPath}/postForm" class="postButton">+ 새 여정 만들기</a>
 				        <a href="${pageContext.request.contextPath}/members/signOut" class="signOutButton">로그아웃</a>
 				    </c:if>
 				

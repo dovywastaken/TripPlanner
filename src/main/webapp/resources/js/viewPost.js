@@ -52,7 +52,7 @@ document.querySelectorAll('.location-name-btn').forEach(button => {
 
         // 팝업 창 열기 (반응형 크기 설정)
         window.open(
-            contextPath+`/Maps/map?info=${encodeURIComponent(dataInfo)}`,
+            contextPath+`/map/detailed?info=${encodeURIComponent(dataInfo)}`,
             'popupWindow',
             `width=${popupWidth},height=${popupHeight},left=${left},top=${top}`
         );

@@ -33,7 +33,7 @@
                 <tbody>
                 <c:forEach items="${postList}" var="postList" varStatus="loop">
                     <tr>
-                        <td class="tableContent"><a href="${pageContext.request.contextPath}/postview?num=${postList.p_unique}&page=${currentPage}">${postList.title}</a></td>
+                        <td class="tableContent"><a href="${pageContext.request.contextPath}/postView?num=${postList.p_unique}&page=${currentPage}">${postList.title}</a></td>
                         <td class="tableContent">${postList.id}</td>
                         <td class="tableContent">${date.get(loop.index)}</td>
                         <td class="tableContent">${postList.likes}</td>
@@ -78,7 +78,7 @@
                 </div>
                     
                 <div>
-                    <form action="${pageContext.request.contextPath}/board/search" method="get">
+                    <form action="${pageContext.request.contextPath}/board/all/search" method="get">
                         <select name="type" id="filter">
                             <option value="id">글쓴이</option>
                             <option value="title">글제목</option>
@@ -124,13 +124,13 @@
 
                     <div id="links"> 
                     	<c:if test="${not empty user}">
-                    	<a href="${pageContext.request.contextPath}/Myboard">• 내 여행 계획</a>
+                    	<a href="${pageContext.request.contextPath}/board/myBoard">• 내 여행 계획</a>
                     	</c:if>
-                        <a href="${pageContext.request.contextPath}/hotPlanners">• 추천 여행 계획</a>
-                        <a href="${pageContext.request.contextPath}/Allboard">• 전체 게시판</a>
-                        <a href="${pageContext.request.contextPath}/boardFestival">• 인기 축제</a>
-                        <a href="${pageContext.request.contextPath}/boardTour">• 인기 관광지</a>
-                        <a href="${pageContext.request.contextPath}/boardRestaurant">• 인기 음식점</a>
+                        <a href="${pageContext.request.contextPath}/board/hot">• 추천 여행 계획</a>
+                        <a href="${pageContext.request.contextPath}/board/all">• 전체 게시판</a>
+                        <a href="${pageContext.request.contextPath}/board/festival">• 인기 축제</a>
+                        <a href="${pageContext.request.contextPath}/board/tour">• 인기 관광지</a>
+                        <a href="${pageContext.request.contextPath}/board/restaurant">• 인기 음식점</a>
                     </div>
                     <a href="${pageContext.request.contextPath}/members/signOut" class="signOutButton">로그아웃</a>
             </div>

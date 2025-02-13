@@ -10,7 +10,7 @@
     <title>TripPlanner</title>
     <script>var contextPath = '${pageContext.request.contextPath}';</script>
     <script src="${pageContext.request.contextPath}/resources/js/signUp.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/m_updateMember.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/updateMember.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/normalize.css">
     <link href="https://cdn.jsdelivr.net/gh/sun-typeface/SUITE@2/fonts/static/woff2/SUITE.css" rel="stylesheet">
     <style>
