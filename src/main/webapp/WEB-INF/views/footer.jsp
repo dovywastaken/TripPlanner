@@ -43,12 +43,12 @@
 	                <ul>
 	                    <h2>게시판 관련</h2>
 	                    <br>
-	                    <li><a href="${pageContext.request.contextPath}/board/all">• 전체 플래너 페이지</a></li>
-	                    <li><a href="${pageContext.request.contextPath}/board/myBoard">• 개인 플래너 페이지</a></li>
-	                    <li><a href="${pageContext.request.contextPath}/board/hot">• 인기 플래너 페이지</a></li>
-	                    <li><a href="${pageContext.request.contextPath}/board/festival">• 추천 축제 페이지</a></li>
-	                    <li><a href="${pageContext.request.contextPath}/board/tour">• 추천 관광지 페이지</a></li>
-	                    <li><a href="${pageContext.request.contextPath}/board/restaurant">• 추천 음식점 페이지</a></li>
+	                    <li><a href="${pageContext.request.contextPath}/Allboard">• 전체 플래너 페이지</a></li>
+	                    <li><a href="${pageContext.request.contextPath}/Myboard">• 개인 플래너 페이지</a></li>
+	                    <li><a href="${pageContext.request.contextPath}/hotPlanners">• 인기 플래너 페이지</a></li>
+	                    <li><a href="${pageContext.request.contextPath}/boardFestival">• 추천 축제 페이지</a></li>
+	                    <li><a href="${pageContext.request.contextPath}/boardTour">• 추천 관광지 페이지</a></li>
+	                    <li><a href="${pageContext.request.contextPath}/boardRestaurant">• 추천 음식점 페이지</a></li>
 	                </ul>
 	            </div>
 	            
@@ -68,6 +68,18 @@
 	        <br>
 	        <br>
 	        <div id="teammateContainer">
+	            <div class="teammate">
+	                <h1>황현제</h1>
+	                <br>
+	                <p>이메일 : guswpwkf@naver.com</p>
+	                <p>연락처 : 010-8788-3121</p>
+	                <br>
+	                <div id="icons">
+<!-- 	                    <a href="https://www.naver.com"><i class="fa-brands fa-instagram"></i></a>
+	                    <a href="https://www.naver.com"><i class="fa-brands fa-github"></i></a> -->
+	                </div>
+	            </div>
+	            
 	            <div class="teammate">
 	                <h1>김의신</h1>
 	                <br>

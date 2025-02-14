@@ -13,7 +13,7 @@ public class Post
 	private String title;
 	private String contents;
 	private Timestamp publishDate;
-	private int views;
+	private int view;
 	private int likes;
 	private String region;
 	private boolean isPrivate;
@@ -54,11 +54,11 @@ public class Post
 	public void setPublishDate(Timestamp timestamp) {
 		this.publishDate = timestamp;
 	}
-	public int getViews() {
-		return views;
+	public int getView() {
+		return view;
 	}
-	public void setViews(int views) {
-		this.views = views;
+	public void setView(int view) {
+		this.view = view;
 	}
 	public int getLikes() {
 		return likes;

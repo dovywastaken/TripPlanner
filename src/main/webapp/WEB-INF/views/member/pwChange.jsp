@@ -167,7 +167,7 @@
             </div>
         </form:form>
     </div>
-    <%@ include file="../footerCompact.jsp" %>
+    <%@ include file="../footer.jsp" %>
 </body>
 
 <script>function goBack() {window.history.back();}</script>

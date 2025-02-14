@@ -5,17 +5,18 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>게시판</title>
+<title>검색 결과 게시판</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/normalize.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/header.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/board.css">
 <link href="https://cdn.jsdelivr.net/gh/sun-typeface/SUITE@2/fonts/static/woff2/SUITE.css" rel="stylesheet">
 </head>
 <script src="https://kit.fontawesome.com/96b1ce314a.js"></script>
 <body>
-
 <%@ include file="../header.jsp" %>
+    <!-- 제목 -->
     <div id="container">
-        <div id="titleBanner">내 여행 계획</div>
+        <p id="titleBanner">'${keyword}'에 대한 검색 결과입니다.</p>
         <div id="boardContainer"> 
             <table id="table">
                 <thead>
@@ -29,23 +30,30 @@
                     </tr>
                 </thead>
                 <tbody>
-                <c:forEach items="${postList}" var="postList" varStatus="loop">
-                    <tr>
-                        <td class="tableContent"><a href="${pageContext.request.contextPath}/postView?num=${postList.p_unique}&page=${currentPage}">${postList.title}</a></td>
-                        <td class="tableContent">${postList.id}</td>
-                        <td class="tableContent">${date.get(loop.index)}</td>
-                        <td class="tableContent">${postList.likes}</td>
-                        <td class="tableContent">${postList.views}</td>
-                        <!-- <td class="tableContent">${getpostnumber.get(loop.index)}</td> -->
-                    </tr>
-                </c:forEach> 
+                    <!-- 검색 결과가 없을 경우 -->
+                    <c:if test="${empty Allpost}">
+                        <tr>
+                            <td colspan="6">검색 결과가 없습니다.</td>
+                        </tr>
+                    </c:if>
+                    <!-- 검색 결과가 있을 경우 -->
+                    <c:forEach items="${Allpost}" var="All" varStatus="loop">
+                        <tr>
+                            <td class="tableContent"><a href="${pageContext.request.contextPath}/postview?num=${All.p_unique}&page=${currentPage}">${All.title}</a></td>
+                            <td class="tableContent">${All.id}</td>
+                            <td class="tableContent">${date.get(loop.index)}</td>
+                            <td class="tableContent">${All.likes}</td>
+                            <td class="tableContent">${All.view}</td>
+                            <!-- <td class="tableContent">${getpostnumber.get(loop.index)}</td> -->
+                        </tr>
+                    </c:forEach>
                 </tbody>
             </table>
             <div id="paginationAndSearchBar">
                 <div class="pagination">
                     <c:set var="pagination" value="${pagination}" />
 
-                    <!-- 첫 페이지 및 이전 그룹 버튼 -->
+                
                     <c:if test="${pagination.startPage > 1}">
                         <div class="pageIndicatorWrapper">
                             <a href="?page=1&type=${type}&keyword=${keyword}"><i class="fa-solid fa-angles-left"></i></a>
@@ -53,7 +61,7 @@
                         </div>
                     </c:if>
 
-                    <!-- 페이지 그룹 표시 -->
+                
                     <c:forEach begin="${pagination.startPage}" end="${pagination.endPage}" var="i">
                         <c:choose>
                             <c:when test="${i == pagination.currentPage}">
@@ -65,7 +73,7 @@
                         </c:choose>
                     </c:forEach>
 
-                    <!-- 다음 그룹 및 마지막 페이지 버튼 -->
+                
                     <c:if test="${pagination.endPage < pagination.totalPages}">
                         <div class="pageIndicatorWrapper">
                             <a href="?page=${pagination.endPage + 1}&type=${type}&keyword=${keyword}"><i class="fa-solid fa-angle-right"></i></a>
@@ -73,10 +81,10 @@
                         </div>
                     </c:if>
                 </div>
-            
                 <div>
-                    <form action="${pageContext.request.contextPath}/board/myBoard/search" method="get">
-                        <input type="text" name="keyword" id="searchBar" placeholder="검색" required>
+                    <!-- 검색 폼 -->
+                    <form action="${pageContext.request.contextPath}/board/mysearch" method="GET" style="text-align: center;">
+                        <input type="text" name="keyword" value="${keyword}" id="searchBar" placeholder="검색" required>
                         <input type="submit" id="searchButton" value="">
                     </form>
                 </div>
@@ -89,11 +97,11 @@
             <div id="myPanel">
                     <!-- 로그인한 사용자가 있을 때 보여줄 내용 -->
                     <div id="userInfo">
-                        <h1>${user.nickname}</h1>
-                        <h2>${user.email}</h2>
+                        <h1>${user.name}</h1>
+                        <h2>${user.id}</h2>
                     </div>
                     <p id="currentDate" style="text-align: center; width: 100%; color: #2C3F3C;"></p>
-					<c:if test="${user.emailCheck == 0}">
+                    <c:if test="${user.emailCheck == 0}">
                     <p style="text-align : center; margin-top : 12px; width: 100%;">아직 이메일 인증이 안됐어요!</p>
                     	<a href="${pageContext.request.contextPath}/members/myPage" 
                     		style="outline: 2px solid #313339; 
@@ -114,26 +122,22 @@
 					    </a>
                     </c:if>
                     <hr style="border: 1px solid #F1F3F9; margin : 34px auto 10px auto; width: 80%;">
-
                     <div id="links"> 
-                        <a href="${pageContext.request.contextPath}/board/hot">• 추천 여행 계획</a>
-                        <a href="${pageContext.request.contextPath}/board/all">• 전체 게시판</a>
-                        <a href="${pageContext.request.contextPath}/board/festival">• 인기 축제</a>
-                        <a href="${pageContext.request.contextPath}/board/tour">• 인기 관광지</a>
-                        <a href="${pageContext.request.contextPath}/board/restaurant">• 인기 음식점</a>
+                        <a href="${pageContext.request.contextPath}/hotPlanners">• 추천 여행 계획</a>
+                        <a href="${pageContext.request.contextPath}/Allboard">• 전체 게시판</a>
+                        <a href="${pageContext.request.contextPath}/boardFestival">• 인기 축제</a>
+                        <a href="${pageContext.request.contextPath}/boardTour">• 인기 관광지</a>
+                        <a href="${pageContext.request.contextPath}/boardRestaurant">• 인기 음식점</a>
                     </div>
                     <a href="${pageContext.request.contextPath}/members/signOut" class="signOutButton">로그아웃</a>
             </div>
             <div id="backButton" onclick="goBack()">뒤로 가기</div>
         </div>
     </aside>
-    
-    
-     <%@ include file="../footerCompact.jsp" %>
+<%@ include file="../footerCompact.jsp" %>
 </body>
-
 <script>
-function goBack(){window.history.back();}
+	function goBack(){window.history.back();}
     // 요일 이름 배열
     const dayNames = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
     

@@ -62,7 +62,7 @@ public class AdminController
         if (keyword == null) //만약 검색어가 없다면
         {
             memberList = memberService.readAllMemberPaging(limit, offset); //모든 회원 정보를 리스트에 저장하고
-        }
+        } 
         else //검색어가 있으면
         {
             memberList = memberService.searchMember(limit, offset,keyword); //검색어에 맞는 회원 정보 리스트를 저장한다

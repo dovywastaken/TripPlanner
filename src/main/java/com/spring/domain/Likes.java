@@ -7,8 +7,6 @@ public class Likes {
 	private int p_unique;
 	private int c_unique;
 	private Timestamp likesDate;
-	
-	
 	public String getId() {
 		return id;
 	}
@@ -33,4 +31,6 @@ public class Likes {
 	public void setLikesDate(Timestamp likesDate) {
 		this.likesDate = likesDate;
 	}
+
+	
 }

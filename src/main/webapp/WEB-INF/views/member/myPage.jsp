@@ -31,7 +31,7 @@
                         <span id="emailCheck" class="green-text">인증 완료</span>
                     </c:if>
                     </p>
-                    <p class="dataBox">${user.email}</p>
+                    <p class="dataBox">${user.id}</p>
                 </div>
                 <c:if test="${user.emailCheck == 0}">
 	                <div class="email-verification">
@@ -42,7 +42,7 @@
                 </c:if>
                 <div class="infoWrapperAlignment">
                     <p>닉네임</p>
-                    <p class="dataBox">${user.nickname}</p>
+                    <p class="dataBox">${user.name}</p>
                 </div>
                 <div class="infoWrapperAlignment">
                     <p>전화번호</p>
@@ -79,18 +79,18 @@
             <div id="myPanel">
                     <!-- 로그인한 사용자가 있을 때 보여줄 내용 -->
                     <div id="userInfo">
-                        <h1>${user.nickname}</h1>
-                        <h2>${user.email}</h2>
+                        <h1>${user.name}</h1>
+                        <h2>${user.id}</h2>
                     </div>
                     <p id="currentDate" style="text-align: center; width: 100%; color: #2C3F3C;"></p>
                 <hr style="border: 1px solid #F1F3F9; margin : 21px auto 10px auto; width: 80%;">
 
                 <div id="links"> 
-                    <a href="${pageContext.request.contextPath}/board/hot">• 추천 여행 계획</a>
-                    <a href="${pageContext.request.contextPath}/board/allBoard">• 전체 게시판</a>
-                    <a href="${pageContext.request.contextPath}/board/festival">• 인기 축제</a>
-                    <a href="${pageContext.request.contextPath}/board/tour">• 인기 관광지</a>
-                    <a href="${pageContext.request.contextPath}/board/restaurant">• 인기 음식점</a>
+                    <a href="${pageContext.request.contextPath}/hotPlanners">• 추천 여행 계획</a>
+                    <a href="${pageContext.request.contextPath}/Allboard">• 전체 게시판</a>
+                    <a href="${pageContext.request.contextPath}/boardFestival">• 인기 축제</a>
+                    <a href="${pageContext.request.contextPath}/boardTour">• 인기 관광지</a>
+                    <a href="${pageContext.request.contextPath}/boardRestaurant">• 인기 음식점</a>
                 </div>
                 <a href="${pageContext.request.contextPath}/members/signOut" class="signOutButton">로그아웃</a>
             </div>

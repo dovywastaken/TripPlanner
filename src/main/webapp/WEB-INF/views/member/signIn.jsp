@@ -166,7 +166,7 @@
                     <div class="form-group">
                         <label for="id">이메일</label>
                        <!--  <input type="text" placeholder="email@domain.com"> -->
-                        <form:input path="email" id="id" placeholder="email@domain.com"/>
+                        <form:input path="id" id="id" placeholder="email@domain.com"/>
                     </div>
                     <div class="form-group">
                         <label for="pw">비밀번호</label>

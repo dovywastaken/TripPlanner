@@ -158,17 +158,17 @@
     <div class="form-container">
 	    <h2>회원가입</h2>
 	
-	    <form:form modelAttribute="member" method="POST" action="${pageContext.request.contextPath}/members/signUp" id="signUp_form">
+	    <form:form modelAttribute="member" method="POST" action="${pageContext.request.contextPath}/members/signUp" id="signUp_form" onsubmit="combineEmail()">
 	        <div class="form-group"> 
 	            <div class="formName"> 
-	                <label for="email" class="formLabel">이메일</label>
+	                <label for="id" class="formLabel">이메일</label>
 	                <input type="button" id="buttonDisabled" class="checkButton" value="중복체크">
 	                <input type="button" id="buttonActive" class="checkButton" value="중복체크" style="display:none">
 	                <input type="button" id="buttonConfirmed" class="checkButton" value="체크완료" style="display:none">
 	            </div>
-	            <form:input path="email" id="email" class="textBox" placeholder="abc@sample.com" onchange="emailValidator()" />
+	            <form:input path="id" id="id" class="textBox" placeholder="이메일" onchange="IDValidator()" />
 	            <div id="message_id"></div> 
-	            <form:errors path="email" class="error-color"/>
+	            <form:errors path="id" class="error-color"/>
 	        </div>
 	
 	        <div class="form-group">
@@ -188,7 +188,7 @@
 	
 	        <div class="form-group">
 	            <label for="name" class="formName">닉네임</label>
-	            <form:input path="nickname" id="name" class="textBox" onchange="nameValidator()" placeholder="닉네임"/>
+	            <form:input path="name" id="name" class="textBox" onchange="NameValidator()" placeholder="이름"/>
 	            <div id="message_name"></div>
 	        </div>
 	

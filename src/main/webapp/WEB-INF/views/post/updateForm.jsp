@@ -159,6 +159,9 @@
             // 지도 페이지로 이동
             window.location.href = '${pageContext.request.contextPath}/Maps';
         });
+
+        // ✅ 렌더링 함수 호출
+        renderMyList();
     });
     </script>
 </body>

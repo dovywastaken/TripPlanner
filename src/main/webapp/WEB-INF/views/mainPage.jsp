@@ -25,32 +25,28 @@
 	            <div class="section">
 	                <div class="title">
 	                    <span>인기 여행 계획</span>
-	                    <a href="${pageContext.request.contextPath}/board/hot" class="morePost">더보기</a>
+	                    <a href="${pageContext.request.contextPath}/hotPlanners" class="morePost">더보기</a>
 	                </div>
 	                <div id="planner">
-	                <c:choose>
-	               			<c:when test="${not empty result.postList}">
-								<c:forEach var="postList" items="${result.postList}">
-									<div class="plannerDoubling">
-							        	<div class="plannerCard">
-								            <div class="imgFrame">
-								                <img src="${pageContext.request.contextPath}/resources/upload/${postList.fileImage[0]}" class="pImg">
-								            </div>
-								            <div class="plannerCol" id="pText">
-								            	<div>
-													<h4>${postList.id} 님의</h4> 
-								                	<h3 class="plannerTitle">${postList.title}</h3>
-												</div>
-												<div class="plannerStatus">
-													<span>좋아요: ${postList.likes}</span>
-													<p>조회수: ${postList.views}</p>
-												</div>
-								            </div>
-							        	</div>
+					<c:forEach var="post" items="${result.Allpost}">
+						<div class="plannerDoubling">
+				        	<div class="plannerCard">
+					            <div class="imgFrame">
+					                <img src="${pageContext.request.contextPath}/resources/upload/${post.fileImage[0]}" class="pImg">
+					            </div>
+					            <div class="plannerCol" id="pText">
+					            	<div>
+										<h4>${post.id} 님의</h4> 
+					                	<h3 class="plannerTitle">${post.title}</h3>
 									</div>
-								</c:forEach>
-							</c:when>
-					</c:choose>
+									<div class="plannerStatus">
+										<span>좋아요: ${post.likes}</span>
+										<p>조회수: ${post.view}</p>
+									</div>
+					            </div>
+				        	</div>
+						</div>
+					</c:forEach>
 	                </div>
 	            </div>
 	
@@ -60,7 +56,7 @@
 	            <div class="section">
 	                <div class="title">
 	                    <span>추천 축제</span>
-	                    <a href="${pageContext.request.contextPath}/board/festival" class="morePost">더보기</a>
+	                    <a href="${pageContext.request.contextPath}/boardFestival" class="morePost">더보기</a>
 	                </div>
 		            <div id="planner">
 		                <c:choose>
@@ -86,7 +82,7 @@
 				 <div class="section">
 	                  <div class="title">
 	                      <span>추천 관광지</span>
-	                      <a href="${pageContext.request.contextPath}/board/tour" class="morePost">더보기</a>
+	                      <a href="${pageContext.request.contextPath}/boardTour" class="morePost">더보기</a>
 	                  </div>
 	                  <div id="planner">
 	                  		<c:choose>
@@ -112,7 +108,7 @@
 	             <div class="section">
 	                  <div class="title">
 	                      <span>추천 맛집</span>
-	                      <a href="${pageContext.request.contextPath}/board/restaurant" class="morePost">더보기</a>
+	                      <a href="${pageContext.request.contextPath}/boardRestaurant" class="morePost">더보기</a>
 	                  </div>
 	                  <div id="planner">
 	                      <c:choose>
@@ -145,15 +141,15 @@
 	            <div id="myPanel">
 				    <c:if test="${not empty user}">
 				        <!-- 로그인한 사용자가 있을 때 보여줄 내용 -->
-				        <h1>${user.nickname} 님, <br>떠날 준비 되셨나요?</h1>
+				        <h1>${user.name} 님, <br>떠날 준비 되셨나요?</h1>
 				        <div class="myPost">
 				            <div class="myPostTitle">
 				                <div class="postTitle">최근 작성 글</div>
 				            </div>
-				            <c:if test="${postList.size() == 0}">
+				            <c:if test="${posts.size() == 0}">
 				            	<h3>최근 작성글이 없어요!</h3>
 				            </c:if>
-				            <c:forEach var="post" items="${postList}" varStatus="status">
+				            <c:forEach var="post" items="${posts}" varStatus="status">
 							    <c:choose>
 							        <c:when test="${status.index == 0}">
 							            <div class="post">
@@ -166,7 +162,7 @@
 							                        <span>내 여행 계획 </span>
 							                        <span id="postCount">${count}</span>
 							                    </div>
-							                    <a class="postMore" href='${pageContext.request.contextPath}/board/myBoard'>더보기</a>
+							                    <a class="postMore" href='${pageContext.request.contextPath}/Myboard'>더보기</a>
 							                </div>
 							            </div>
 							        </c:when>
@@ -179,7 +175,7 @@
 							    </c:choose>
 							</c:forEach>
 						</div>
-				        <a href="${pageContext.request.contextPath}/postForm" class="postButton">+ 새 여정 만들기</a>
+				        <a href="postform" class="postButton">+ 새 여정 만들기</a>
 				        <a href="${pageContext.request.contextPath}/members/signOut" class="signOutButton">로그아웃</a>
 				    </c:if>
 				
@@ -194,7 +190,7 @@
 				            <form:form modelAttribute="member" method="POST" action="members/signIn">
 				                <div class="form-group">
 				                    <label for="id">아이디:</label>
-				                    <form:input path="email" id="id" placeholder="아이디" />
+				                    <form:input path="id" id="id" placeholder="아이디" />
 				                </div>
 				                <div class="form-group">
 				                    <label for="pw">비밀번호:</label>
@@ -209,7 +205,7 @@
 				        </div>
 					</c:if>
 				</div>
-
+				
 	        </div>
 	    </aside>
 	    

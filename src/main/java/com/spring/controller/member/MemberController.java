@@ -65,7 +65,7 @@ public class MemberController {
         
         String phone = member.getPhone1();
         String[] phoneList = phone.split("-");
-        System.out.println("이메일 실제로 받는지 체크 : " + member.getEmail());
+        
         for(int i=1; i<=phoneList.length; i++) 
         {
         	member.setPhone1(phoneList[0]);
@@ -96,14 +96,14 @@ public class MemberController {
         System.out.println("MemberController : members/signIn(POST)으로 매핑되었습니다");
         
         // 로그인을 위한 회원 정보 조회
-        Member loginMb = memberService.findById(member.getEmail());
+        Member loginMb = memberService.findById(member.getId());
         
         if (loginMb != null && loginMb.getPw().equals(member.getPw())) 
         {
             session.setAttribute("user", loginMb);
             System.out.println("로그인 성공, 메인페이지로 리다이렉션");
             return "redirect:/"; // 로그인 성공 시 메인페이지로 리다이렉션
-        }else if (member.getEmail() == null || member.getEmail().isEmpty()) {
+        }else if (member.getId() == null || member.getId().isEmpty()) {
             model.addAttribute("EmptyForm", "아이디를 입력해주세요");
             System.out.println("아이디가 빈 경우");
             return "member/signIn"; // 아이디가 빈 경우 로그인 페이지로 이동
@@ -151,8 +151,8 @@ public class MemberController {
     	{
     		String host = "http://localhost:8080/TripPlanner/members/emailCheck";
     		String from = "larrydaniels751@gmail.com";
-    		String to = member.getEmail(); //메일 보내기 위한 이메일 주소로써의 이메일 주소
-    		String who = member.getEmail(); //링크 만들기 위한 아이디로써의 이메일 주소
+    		String to = member.getId();
+    		String who = member.getId();
     		String content = "클릭하여 이메일 인증을 완료해주십시요\n" + host + "?userID=" + who;
     		
     		SimpleMailMessage message = new SimpleMailMessage();
@@ -182,7 +182,7 @@ public class MemberController {
         System.out.println("MemberController : members/emailCheck 로 매핑");
     	Member member = (Member)session.getAttribute("user"); //현재 로그인된 계정 정보
     	String idCheck = userId; //이메일 링크 끝에 있는 아이디
-    	String id = member.getEmail(); //현재 로그인된 계정의 아이디
+    	String id = member.getId(); //현재 로그인된 계정의 아이디
     	
     	if(idCheck.equals(id)) 
     	{
@@ -215,31 +215,22 @@ public class MemberController {
 
     // 회원 정보 수정 요청 처리
     @PostMapping("/updateMember")
-    public String fromUpdateMember(@ModelAttribute("member") Member member, HttpSession session, Model model) {
+    public String fromUpdateMember(@ModelAttribute("user") Member member , HttpSession session, Model model) {
         System.out.println("===========================================================================================");
         System.out.println("MemberController : members/updateMember(POST)으로 매핑되었습니다");
+    
         
-        Member loginMember = (Member)session.getAttribute("user");
-        String email = loginMember.getEmail();
-        
-        System.out.println("세션에 담긴 정보 : " + loginMember.getEmail() + loginMember.getNickname() + loginMember.getPhone1() + loginMember.getPhone2() + loginMember.getPhone3());
-        
-        //이메일도 dto에 넣어줘야함
-        member.setEmail(email);
-        
-        // 휴대폰 나누고 다시 dto에 넣는게 필요
+        // 이메일 설정
+        String id = member.getId();
         String phone = member.getPhone1();
         String[] phoneList = phone.split("-");
     	member.setPhone1(phoneList[0]);
         member.setPhone2(phoneList[1]);
         member.setPhone3(phoneList[2]);
         
-        System.out.println("새로 업데이트 할 정보 : " + member.getEmail() + member.getNickname() + member.getPhone1() + member.getPhone2() + member.getPhone3());
-        //여기까지 왔으면 새로 수정한 이메일, 휴대폰 번호가 들어간 member dto가 만들어짐
-        
         // 회원 정보 업데이트
         memberService.updateMember(member);
-        Member updatedMember = memberService.findById(email);
+        Member updatedMember = memberService.findById(id);
         System.out.println("파인드바이아이디 통과 ");
         
 
@@ -273,7 +264,7 @@ public class MemberController {
     	System.out.println("===========================================================================================");
         System.out.println("MemberController : /members/toPwChange(POST)으로 매핑되었습니다");
         Member mb = (Member)session.getAttribute("user");
-        String id = mb.getEmail();
+        String id = mb.getId();
         String pw = member.getPw();
         
         System.out.println("기존 비밀번호 " + mb.getPw() + "에서 "+ member.getPw() + "로 수정합니다");

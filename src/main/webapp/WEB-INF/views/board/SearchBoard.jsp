@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>검색 결과 게시판</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/normalize.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/header.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/board.css">
 <link href="https://cdn.jsdelivr.net/gh/sun-typeface/SUITE@2/fonts/static/woff2/SUITE.css" rel="stylesheet">
 </head>
@@ -43,7 +44,7 @@
                             <td class="tableContent">${All.id}</td>
                             <td class="tableContent">${date.get(loop.index)}</td>
                             <td class="tableContent">${All.likes}</td>
-                            <td class="tableContent">${All.views}</td>
+                            <td class="tableContent">${All.view}</td>
                             <!-- <td class="tableContent">${getpostnumber.get(loop.index)}</td> -->
                         </tr>
                     </c:forEach>
@@ -83,7 +84,7 @@
                 </div>
                 
                 <!-- 검색 폼 -->
-                <form action="${pageContext.request.contextPath}/board/all/search" method="GET" style="text-align: center;">
+                <form action="${pageContext.request.contextPath}/board/search" method="GET" style="text-align: center;">
                     <select name="type" id="filter">
                         <option value="id" ${type == 'id' ? 'selected' : ''}>글쓴이</option>
                         <option value="title" ${type == 'title' ? 'selected' : ''}>글제목</option>
@@ -101,8 +102,8 @@
                 <c:if test="${not empty user}">
                     <!-- 로그인한 사용자가 있을 때 보여줄 내용 -->
                     <div id="userInfo">
-                        <h1>${user.nickname}</h1>
-                        <h2>${user.email}</h2>
+                        <h1>${user.name}</h1>
+                        <h2>${user.id}</h2>
                     </div>
                     <p id="currentDate" style="text-align: center; width: 100%; color: #2C3F3C;"></p>
                     <c:if test="${user.emailCheck == 0}">
@@ -130,13 +131,13 @@
 
                     <div id="links"> 
                     	<c:if test="${not empty user}">
-                    	<a href="${pageContext.request.contextPath}/board/myBoard">• 내 여행 계획</a>
+                    	<a href="${pageContext.request.contextPath}/Myboard">• 내 여행 계획</a>
                     	</c:if>
-                        <a href="${pageContext.request.contextPath}/board/hot">• 추천 여행 계획</a>
-                        <a href="${pageContext.request.contextPath}/board/all">• 전체 게시판</a>
-                        <a href="${pageContext.request.contextPath}/board/festival">• 인기 축제</a>
-                        <a href="${pageContext.request.contextPath}/board/tour">• 인기 관광지</a>
-                        <a href="${pageContext.request.contextPath}/board/restaurant">• 인기 음식점</a>
+                        <a href="${pageContext.request.contextPath}/hotPlanners">• 추천 여행 계획</a>
+                        <a href="${pageContext.request.contextPath}/Allboard">• 전체 게시판</a>
+                        <a href="${pageContext.request.contextPath}/boardFestival">• 인기 축제</a>
+                        <a href="${pageContext.request.contextPath}/boardTour">• 인기 관광지</a>
+                        <a href="${pageContext.request.contextPath}/boardRestaurant">• 인기 음식점</a>
                     </div>
                     <a href="${pageContext.request.contextPath}/members/signOut" class="signOutButton">로그아웃</a>
             </div>

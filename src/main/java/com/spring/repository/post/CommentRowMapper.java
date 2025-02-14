@@ -19,7 +19,7 @@ public class CommentRowMapper implements RowMapper<Comment> {
 		comment.setCommentLikes(rs.getInt("commentLikes"));
 		comment.setCommentDate(rs.getTimestamp("commentDate"));
 		comment.setComments(rs.getString("comments"));
-		comment.setEmail(rs.getString("id"));
+		comment.setId(rs.getString("id"));
 		return comment;
 		
 	}

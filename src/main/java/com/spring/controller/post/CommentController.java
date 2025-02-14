@@ -46,25 +46,24 @@ public class CommentController {
         int pageSize = 10;
         int totalCount = commentService.countCommentsByPostId(postId);
         int totalPage = (int)Math.ceil((double)totalCount / pageSize);
-        String email = null;
-        if(member!=null) 
-        {
-        	email = member.getEmail();
-        	response = commentService.getCommentsByPostId(postId, page, pageSize,email);
+        String id=null;
+        if(member!=null) {
+        id =member.getId();
+        response = commentService.getCommentsByPostId(postId, page, pageSize,id);
+        }else {
+        response = commentService.getCommentsByPostId(postId, page, pageSize,id);	
         }
-        else 
-        {
-        	response = commentService.getCommentsByPostId(postId, page, pageSize,email);	
-        }
-        List<Comment> comments = (List<Comment>) response.get("comments");
-        List<String> commentDate = new ArrayList<String>();
-        DateFormatter dateFormatter = new DateFormatter();
-        for(int i=0;i<comments.size();i++) 
-        {
-        	String time=dateFormatter.formatBoardDate(comments.get(i).getCommentDate());
-        	commentDate.add(time);
+        List<Comment> comments=(List<Comment>) response.get("comments");
+        List<String> commentDate=new ArrayList<String>();
+        DateFormatter dateFormatter=new DateFormatter();
+        for(int i=0;i<comments.size();i++) {
+        String time=dateFormatter.formatBoardDate(comments.get(i).getCommentDate());
+        System.out.println(time);
+        commentDate.add(time);
+        
         }
         List<Integer> commentisLike=(List<Integer>) response.get("isLike");
+        System.out.println(comments.size());
         
         response.put("commentDate", commentDate);
         response.put("commentisLike", commentisLike);
@@ -78,14 +77,13 @@ public class CommentController {
 
     @PostMapping
     public Map<String,Object> createComment(@RequestParam("postId") int postId,
-                                            @RequestParam("id") String userEmail,
-                                            @RequestParam("comments") String commentText) 
-    {
+                                            @RequestParam("id") String userId,
+                                            @RequestParam("comments") String commentText) {
     	
     	Timestamp timestamp =new Timestamp(System.currentTimeMillis());
         Comment comment = new Comment();
         comment.setP_unique(postId);
-        comment.setEmail(userEmail);
+        comment.setId(userId);
         comment.setComments(commentText);
         comment.setCommentDate(timestamp);
         comment.setCommentLikes(0);
@@ -94,17 +92,14 @@ public class CommentController {
 
         Map<String,Object> response = new HashMap<>();
         response.put("message", "success");
-        
         return response;
     }
 
     @DeleteMapping("/{c_unique}")
-    public Map<String,Object> deleteComment(@PathVariable int c_unique) 
-    {
+    public Map<String,Object> deleteComment(@PathVariable int c_unique) {
         commentService.deleteComment(c_unique);
         Map<String,Object> response = new HashMap<>();
         response.put("message", "deleted");
-        
         return response;
     }
 
@@ -115,28 +110,24 @@ public class CommentController {
     	Timestamp timestamp=new Timestamp(System.currentTimeMillis());
     	Likes like=new Likes();
     	List<Integer> result=new ArrayList<Integer>();
-    	String email = null;
-    	
-    	if(member!=null) 
-    	{
-	    	email = member.getEmail();
-	    	like.setId(email);
-	    	like.setC_unique(c_unique);
-	    	like.setLikesDate(timestamp);
-	    	result=commentService.incrementCommentLikes(like);
-	    	int islike=result.get(0);
-	    	int totallike=result.get(1);
-
-	    	response.put("id", email);
-	    	response.put("islike", islike);
-	    	response.put("totallike", totallike);
-	    	
-	    	return response;
-    	}
-    	else 
-    	{
-    	 response.put("id", email);
+    	String id=null;
+    	if(member!=null) {
+    	 id=member.getId();
+    	 like.setId(id);
+    	 like.setC_unique(c_unique);
+    	 like.setLikesDate(timestamp);
+    	 result=commentService.incrementCommentLikes(like);
+    	 int islike=result.get(0);
+    	 int totallike=result.get(1);
     	 
+    	 System.out.println("눌림:"+islike);
+    	 System.out.println("총수"+totallike);
+    	 response.put("id", id);
+    	 response.put("islike", islike);
+    	 response.put("totallike", totallike);
+    	 return response;
+    	}else {
+    	 response.put("id", id);
     	 return response;
     	}
        
@@ -154,7 +145,6 @@ public class CommentController {
         Member member = (Member) session.getAttribute("member");
         if (member == null) {
             response.put("message", "unauthorized");
-            
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
 
@@ -163,14 +153,12 @@ public class CommentController {
             Comment comment = commentService.getCommentById(c_unique);
             if (comment == null) {
                 response.put("message", "not_found");
-                
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
             }
 
             // 작성자 본인 확인
-            if (!comment.getEmail().equals(member.getEmail())) {
+            if (!comment.getId().equals(member.getId())) {
                 response.put("message", "forbidden");
-                
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
             }
 
@@ -179,13 +167,11 @@ public class CommentController {
             //commentService.updateComment(c_unique,comment);
 
             response.put("message", "updated");
-            
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {
             response.put("message", "error");
             response.put("error", e.getMessage());
-            
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }

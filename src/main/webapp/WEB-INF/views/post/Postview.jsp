@@ -8,8 +8,10 @@
     <script>
          window.contextPath = '${pageContext.request.contextPath}';
     </script>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/postView.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/viewpost.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  
+    
 <body>
 <%@ include file="../header.jsp" %>
 
@@ -22,7 +24,7 @@
     <div class="container">
         <div class="post-view">
             <span class="info-item1"><i class="fa-solid fa-user"></i> ${onepost.id} </i> <i class="fa-solid fa-clock"></i> ${postdate}</span>
-            <span class="info-item2"><i class="fa-solid fa-eye"></i> 조회수: ${onepost.views}</span>
+            <span class="info-item2"><i class="fa-solid fa-eye"></i> 조회수: ${onepost.view}</span>
         </div>
     
         
@@ -33,13 +35,13 @@
         
 			<div class="like-box">
 			    <span class="info-item">
-			        <c:if test="${onepost.id != member.email}">
+			        <c:if test="${onepost.id != member.id}">
 			            <button id="postLikeBtn" class="like-btn">
 			                <i class="fa-solid fa-thumbs-up"></i>
 			            </button>
 			            <span id="postLikes">${onepost.likes}</span>
 			        </c:if>
-			        <c:if test="${onepost.id == member.email}">
+			        <c:if test="${onepost.id == member.id}">
 			            <span id="postLikes">
 			                <i class="fa-solid fa-thumbs-up"></i> ${onepost.likes}
 			            </span>
@@ -54,7 +56,7 @@
             <div id="pagination" class="pagination"></div>
             
                  <c:choose>
-                <c:when test="${not empty member.email}">
+                <c:when test="${not empty member.id}">
                     <div class="comment-box">
                         <form id="commentForm">
                             <textarea id="commentContent" rows="4" placeholder="댓글을 입력해주세요" required></textarea>
@@ -78,9 +80,9 @@
             <div id="myPanel">
                     <!-- 로그인한 사용자가 있을 때 보여줄 내용 -->
                     <div id="userInfo">
-                        <h1>${user.nickname}</h1>
-                        <h2>${user.email}</h2>
-                        <c:if test="${onepost.id==user.email}">
+                        <h1>${user.name}</h1>
+                        <h2>${user.id}</h2>
+                        <c:if test="${onepost.id==user.id}">
                        <span> 
                         <a href="${pageContext.request.contextPath}/postview/update?num=${onepost.p_unique}" class="btn edit-btn">수정</a>
                        <a href="${pageContext.request.contextPath}/postview/delete?num=${onepost.p_unique}" class="btn delet-btn">삭제</a>
@@ -112,13 +114,13 @@
 
                     <div id="links"> 
                     	<c:if test="${not empty user}">
-                    	<a href="${pageContext.request.contextPath}/board/myBoard">• 내 여행 계획</a>
+                    	<a href="${pageContext.request.contextPath}/Myboard">• 내 여행 계획</a>
                     	</c:if>
-                        <a href="${pageContext.request.contextPath}/board/hot">• 추천 여행 계획</a>
-                        <a href="${pageContext.request.contextPath}/board/all">• 전체 게시판</a>
-                        <a href="${pageContext.request.contextPath}/board/festival">• 인기 축제</a>
-                        <a href="${pageContext.request.contextPath}/board/tour">• 인기 관광지</a>
-                        <a href="${pageContext.request.contextPath}/board/restaurant">• 인기 음식점</a>
+                        <a href="${pageContext.request.contextPath}/hotPlanners">• 추천 여행 계획</a>
+                        <a href="${pageContext.request.contextPath}/Allboard">• 전체 게시판</a>
+                        <a href="${pageContext.request.contextPath}/boardFestival">• 인기 축제</a>
+                        <a href="${pageContext.request.contextPath}/boardTour">• 인기 관광지</a>
+                        <a href="${pageContext.request.contextPath}/boardRestaurant">• 인기 음식점</a>
                     </div>
                     <a href="${pageContext.request.contextPath}/members/signOut" class="signOutButton">로그아웃</a>
             </div>
@@ -135,7 +137,7 @@
     <script>
         var contextPath = "${pageContext.request.contextPath}";
         var postId = "${postId}";
-        var sessionId = "${member.email}";
+        var sessionId = "${member.id}";
         var totalPages = ${totalPages};
     </script>
     
@@ -143,6 +145,6 @@
     
     <%@ include file="../footerCompact.jsp" %>
     <script src="${pageContext.request.contextPath}/resources/js/comment.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/viewPost.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/viewpost.js"></script>
 </body>
 </html>
