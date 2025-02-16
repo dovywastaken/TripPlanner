@@ -37,6 +37,7 @@ public class MainController
 	@GetMapping("/") // 메인 페이지 뷰를 띄워주는 메서드
 	public String mainPage(Model model, HttpSession session) {
 	    System.out.println("===========================================================================================");
+	    System.out.println("MainController: 프로젝트명으로 매핑되었습니다.");
 	    Member member=new Member(); //멤버 객체 전달 안해주면 에러남
 	    model.addAttribute("member",member);
 	    // 세션이 존재하는 경우 처리
@@ -130,7 +131,7 @@ public class MainController
 	}
 	
 	//로그인 폼 전송
-    @PostMapping("/")
+    @PostMapping("/mainSignIn")
     public String mainPageSignIn(@ModelAttribute("member") Member member, HttpSession session, Model model)
     {
         System.out.println("===========================================================================================");
@@ -146,7 +147,7 @@ public class MainController
         } else if (member.getEmail() == null || member.getEmail().isEmpty()) {
             model.addAttribute("EmptyForm", "아이디를 입력해주세요");
             System.out.println("아이디가 빈 경우");
-            return "mainPage"; // 아이디가 빈 경우 로그인 페이지로 이동
+            return "redirect:/"; // 아이디가 빈 경우 로그인 페이지로 이동
         } else if (member.getPw() == null || member.getPw().isEmpty()) {
             model.addAttribute("EmptyForm", "비밀번호를 입력해주세요");
             System.out.println("비밀번호가 빈 경우");

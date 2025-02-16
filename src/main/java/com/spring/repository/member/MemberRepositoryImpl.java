@@ -66,6 +66,12 @@ public class MemberRepositoryImpl implements MemberRepository
     {
     	System.out.println("+++++++++++++++++++++++++++++++++++++++");
     	System.out.println("[MemberRepository : findById 메서드 호출]");
+    	
+    	if(id.trim() == null || id.trim().isEmpty()) 
+    	{
+    		return null;
+    	}
+    	
         String sql = "SELECT * FROM members WHERE id = ?";
         String updateSql = "UPDATE members SET loginDate = ? WHERE id = ?";
         Date date = new Date(System.currentTimeMillis());

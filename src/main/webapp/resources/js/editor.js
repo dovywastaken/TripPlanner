@@ -174,7 +174,7 @@ document.addEventListener('click', function(e) {
     let clickedLink = e.target.closest('a');
     
     if (clickedLink) {
-        if (!clickedLink.href.includes(contextPath+'/Maps') && 
+        if (!clickedLink.href.includes(contextPath+'/map') && 
             !clickedLink.id.includes('open-map')) {
             sessionStorage.clear();
         }
@@ -195,5 +195,5 @@ $('#open-map').click(function () {
         commentIsAllowed: $('input[name="commentIsAllowed"]:checked').val()
     };
     sessionStorage.setItem('tempPostData', JSON.stringify(tempData));
-    window.location.href = contextPath+'/Maps';
+    window.location.href = contextPath+'/map';
 });

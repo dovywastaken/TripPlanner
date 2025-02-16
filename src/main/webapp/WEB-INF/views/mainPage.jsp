@@ -191,7 +191,7 @@
 				        <div class="form-container">
 				            
 				            <!-- 로그인 폼 -->
-				            <form:form modelAttribute="member" method="POST" action="members/signIn">
+				            <form:form modelAttribute="member" method="POST" action="${pageContext.request.contextPath}/mainSignIn">
 				                <div class="form-group">
 				                    <label for="id">아이디:</label>
 				                    <form:input path="email" id="id" placeholder="아이디" />

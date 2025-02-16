@@ -84,7 +84,9 @@ public class BoardController
 	                          @RequestParam("keyword") String keyword,
 	                          Model model) 
 	{
-	    
+		System.out.println("===========================================================================================");
+        System.out.println("BoardController : board/all/search(GET)으로 매핑되었습니다.");
+        
 	    Map<String, Object> result = boardService.allBoardSearch(type, keyword, page);
 	    System.out.println("db에서 가져온 결과 값" + result);
 	    
@@ -105,6 +107,8 @@ public class BoardController
 	@GetMapping("/hot")
 	public String toHotBoard(@RequestParam(value = "page",defaultValue = "1")int page, Model model) 
 	{
+		System.out.println("===========================================================================================");
+        System.out.println("BoardController : board/hot(GET)으로 매핑되었습니다.");
 		int size = 10;
 		Map<String,Object> result=boardService.hotBoard(size, page); //
 		setBoardModelAttributes(result,page,model);
@@ -120,7 +124,8 @@ public class BoardController
 	@GetMapping("/myBoard")
 	public String toMyBoard(HttpSession session,Model model, @RequestParam(value = "page", defaultValue = "1") int page) 
 	{
-		
+		System.out.println("===========================================================================================");
+        System.out.println("BoardController : board/myBoard(GET)으로 매핑되었습니다.");
 		Member member=(Member)session.getAttribute("user");
 		if(member != null) 
 		{
@@ -146,7 +151,10 @@ public class BoardController
 	                          @RequestParam("keyword") String keyword,
 	                          HttpSession session,
 	                          Model model
-	                          ) {
+	                          )
+	{
+		System.out.println("===========================================================================================");
+        System.out.println("BoardController : board/myBoard/search(GET)으로 매핑되었습니다.");
 	    if(session!=null) {
 	    Member member=(Member)session.getAttribute("user");
 	    String id=member.getEmail();
@@ -166,7 +174,10 @@ public class BoardController
 	
 	
 	@GetMapping("/festival")
-	public String toBoardFestival(@RequestParam(value = "page", defaultValue = "1") int page, Model model, HttpSession session) {
+	public String toBoardFestival(@RequestParam(value = "page", defaultValue = "1") int page, Model model, HttpSession session) 
+	{
+		System.out.println("===========================================================================================");
+        System.out.println("BoardController : board/festival(GET)으로 매핑되었습니다.");
 	    int limit = 12; // 한 페이지당 표시할 관광지 수
 	    int offset = (page - 1) * limit;
 	    String type = "15";
@@ -183,7 +194,10 @@ public class BoardController
 	}
 	
 	@GetMapping("/tour")
-	public String toBoardTour(@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
+	public String toBoardTour(@RequestParam(value = "page", defaultValue = "1") int page, Model model) 
+	{
+		System.out.println("===========================================================================================");
+        System.out.println("BoardController : board/tour(GET)으로 매핑되었습니다.");
 	    int limit = 12; // 한 페이지당 표시할 관광지 수
 	    int offset = (page - 1) * limit;
 	    String type = "12";
@@ -198,7 +212,10 @@ public class BoardController
 	}
 	
 	@GetMapping("/restaurant")
-	public String toBoardRestaurant(@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
+	public String toBoardRestaurant(@RequestParam(value = "page", defaultValue = "1") int page, Model model) 
+	{
+		System.out.println("===========================================================================================");
+        System.out.println("BoardController : board/restaurant(GET)으로 매핑되었습니다.");
 	    int limit = 12; // 한 페이지당 표시할 관광지 수
 	    int offset = (page - 1) * limit;
 	    String type = "39";
@@ -218,10 +235,14 @@ public class BoardController
 	@GetMapping("/detailedInfo")
 	public String toDetailedPage(@RequestParam String contentTypeId, @RequestParam String contentId, Model model) 
 	{
-		
+		System.out.println("===========================================================================================");
+        System.out.println("BoardController : board/detailedInfo(GET)으로 매핑되었습니다.");
 		model.addAttribute("tourAPIKey", tourAPIKey);
 		model.addAttribute("contenttypeid", contentTypeId);
 		model.addAttribute("contentid", contentId);
+		System.out.println(model.getAttribute("tourAPIKey"));
+		
+		
 		return "board/detailedPage";
 	}
 }

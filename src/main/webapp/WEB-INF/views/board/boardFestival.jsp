@@ -25,12 +25,12 @@
 					<c:forEach var="festivals" items="${festivals}">
 			            <div class="recommandCard">
 			            	<div class="imgFrame">
-				                <a href="${pageContext.request.contextPath}/detailedInfo?contentTypeId=${festivals.contenttypeid}&contentId=${festivals.contentid}">
+				                <a href="${pageContext.request.contextPath}/board/detailedInfo?contentTypeId=${festivals.contenttypeid}&contentId=${festivals.contentid}">
 				                    <img src="${festivals.firstimage}" class="pImg">
 				                </a>
 				            </div>
 			                <div class="plannerCol" id="pText">
-			                    <a href="${pageContext.request.contextPath}/detailedInfo?contentTypeId=${festivals.contenttypeid}&contentId=${festivals.contentid}" class="plannerTitle">${festivals.title}</a>
+			                    <a href="${pageContext.request.contextPath}/board/detailedInfo?contentTypeId=${festivals.contenttypeid}&contentId=${festivals.contentid}" class="plannerTitle">${festivals.title}</a>
 			                    <p class="hashtag">#${festivals.addr1}</p>
 			                </div>
 			            </div>

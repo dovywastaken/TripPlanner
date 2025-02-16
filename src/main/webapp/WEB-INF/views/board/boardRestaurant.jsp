@@ -16,7 +16,7 @@
 <%@ include file="../header.jsp" %>
 
 <div class="container">
-	<h1>추천 축제 게시판입니다.</h1>
+	<h1>추천 음식점 게시판입니다.</h1>
 	<div class="section">
         <div id="planner">
 			<c:choose>
@@ -24,12 +24,12 @@
 					<c:forEach var="restaurants" items="${restaurants}">
 			            <div class="recommandCard">
 			            	<div class="imgFrame">
-				                <a href="${pageContext.request.contextPath}/detailedInfo?contentTypeId=${restaurants.contenttypeid}&contentId=${restaurants.contentid}"">
+				                <a href="${pageContext.request.contextPath}/board/detailedInfo?contentTypeId=${restaurants.contenttypeid}&contentId=${restaurants.contentid}"">
 				                    <img src="${restaurants.firstimage}" class="pImg">
 				                </a>
 				            </div>
 			                <div class="plannerCol" id="pText">
-			                    <a href="${pageContext.request.contextPath}/detailedInfo?contentTypeId=${restaurants.contenttypeid}&contentId=${restaurants.contentid}" class="plannerTitle">${restaurants.title}</a>
+			                    <a href="${pageContext.request.contextPath}/board/detailedInfo?contentTypeId=${restaurants.contenttypeid}&contentId=${restaurants.contentid}" class="plannerTitle">${restaurants.title}</a>
 			                    <p class="hashtag">#${restaurants.addr1}</p>
 			                </div>
 			            </div>
