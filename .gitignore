@@ -45,4 +45,3 @@ target/
 .vscode/      # VSCode
 
 src/main/resources/properties/*.properties
-.DS_Store
