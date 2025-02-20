@@ -59,7 +59,7 @@ function renderKakaoPlace(contentId) {
 
     const url = `https://place.map.kakao.com/${contentId}`;
     console.log(url);
-    detailBox.innerHTML = `<iframe src="${url}" style="width: 100%; height: 100%; border: none; position: absolute; top: 0; left: 0;"></iframe>`;
+    detailBox.innerHTML = `<iframe src="${url}" style="width: 50%; height: 50%; border: none; position: absolute; top: 0; left: 0;"></iframe>`;
 }
 
 
@@ -78,10 +78,8 @@ function renderTourPlace(info) {
 
 // 관광공사 상세 정보 렌더링
 function renderTourDetail(detail, details) {
-	console.log("왓냐?");
     const detailBox = document.getElementById('detail-box');
     if(!detailBox) return;
-	console.log("왓냐?2");
 	
     detailBox.innerHTML = `
         <div class="detail-wrapper">

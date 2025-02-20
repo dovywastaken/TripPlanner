@@ -1,22 +1,13 @@
-/***************************************
- * 기본 설정 및 초기화 관련
- ***************************************/
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-html, body {
+/* html, body {
     width: 100%;
     height: 100%;
 }
-
+ */
 /***************************************
  * 지도 관련
  ***************************************/
 #map {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -36,7 +27,7 @@ html, body {
     border-radius: 21px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     padding: 15px;
-    z-index: 100;
+    z-index: 2;
     font-size: 14px;
 }
 
@@ -95,7 +86,7 @@ html, body {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     padding: 15px;
     overflow-y: auto;
-    z-index: 90;
+    z-index: 2;
 }
 
 /* 리스트 내부 아이템 스타일 */
@@ -155,7 +146,7 @@ html, body {
     border-bottom: none;
     border-radius: 21px;
     cursor: pointer;
-    z-index: 95;
+    z-index: 2;
     height:40px;
     width: 150px;
 }
