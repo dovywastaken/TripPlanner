@@ -123,11 +123,18 @@ public class PostRepositoryImpl implements PostRepository {
 	}
 
 	@Override
-	public int pageserch(int p_unique) {
-		String pageserch= 
-				"WITH RankedPosts AS (SELECT p_unique, ROW_NUMBER() OVER (ORDER BY publishDate DESC, p_unique DESC) as row_num FROM post WHERE isPrivate = 1) SELECT CEILING(row_num / 10) as page_number"
+	public int pageSearch(int p_unique) 
+	{
+		System.out.println("+++++++++++++++++++++++++++++++++++++++");
+    	System.out.println("[PostRepository : pageSearch 메서드 호출]");
+    	System.out.println("파라미터가 제대로 들어왔는지 확인하기 : "+ p_unique);
+		String SQL= 
+				"WITH RankedPosts AS (SELECT p_unique, ROW_NUMBER() OVER (ORDER BY publishDate DESC, p_unique DESC) as row_num FROM post WHERE isPrivate = 0) SELECT CEILING(row_num / 10) as page_number"
 				+ " FROM RankedPosts WHERE p_unique = ?";
-		int rownum=template.queryForObject(pageserch, Integer.class,p_unique);
+		System.out.println("SQL문 : " + SQL);
+		int rownum = template.queryForObject(SQL, Integer.class,p_unique);
+		System.out.println("결과 값 : " + rownum);
+		System.out.println("[PostRepository : pageSearch 메서드 종료]");
 	return rownum;
 	}
 

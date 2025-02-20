@@ -6,10 +6,11 @@ html, body {
 }
 
 #map {
-    position: absolute;
-    left:30%;
-    width: 70%;
-    height: 100%;
+	outline : 5px dashed red;
+    position : absolute;
+    left : 30%;
+    width : 70%;
+    height : 100%;
 }
 
 #detail-box {

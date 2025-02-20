@@ -86,6 +86,7 @@ public class PostController {
 		   System.out.println("postCreate(Post) : try로 들어옴");
 	       Member member = (Member)session.getAttribute("user");
 	       System.out.println("postCreate(Post) : 세션에서 로그인한 회원 데이터를 멤버 dto에 저장함");
+	       System.out.println("로그인한 회원 dto 들고왔는지 체크하기 : "+ member);
 	       Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 	       System.out.println("postCreate(Post) : 현재 시간 측정 위한 Timestamp객체 생성");
 	       post.setId(member.getNickname());
@@ -132,7 +133,8 @@ public class PostController {
 	       int postId = postService.getLatestPostId(member.getEmail());
 	       System.out.println("1");
 	       // contents에서 장소 정보 처리
-	       if (contents != null && !contents.isEmpty()) {
+	       if (contents != null && !contents.isEmpty()) 
+	       {
 	    	   System.out.println("2");
 	           Document doc = Jsoup.parse(contents);
 	           System.out.println("3");
@@ -182,7 +184,8 @@ public class PostController {
 	       }
 
 	       // 페이지 번호 가져오기
-	       int page = postService.pageserch(postId);
+	       System.out.println("게시글 고유번호 존재 여부 : "+ postId + "번");
+	       int page = postService.pageSearch(postId);
 	       System.out.println("22");
 	   
 	       // 리다이렉트 속성 설정
@@ -378,7 +381,7 @@ public class PostController {
        }
 
        // 페이지 번호 가져오기
-       int page = postService.pageserch(post.getP_unique());
+       int page = postService.pageSearch(post.getP_unique());
        redirect.addAttribute("num", post.getP_unique());
        redirect.addAttribute("page", page);
 

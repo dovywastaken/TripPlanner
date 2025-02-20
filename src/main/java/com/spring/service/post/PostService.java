@@ -18,6 +18,6 @@ public interface PostService {
     int getIdisLike(String id, int num);
     int getLatestPostId(String userId);
     Map<String,Object> getMainPost(String id);
-    int pageserch(int p_unique);
+    int pageSearch(int p_unique);
     void updatetour(Tour tour);
 }

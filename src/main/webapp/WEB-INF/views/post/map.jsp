@@ -4,15 +4,15 @@
 <head>
   <meta charset="UTF-8" />
   <title>지도 + 오버레이 패널</title>
- 
+  <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=${mapAPIKey}&libraries=services"></script>
+  <script> window.contextPath = '${pageContext.request.contextPath}'; </script>
   <script src="${pageContext.request.contextPath}/resources/js/tourApi.js"></script>
   <script type="module" src="${pageContext.request.contextPath}/resources/js/map.js" defer="defer"></script>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/map.css">
-  <script>
-  	window.contextPath = '${pageContext.request.contextPath}';
-  </script>
-  
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/maps.css">
 </head>
+
+
 <body>
 
   <!-- 지도 영역 -->
@@ -65,10 +65,6 @@
   </div>
 
 	<button id="myList-submit">저장</button>
-	
-	
-	
-	
   <div id="searchBar">
     <div class="search-input-wrap">
         <input type="text" id="searchKeyword" placeholder="장소를 검색하세요">
@@ -87,8 +83,5 @@
 	</div>
 	<button id="serch-Listbtn">검색바</button>
 	<button id="myListbtn">마이리스트</button>
-
-  <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=${mapAPIKey}&libraries=services"></script>
-
 </body>
 </html>

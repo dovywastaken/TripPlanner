@@ -66,9 +66,9 @@ public class PostServiceImlp implements PostService {
 	}
 
 	@Override
-	public int pageserch(int p_unique) {
+	public int pageSearch(int p_unique) {
 		
-		return postRepository.pageserch(p_unique);
+		return postRepository.pageSearch(p_unique);
 	}
 
 	@Override
