@@ -89,8 +89,10 @@ public class PostController {
 	       System.out.println("로그인한 회원 dto 들고왔는지 체크하기 : "+ member);
 	       Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 	       System.out.println("postCreate(Post) : 현재 시간 측정 위한 Timestamp객체 생성");
-	       post.setId(member.getNickname());
-	       System.out.println("postCreate(Post) : 게시글의 아이디를 로그인한 유저의 닉네임(원래는 이메일이었음)으로 설정함");
+	       post.setId(member.getEmail());
+	       System.out.println("postCreate(Post) : 게시글의 아이디를 로그인한 유저의 이메일인 " + post.getId() + "로 설정함");
+	       post.setNickname(member.getNickname());
+	       System.out.println("postCreate(Post) : 나중에 게시판에 표시할 닉네임인 " + post.getNickname() + " 가져옴");
 	       post.setPublishDate(timestamp);
 	       System.out.println("postCreate(Post) : 게시글 등록일을 timestamp객체로 현재 시간으로 등록함");
 
@@ -131,6 +133,7 @@ public class PostController {
 
 	       // 최신 게시글 ID 가져오기
 	       int postId = postService.getLatestPostId(member.getEmail());
+	       System.out.println(postId);
 	       System.out.println("1");
 	       // contents에서 장소 정보 처리
 	       if (contents != null && !contents.isEmpty()) 

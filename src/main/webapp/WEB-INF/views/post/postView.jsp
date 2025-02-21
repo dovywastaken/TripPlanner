@@ -21,7 +21,7 @@
 
     <div class="container">
         <div class="post-view">
-            <span class="info-item1"><i class="fa-solid fa-user"></i> ${onepost.id} </i> <i class="fa-solid fa-clock"></i> ${postdate}</span>
+            <span class="info-item1"><i class="fa-solid fa-user"></i> ${onepost.nickname} </i> <i class="fa-solid fa-clock"></i> ${postdate}</span>
             <span class="info-item2"><i class="fa-solid fa-eye"></i> 조회수: ${onepost.views}</span>
         </div>
     

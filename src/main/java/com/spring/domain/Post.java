@@ -22,6 +22,7 @@ public class Post
 	private int satisfaction;
 	private List<String> fileImage;
 	private int commentCount;
+	private String nickname;
 	
 	
 	public List<String> getFileImage() {
@@ -107,6 +108,18 @@ public class Post
 	}
 	public void setCommentCount(int commentCount) {
 		this.commentCount = commentCount;
+	}
+	
+	
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}	
+	
+	
+	
+	
 	
 }

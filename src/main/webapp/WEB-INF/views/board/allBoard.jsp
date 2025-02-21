@@ -34,7 +34,7 @@
                 <c:forEach items="${postList}" var="postList" varStatus="loop">
                     <tr>
                         <td class="tableContent"><a href="${pageContext.request.contextPath}/postView?num=${postList.p_unique}&page=${currentPage}">${postList.title}</a></td>
-                        <td class="tableContent">${postList.id}</td>
+                        <td class="tableContent">${postList.nickname}</td>
                         <td class="tableContent">${date.get(loop.index)}</td>
                         <td class="tableContent">${postList.likes}</td>
                         <td class="tableContent">${postList.views}</td>

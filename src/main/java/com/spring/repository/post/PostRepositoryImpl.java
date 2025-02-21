@@ -30,7 +30,7 @@ public class PostRepositoryImpl implements PostRepository {
 
     @Override
     public void createPost(Post post) {
-        String sql = "INSERT INTO post (id, title, contents, publishDate, isPrivate, commentIsAllowed, imageNames) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO post (id, title, contents, publishDate, isPrivate, commentIsAllowed, imageNames, nickname) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         String imageNames = String.join(",", post.getFileImage());
         template.update(sql,
                 post.getId(),
@@ -39,7 +39,8 @@ public class PostRepositoryImpl implements PostRepository {
                 post.getPublishDate(),
                 post.getIsPrivate(),
                 post.isCommentIsAllowed(),
-                imageNames
+                imageNames,
+                post.getNickname()
         );
     }
 

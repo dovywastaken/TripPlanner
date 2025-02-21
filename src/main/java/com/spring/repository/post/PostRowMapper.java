@@ -26,6 +26,7 @@ public class PostRowMapper implements RowMapper<Post>{
         post.setCommentIsAllowed(rs.getString("commentIsAllowed"));
         String imageNames = rs.getString("imageNames");
         post.setCommentCount(rs.getInt("commentCount"));
+        post.setNickname(rs.getString("nickname"));
         
         if (imageNames != null && !imageNames.isEmpty()) 
         {
