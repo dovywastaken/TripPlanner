@@ -31,26 +31,28 @@ public class BoardController
 	@Autowired
 	BoardService boardService;
 	
-	private void setBoardModelAttributes(Map<String,Object> result,int page,Model model) 
-	//게시물을 들고오고 게시물 수를 들고옴과 동시에 페이지네이션 데이터를 생성, 게시물 생성 날짜 포맷팅을 해줌
+	private void setBoardModelAttributes(Map<String,Object> result,int page,Model model)
 	{
-		List<Post> postList = (List<Post>) result.get("postList"); //모든 게시글을 result에서 들고와서 리스트에 담는다
-		int postSize= (int)result.get("postSize"); //게시글 갯수의 총 합을 result에서 들고와서 변수에 담는다
-		
-		ArrayList<Integer> getTotalPages = paginationHelper.getTotalPages(postSize, 10); //페이지네이션 만드는 코드
-		ArrayList<Integer> getpostnumber = paginationHelper.getpostnumber(postSize, page, 10); //
-		
-		DateFormatter dateFormatter = new DateFormatter(); //게시물의 날짜를 포멧에 맞춰주는 객체
-		ArrayList<String> date=new ArrayList<String>(); //
-		for (Post post : postList) //Allpost에 있는 요소를 순회하면서 post에 담는다
-		{
-		       date.add(dateFormatter.formatBoardDate(post.getPublishDate())); 
-		}
-		 
-		model.addAttribute("date", date);
-		model.addAttribute("getTotalPages", getTotalPages);
-		model.addAttribute("getpostnumber", getpostnumber);
-		model.addAttribute("postList", postList);
+	    List<Post> postList = (List<Post>) result.get("postList");
+	    int postSize= (int)result.get("postSize");
+
+	    ArrayList<Integer> getTotalPages = paginationHelper.getTotalPages(postSize, 10);
+	    ArrayList<Integer> getpostnumber = paginationHelper.getpostnumber(postSize, page, 10);
+
+	    DateFormatter dateFormatter = new DateFormatter();
+	    ArrayList<String> date=new ArrayList<String>();
+	    for (Post post : postList)
+	    {
+	           date.add(dateFormatter.formatBoardDate(post.getPublishDate()));
+	    }
+
+	    System.out.println("postList size: " + postList.size()); // 로그 출력 추가
+	    System.out.println("date list size: " + date.size());   // 로그 출력 추가
+
+	    model.addAttribute("date", date);
+	    model.addAttribute("getTotalPages", getTotalPages);
+	    model.addAttribute("getpostnumber", getpostnumber);
+	    model.addAttribute("postList", postList);
 	}
 	
 	
@@ -60,19 +62,21 @@ public class BoardController
 		System.out.println("===========================================================================================");
         System.out.println("BoardController : board/all(GET)으로 매핑되어 전체 글 목록을 표시할 준비가 되었습니다.");
 		Map<String,Object> result = boardService.allBoard(page);
+		System.out.println("db에서 들고온 전체 게시글 수 : " + result.get("postSize"));
 		setBoardModelAttributes(result,page,model);
 		int totalPosts = (int) result.get("postSize");
+		System.out.println("전체 게시글 수 : "+ totalPosts);
 		Map<String, Object> pagination = paginationHelper.getPagination(page, totalPosts, 10, 5);
 		
 		model.addAttribute("currentPage", page);
 		model.addAttribute("pagination", pagination);
 
-//		System.out.println("게시글 날짜 : " + model.getAttribute("date"));
-//		System.out.println("총 페이지 갯수 : " + model.getAttribute("getTotalPages"));
-//		System.out.println("getPostNumber로 가져온 값 : " + model.getAttribute("getpostnumber"));
-//		System.out.println("총 게시글 리스트 : " + model.getAttribute("postList"));
-//		System.out.println("페이지 번호 : " + page);
-//		System.out.println("페이지네이션 : " + pagination);
+		System.out.println("게시글 날짜 : " + model.getAttribute("date"));
+		System.out.println("총 페이지 갯수 : " + model.getAttribute("getTotalPages"));
+		System.out.println("getPostNumber로 가져온 값 : " + model.getAttribute("getpostnumber"));
+		System.out.println("총 게시글 리스트 : " + model.getAttribute("postList"));
+		System.out.println("페이지 번호 : " + page);
+		System.out.println("페이지네이션 : " + pagination);
 		
 		return "board/allBoard";
 	}

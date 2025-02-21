@@ -31,15 +31,15 @@
                 </thead>
                 <tbody>
                     <!-- 검색 결과가 없을 경우 -->
-                    <c:if test="${empty Allpost}">
+                    <c:if test="${empty postList}">
                         <tr>
                             <td colspan="6">검색 결과가 없습니다.</td>
                         </tr>
                     </c:if>
                     <!-- 검색 결과가 있을 경우 -->
-                    <c:forEach items="${Allpost}" var="All" varStatus="loop">
+                    <c:forEach items="${postList}" var="All" varStatus="loop">
                         <tr>
-                            <td class="tableContent"><a href="${pageContext.request.contextPath}/postview?num=${All.p_unique}&page=${currentPage}">${All.title}</a></td>
+                            <td class="tableContent"><a href="${pageContext.request.contextPath}/postView?num=${All.p_unique}&page=${currentPage}">${All.title}</a></td>
                             <td class="tableContent">${All.id}</td>
                             <td class="tableContent">${date.get(loop.index)}</td>
                             <td class="tableContent">${All.likes}</td>

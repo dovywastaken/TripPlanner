@@ -23,17 +23,21 @@ public class BoardRepositoryImpl implements BoardRepository
 	public Map<String, Object> allBoard(int page) 
 	{ //공개 게시글 페이지네이션 및 데이터 반환 메서드
 		System.out.println("+++++++++++++++++++++++++++++++++++++++");
-    	System.out.println("[BoardRepository : allBoardRead 메서드 호출]");
+    	System.out.println("[BoardRepository : allBoard 메서드 호출]");
 		int pageSize = 10; //총 10개의 글을 불러오는데
         int offset = (page - 1) * pageSize; //페이지네이션 시작점 page의 값이 1이면 0번 글부터 2면 10번 글부터
 		
 		PostRowMapper postRowMapper = new PostRowMapper();
 		String postListSQL = "SELECT * FROM post WHERE isPrivate = 0 ORDER BY publishDate DESC, p_unique DESC LIMIT ?, ?"; //등록일 순, 고유번호의 내림차순으로 정렬한 데이터 들고옴
 		List<Post> postList = template.query(postListSQL,postRowMapper,new Object[] {offset,pageSize}); // 실제 게시글을 리스트화 시킨것
+		
+		String totalPostCountSQL = "SELECT COUNT(*) FROM post WHERE isPrivate = 0";
+	    int totalPostSize = template.queryForObject(totalPostCountSQL, Integer.class);
+		
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("postList", postList);
-		result.put("postSize", postList.size());
-		System.out.println("[총 " + postList.size() + "개의 게시글을 반환합니다]");
+		result.put("postSize", totalPostSize);
+		System.out.println("[총 " + totalPostSize + "개의 게시글을 반환합니다]");
 		System.out.println("포스트리스트 " + postList);
 		System.out.println("[BoardRepository : allBoardRead 메서드 종료]");
 		

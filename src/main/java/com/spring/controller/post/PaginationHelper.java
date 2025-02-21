@@ -6,7 +6,8 @@ import java.util.Map;
 
 
 
-public class PaginationHelper {
+public class PaginationHelper 
+{
 	
 	public ArrayList<Integer> getTotalPages(int totalPosts, int pageSize) 
 	{
