@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- 변수 설정 (선택 사항이지만 유용) -->
+    <!-- 로그 파일이 저장될 경로 (Cafe24 환경에서는 쓰기 가능한 경로로 수정 필요) -->
+    <property name="LOG_DIR" value="/Users/TestChamber/logs" />
+    <!-- 콘솔 로그 패턴 -->
+    <property name="CONSOLE_LOG_PATTERN" value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
+    <!-- 파일 로그 패턴 -->
+    <property name="FILE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
+
+    <!-- 1. Console Appender: 로그를 콘솔(System.out)로 출력 -->
+    <!-- Tomcat을 실행하면 이 로그가 catalina.out 또는 유사한 파일에 기록됨 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 2. File Appender: 로그를 파일로 저장 (선택 사항) -->
+    <!-- 배포 환경(Cafe24 등)에서는 <file> 및 <fileNamePattern> 경로를
+         쓰기 가능한 실제 경로로 수정해야 합니다.
+         만약 파일 로깅이 필요 없다면 이 appender 전체를 주석 처리하거나 삭제해도 됩니다. -->
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/tripplanner.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/tripplanner.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>30</maxHistory> <!-- 로그 보관 기간 (일) -->
+        </rollingPolicy>
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+
+    <!-- 3. 로거(Logger) 설정 -->
+    <!-- 특정 패키지 또는 클래스에 대한 로그 레벨 및 Appender 지정 -->
+    <!-- 개발 중에는 DEBUG 레벨로 설정하여 상세 로그 확인 -->
+    <logger name="com.spring.controller" level="DEBUG" additivity="false">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE" /> <!-- 파일 로깅 사용 시 -->
+    </logger>
+
+    <logger name="com.spring.service" level="DEBUG" additivity="false">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE" />
+    </logger>
+
+    <!-- Spring Framework 자체 로그 레벨 (너무 상세하면 INFO 또는 WARN으로) -->
+    <logger name="org.springframework" level="INFO" additivity="false">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE" />
+    </logger>
+    <!-- 데이터베이스 관련 로그 레벨 (필요시 DEBUG로 변경) -->
+    <logger name="jdbc.sqlonly" level="OFF" />
+    <logger name="jdbc.sqltiming" level="OFF" />
+    <logger name="jdbc.audit" level="OFF" />
+    <logger name="jdbc.resultset" level="OFF" />
+    <logger name="jdbc.resultsettable" level="OFF"/>
+    <logger name="jdbc.connection" level="OFF" />
+
+
+    <!-- 4. 루트 로거(Root Logger) 설정 -->
+    <!-- 모든 로거의 기본 설정. 지정되지 않은 모든 로그는 여기서 처리됨. -->
+    <!-- 개발 중에는 INFO 또는 DEBUG, 운영 시에는 WARN 또는 ERROR 권장 -->
+    <root level="INFO">
+        <appender-ref ref="STDOUT" /> <!-- 기본적으로 콘솔에 출력 -->
+        <appender-ref ref="FILE" /> <!-- 파일 로깅 사용 시 -->
+    </root>
+
+</configuration>

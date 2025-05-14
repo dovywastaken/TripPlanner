@@ -1,9 +1,12 @@
 package com.spring.service.post;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -17,6 +20,8 @@ public class FileStorageService {
 
     private final Path fileStorageLocation; // 파일이 저장될 최종 디렉토리 경로 객체
 
+    private static final Logger logger = LoggerFactory.getLogger(FileStorageService.class);
+    
     /**
      * 생성자: application.properties(또는 keys.properties)에서 파일 저장 경로를 주입받아
      * Path 객체로 변환하고 저장합니다.

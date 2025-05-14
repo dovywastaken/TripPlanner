@@ -1,16 +1,11 @@
 package com.spring.controller.post;
 
-import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
-
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,18 +30,21 @@ import com.spring.service.post.CommentService;
 import com.spring.service.post.FileStorageService;
 import com.spring.service.post.PostService;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import jakarta.servlet.ServletContext;
 
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Controller
 public class PostController {
+	
+	
+	private static final Logger logger = LoggerFactory.getLogger(PostController.class);
 	
 	@Autowired
 	private PostService postService;
@@ -518,44 +516,50 @@ public class PostController {
 	@PostMapping("/uploadSummernoteImage") // URL 경로 변경 (기존 /uploadImage 대신 사용)
     @ResponseBody
     public ResponseEntity<Map<String, Object>> uploadSummernoteImage(@RequestParam("file") MultipartFile file) { // 단일 파일 파라미터
-        System.out.println("===========================================================================================");
-        System.out.println("PostController : /uploadSummernoteImage (POST) 매핑됨");
+        logger.info("===========================================================================================");
+        logger.info("PostController : /uploadSummernoteImage (POST) 매핑됨");
         Map<String, Object> response = new HashMap<>();
 
         if (file == null || file.isEmpty()) {
-            System.out.println("업로드된 파일이 없습니다.");
+        	logger.warn("업로드된 파일이 없습니다.");
             response.put("error", "업로드할 파일이 없습니다.");
             return ResponseEntity.badRequest().body(response);
         }
 
-        System.out.println("전달받은 파일: " + file.getOriginalFilename());
+        logger.info("전달받은 파일: " + file.getOriginalFilename());
 
         try {
             // 1. FileStorageService를 사용하여 파일 저장하고 저장된 파일명(UUID.확장자) 받기
             String savedFilename = fileStorageService.storeFile(file); // 서비스 호출
-            System.out.println("파일 저장 성공, 저장된 파일명: " + savedFilename);
+            logger.info("파일 저장 성공, 저장된 파일명: [{}]", savedFilename);
 
             // 2. 웹 접근 URL 생성 (리소스 핸들러 매핑 경로 기준)
             String imageUrl = "/uploads/" + savedFilename;
-            System.out.println("생성된 이미지 웹 경로: " + imageUrl);
+            logger.info("생성된 이미지 웹 경로: [{}]", imageUrl);
 
             // 3. 성공 JSON 응답 구성 (Summernote가 사용할 URL 포함)
             response.put("url", imageUrl);
             response.put("savedFilename", savedFilename); // 저장된 파일명도 전달 (선택적이지만 유용)
             response.put("success", true);
+            logger.info("Summernote 이미지 업로드 성공 - URL: [{}] 반환", imageUrl);
 
             return ResponseEntity.ok(response);
 
-        } catch (IOException | IllegalStateException e) {
-            System.err.println("파일 업로드 처리 중 오류 발생: " + e.getMessage());
-            // e.printStackTrace();
+        }  catch (IOException e) { // 파일 입출력 관련 명시적 예외
+            logger.error("파일 업로드 처리 중 IOException 발생 - 파일명: [{}], 오류: [{}]", file.getOriginalFilename(), e.getMessage(), e); // 예외 객체도 함께 로깅
             response.put("error", "파일 업로드 중 오류 발생: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-        } catch (Exception e) {
-             System.err.println("알 수 없는 서버 오류 발생: " + e.getMessage());
-             // e.printStackTrace();
-             response.put("error", "서버 내부 오류 발생.");
+        } catch (IllegalStateException e) { // 파일 상태 관련 명시적 예외
+            logger.error("파일 업로드 처리 중 IllegalStateException 발생 - 파일명: [{}], 오류: [{}]", file.getOriginalFilename(), e.getMessage(), e);
+            response.put("error", "파일 업로드 처리 중 내부 상태 오류: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        } catch (Exception e) { // 그 외 모든 예외
+             logger.error("Summernote 이미지 업로드 중 알 수 없는 오류 발생 - 파일명: [{}], 오류: [{}]", file.getOriginalFilename(), e.getMessage(), e);
+             response.put("error", "서버 내부 오류가 발생했습니다. 관리자에게 문의하세요.");
              return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        } finally {
+            logger.info("POST /uploadSummernoteImage 요청 처리 종료");
+            logger.info("===========================================================================================");
         }
     }
 /*

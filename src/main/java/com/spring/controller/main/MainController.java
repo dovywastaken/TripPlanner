@@ -7,6 +7,8 @@ import java.util.Map;
 
 import jakarta.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +27,10 @@ import com.spring.service.post.PostService;
 @Controller
 public class MainController
 {
+	
+	private static final Logger logger = LoggerFactory.getLogger(MainController.class);
+	
+	
 	@Autowired
 	PostService postService;
 	
@@ -38,6 +44,8 @@ public class MainController
 	public String mainPage(Model model, HttpSession session) {
 	    System.out.println("===========================================================================================");
 	    System.out.println("MainController: 프로젝트명으로 매핑되었습니다.");
+	    logger.info("=========================================================================");
+	    logger.info("MainController: 프로젝트명으로 매핑되었습니다.");
 	    Member member=new Member(); //멤버 객체 전달 안해주면 에러남
 	    model.addAttribute("member",member);
 	    // 세션이 존재하는 경우 처리
@@ -76,6 +84,7 @@ public class MainController
 	    hotboard(model);
 
 	    System.out.println("MainController: 프로젝트명으로 매핑되어 mainPage.jsp로 이동합니다.");
+	    logger.info("MainController: 프로젝트명으로 매핑되어 mainPage.jsp로 이동합니다.");
 	    return "mainPage"; // mainPage.jsp로 이동
 	}
 	
