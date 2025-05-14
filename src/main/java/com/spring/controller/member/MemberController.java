@@ -64,15 +64,11 @@ public class MemberController {
         System.out.println("MemberController : members/signUp(POST)으로 매핑");
         
         String phone = member.getPhone1();
-        String[] phoneList = phone.split("-");
-        System.out.println("이메일 실제로 받는지 체크 : " + member.getEmail());
-        for(int i=1; i<=phoneList.length; i++) 
-        {
-        	member.setPhone1(phoneList[0]);
-            member.setPhone2(phoneList[1]);
-            member.setPhone3(phoneList[2]);
-        }
+        member.setPhone1(phone.substring(0,3));
+        member.setPhone2(phone.substring(3,7));
+        member.setPhone3(phone.substring(7));
         
+        System.out.println("이메일 실제로 받는지 체크 : " + member.getEmail());
         memberService.createMember(member);
         System.out.println("메인페이지로 리다렉션");
         return "redirect:/";

@@ -27,7 +27,7 @@
 </head>
 <body>
     <%@ include file="../header.jsp" %>
-    <form id="postForm" action="${pageContext.request.contextPath}/postview/updatePost" method="POST">
+    <form id="postForm" action="${pageContext.request.contextPath}/postView/updatePost" method="POST">
         <!-- 게시글 고유 ID, 작성자 ID, publishDate를 숨겨진 필드로 전달 -->
         <input type="hidden" name="p_unique" value="${result.p_unique}" />
         <input type="hidden" name="id" value="${result.id}" />

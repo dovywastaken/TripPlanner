@@ -184,7 +184,7 @@
 		        <div class="searchAndTableContainer">
 		            <form name="search" id="search" method="get" action="dashboard">
 		                <input type="submit" id="searchButton" value="" />
-		                <input type="text" name="keyword" id="keyword" placeholder="회원 검색하기" />
+		                <input type="text" name="keyword" id="keyword" placeholder="회원 이메일 조회" />
 		            </form>
 		        
 		            <table id="table">

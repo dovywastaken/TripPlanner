@@ -34,7 +34,8 @@
 									<div class="plannerDoubling">
 							        	<div class="plannerCard">
 								            <div class="imgFrame">
-								                <img src="${pageContext.request.contextPath}/resources/upload/${postList.fileImage[0]}" class="pImg">
+								           		<img src="<c:url value='/uploads/${postList.fileImage[0]}'/>" class="pImg">
+								           <!-- <img src="${pageContext.request.contextPath}/resources/upload/${postList.fileImage[0]}" class="pImg"> -->  
 								            </div>
 								            <div class="plannerCol" id="pText">
 								            	<div>

@@ -82,8 +82,8 @@
                         <h2>${user.email}</h2>
                         <c:if test="${onepost.id==user.email}">
                        <span> 
-                        <a href="${pageContext.request.contextPath}/postview/update?num=${onepost.p_unique}" class="btn edit-btn">수정</a>
-                       <a href="${pageContext.request.contextPath}/postview/delete?num=${onepost.p_unique}" class="btn delet-btn">삭제</a>
+                        <a href="${pageContext.request.contextPath}/postView/update?num=${onepost.p_unique}" class="btn edit-btn">수정</a>
+                       <a href="${pageContext.request.contextPath}/postView/delete?num=${onepost.p_unique}" class="btn delet-btn">삭제</a>
                         </span> 
                         </c:if>
                     </div>

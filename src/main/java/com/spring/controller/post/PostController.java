@@ -1,6 +1,7 @@
 package com.spring.controller.post;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,6 +13,8 @@ import java.util.UUID;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,10 +32,12 @@ import com.spring.domain.Member;
 import com.spring.domain.Post;
 import com.spring.domain.Tour;
 import com.spring.service.post.CommentService;
+import com.spring.service.post.FileStorageService;
 import com.spring.service.post.PostService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.ServletContext;
 
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -48,6 +53,9 @@ public class PostController {
 	
 	@Autowired
 	private CommentService commentService;
+	
+	@Autowired
+	private FileStorageService fileStorageService;
 	
 	@GetMapping("/postForm")
 	public String postForm() 
@@ -68,10 +76,119 @@ public class PostController {
         // 여기서는 단순히 모델에 추가
 		System.out.println("PostController : saveForm(POST)으로 매핑되었습니다");
         model.addAttribute("myListData", myListData);
-        return "post/postForm"; // write.jsp로 포워딩
+        return "post/postForm";
     }
 	
 	
+	
+	
+	
+	 @PostMapping("/postCreate")
+		public String postCreate(@ModelAttribute Post post, // contents, isPrivate 등은 ModelAttribute로 자동 매핑됨
+		                       HttpSession session,
+		                       RedirectAttributes redirect)
+		{
+		   System.out.println("===========================================================================================");
+		   System.out.println("PostController : postCreate(Post)으로 매핑되었습니다");
+		   try
+		   {
+	           Member member = (Member) session.getAttribute("user");
+	           System.out.println("로그인한 회원 dto: " + member);
+	           if (member == null) {
+					// 로그인 안된 경우 처리
+					return "redirect:/login"; // 실제 로그인 페이지 경로로 수정
+				}
+
+	           Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+	           System.out.println("postCreate(Post) : Timestamp 생성");
+	           post.setId(member.getEmail());
+	           System.out.println("postCreate(Post) : 작성자 ID 설정: " + post.getId());
+	           post.setNickname(member.getNickname());
+	           System.out.println("postCreate(Post) : 작성자 닉네임 설정: " + post.getNickname());
+	           post.setPublishDate(timestamp);
+	           System.out.println("postCreate(Post) : 게시일 설정");
+
+	           // ====[ fileImage 필드 설정 로직 ]====
+	           // contents HTML에서 서버 저장 파일명(UUID.확장자) 리스트를 추출하여
+	           // Post 객체의 fileImage 필드(List<String>)에 설정합니다.
+	           List<String> storedFileNamesFromContent = new ArrayList<>();
+	           String contentsHtml = post.getContents(); // ModelAttribute를 통해 받아온 contents 사용
+	           if (contentsHtml != null && !contentsHtml.isEmpty()) {
+	               Document doc = Jsoup.parse(contentsHtml);
+	               System.out.println("파싱할 HTML 내용: " + contentsHtml);
+	               Elements images = doc.select("img[src*='/uploads/']");
+	               //Elements images = doc.select("img[src^='/uploads/']"); // /uploads/로 시작하는 img 태그만 선택
+	               System.out.println("postCreate(Post) : 내용에서 이미지 태그 " + images.size() + "개 찾음");
+	               for (Element img : images) {
+	                   String src = img.attr("src"); // 예: /uploads/uuid.jpg 또는 /testChamber/uploads/uuid.jpg
+	                   if (src != null && src.contains("/uploads/")) {
+	                       // 마지막 '/' 뒤의 문자열(파일명)만 추출
+	                       String filename = src.substring(src.lastIndexOf('/') + 1);
+	                       storedFileNamesFromContent.add(filename);
+	                       System.out.println(" - 추출된 서버 저장 파일명: " + filename);
+	                   }
+	               }
+	           }
+	           // 추출한 파일명 리스트를 Post 객체의 fileImage 필드에 설정
+	           post.setFileImage(storedFileNamesFromContent);
+	           System.out.println("postCreate(Post) : Post DTO의 fileImage 필드 설정 완료: " + storedFileNamesFromContent);
+	           // ====[ fileImage 필드 설정 로직 끝 ]====
+
+	           // 서비스 호출하여 게시글 저장
+	           // PostRepository는 내부적으로 post.getFileImage()를 호출하여
+	           // List<String>을 받아 String.join(",")으로 imageNames 컬럼에 저장할 것임
+	           postService.createPost(post);
+	           System.out.println("postCreate(Post) : DB에 게시글 정보 저장 완료 (contents 및 imageNames 포함)");
+
+	           // 최신 게시글 ID 가져오기
+	           int postId = postService.getLatestPostId(member.getEmail());
+	           System.out.println("생성된 게시글 ID: " + postId);
+
+	           // contents에서 장소 정보 처리 (기존 로직 유지)
+	           if (contentsHtml != null && !contentsHtml.isEmpty())
+	           {
+	                Document doc = Jsoup.parse(contentsHtml);
+	                Elements locationButtons = doc.select(".location-name-btn");
+	                System.out.println("postCreate(Post) : 내용에서 장소 버튼 " + locationButtons.size() + "개 찾음");
+	                for (Element button : locationButtons) {
+	                    // ... (기존 Tour 정보 처리 로직) ...
+	                    // postId 변수 사용 확인
+	                     String dataInfo = button.attr("data-info");
+	                     if (dataInfo != null && !dataInfo.isEmpty()) {
+	                         JSONObject jsonObject = new JSONObject(dataInfo);
+	                         Tour tour = new Tour();
+	                         // ... Tour 객체 속성 설정 ...
+	                         tour.setP_unique(postId); // 생성된 게시글 ID 사용
+	                         tour.setCreated_at(timestamp);
+	                         postService.updatetour(tour);
+	                         System.out.println(" - 장소 정보 처리 완료: " + tour.getTitle());
+	                     }
+	                }
+	           }
+
+	           // 페이지 번호 가져오기 및 리다이렉트 (기존 로직 유지)
+	           int page = postService.pageSearch(postId);
+	           redirect.addAttribute("num", postId);
+	           redirect.addAttribute("page", page);
+	           System.out.println("postCreate(Post) : postView로 리다렉션");
+
+	           return "redirect:/postView";
+
+		   }
+		   catch (Exception e)
+		   {
+	           System.err.println("[ERROR] postCreate 예외 발생: " + e.getMessage());
+		       e.printStackTrace();
+	           redirect.addFlashAttribute("errorMessage", "게시글 작성 중 오류가 발생했습니다.");
+	           return "redirect:/postForm"; // 에러 시 작성 폼으로
+		   }
+		}
+	
+	
+	
+	
+	
+	/*
 
 	@PostMapping("/postCreate")
 	public String postCreate(@ModelAttribute Post post,
@@ -117,9 +234,9 @@ public class PostController {
 	               System.out.println("postCreate(Post) : 첨부된 이미지의 src속성을 꺼내서 imageURL이라는 문자열에 담음");
 	               if (!imageUrl.isEmpty()) 
 	               {
-	            	   System.out.println("postCreate(Post) : 첨부된 이미지의 src속성이 비어있어서 if문으로 들어옴");
+	            	   System.out.println("postCreate(Post) : 첨부된 이미지가 존재하므로 if문으로 들어옴");
 	                   imageUrls.add(imageUrl);
-	                   System.out.println("postCreate(Post) : 왜 하는진 모르겠지만 일단 src속성이 빈 이미지를 앞서 만들어 놓은 이미지를 담는 빈 리스트에 담음");
+	                   System.out.println("postCreate(Post) : imageUrls라는 리스트에 각각의 이미지를 담음");
 	               }
 	           }
 	       }
@@ -212,7 +329,7 @@ public class PostController {
 	}
     
 	
-	
+	*/
 	
 	
 	
@@ -398,66 +515,116 @@ public class PostController {
 	   }
 	}
 	
+	@PostMapping("/uploadSummernoteImage") // URL 경로 변경 (기존 /uploadImage 대신 사용)
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> uploadSummernoteImage(@RequestParam("file") MultipartFile file) { // 단일 파일 파라미터
+        System.out.println("===========================================================================================");
+        System.out.println("PostController : /uploadSummernoteImage (POST) 매핑됨");
+        Map<String, Object> response = new HashMap<>();
+
+        if (file == null || file.isEmpty()) {
+            System.out.println("업로드된 파일이 없습니다.");
+            response.put("error", "업로드할 파일이 없습니다.");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        System.out.println("전달받은 파일: " + file.getOriginalFilename());
+
+        try {
+            // 1. FileStorageService를 사용하여 파일 저장하고 저장된 파일명(UUID.확장자) 받기
+            String savedFilename = fileStorageService.storeFile(file); // 서비스 호출
+            System.out.println("파일 저장 성공, 저장된 파일명: " + savedFilename);
+
+            // 2. 웹 접근 URL 생성 (리소스 핸들러 매핑 경로 기준)
+            String imageUrl = "/uploads/" + savedFilename;
+            System.out.println("생성된 이미지 웹 경로: " + imageUrl);
+
+            // 3. 성공 JSON 응답 구성 (Summernote가 사용할 URL 포함)
+            response.put("url", imageUrl);
+            response.put("savedFilename", savedFilename); // 저장된 파일명도 전달 (선택적이지만 유용)
+            response.put("success", true);
+
+            return ResponseEntity.ok(response);
+
+        } catch (IOException | IllegalStateException e) {
+            System.err.println("파일 업로드 처리 중 오류 발생: " + e.getMessage());
+            // e.printStackTrace();
+            response.put("error", "파일 업로드 중 오류 발생: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        } catch (Exception e) {
+             System.err.println("알 수 없는 서버 오류 발생: " + e.getMessage());
+             // e.printStackTrace();
+             response.put("error", "서버 내부 오류 발생.");
+             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+/*
 	@PostMapping("/uploadImage")
 	@ResponseBody
-	public List<String> uploadImage(@RequestParam("fileImg") MultipartFile[] files, HttpServletRequest request)
-	{
-		System.out.println("==========================================================================================="); // 로그 구분선을 출력하여 로그를 시각적으로 구분합니다.
-	    System.out.println("PostController : uploadImage(Post)으로 ASYNC 매핑되었습니다"); // 해당 메소드가 호출되었음을 로그로 남깁니다. (ASYNC 매핑은 이 코드에서는 직접적으로 드러나지 않지만, 주석은 원래 코드의 주석을 반영)
-	    List<String> uploadedImageUrls = new ArrayList<>(); // 업로드된 이미지의 URL을 저장할 리스트를 생성합니다.
-	    System.out.println("전달받은 파일 정보(MultipartFile 배열) : " + files); // 클라이언트로부터 전송된 파일 배열(MultipartFile[])을 콘솔에 출력하여 파일 정보를 확인합니다. (디버깅 목적)
+	public List<String> uploadImage(@RequestParam("fileImg") MultipartFile[] files, HttpServletRequest request) {
+	    System.out.println("===========================================================================================");
+	    System.out.println("PostController : uploadImage(Post)으로 ASYNC 매핑되었습니다");
+	    List<String> uploadedImageUrls = new ArrayList<>();
+	    System.out.println("전달받은 파일 정보(MultipartFile 배열) : " + files);
 
 	    try {
-	        System.out.println("서블릿 컨텍스트에서 '/resources/img' 경로의 실제 파일 시스템 경로를 가져오기 시작합니다."); // 경로 획득 시작 로그
-	        String uploadDir = request.getServletContext().getRealPath("/resources/img"); // 서블릿 컨텍스트를 통해 "/resources/img" 경로의 실제 서버 파일 시스템 경로를 가져옵니다.
-	        System.out.println("이미지 저장 경로 : " + uploadDir); // 이미지가 저장될 실제 경로를 로그로 출력합니다.
-	        File uploadPath = new File(uploadDir); // 실제 저장 경로를 기반으로 File 객체를 생성합니다.
-	        System.out.println("File 객체 생성 완료: " + uploadPath); // File 객체 생성 완료 로그
+	        // ServletContext를 가져옵니다.
+	        ServletContext context = request.getServletContext();
+	        System.out.println("ServletContext 획득: " + context);
 
-	        if (!uploadPath.exists()) // 해당 경로에 디렉토리가 존재하는지 확인합니다.
-	        {
-	        	System.out.println("이미지를 저장할 디렉토리가 존재하지 않습니다."); // 디렉토리 존재 여부 확인 로그
-	        	System.out.println("디렉토리가 없으므로 " + uploadPath + "에 디렉토리를 생성합니다."); // 디렉토리 생성 로그 메시지
-	            uploadPath.mkdirs(); // 지정된 경로에 디렉토리를 생성합니다. (mkdirs()는 중간 경로도 모두 생성)
-	            System.out.println("디렉토리 생성 완료: " + uploadPath); // 디렉토리 생성 완료 로그
+	        // 상대 경로를 지정합니다. (webapp/resources/uploads)
+	        String relativePath = "/resources/uploads";
+	        System.out.println("상대 경로: " + relativePath);
+
+	        // ServletContext.getRealPath()를 사용하여 절대 경로를 얻습니다.
+	        String uploadDir = context.getRealPath(relativePath);
+	        System.out.println("실제 이미지 저장 경로 (절대 경로): " + uploadDir);
+
+
+	        File uploadPath = new File(uploadDir);
+	        System.out.println("File 객체 생성 완료: " + uploadPath);
+
+	        if (!uploadPath.exists()) {
+	            System.out.println("이미지를 저장할 디렉토리가 존재하지 않습니다.");
+	            System.out.println("디렉토리가 없으므로 " + uploadPath + "에 디렉토리를 생성합니다.");
+	            uploadPath.mkdirs();
+	            System.out.println("디렉토리 생성 완료: " + uploadPath);
 	        } else {
-	        	System.out.println("이미지를 저장할 디렉토리가 이미 존재합니다."); // 디렉토리 이미 존재 로그
-	            System.out.println("이미 디렉토리가 있어 : " + uploadPath + "에 이미지를 저장합니다"); // 디렉토리가 이미 존재하는 경우 로그를 출력합니다.
+	            System.out.println("이미지를 저장할 디렉토리가 이미 존재합니다.");
+	            System.out.println("이미 디렉토리가 있어 : " + uploadPath + "에 이미지를 저장합니다");
 	        }
 
 
-	        System.out.println("전달받은 파일 배열을 순회하며 파일 처리 시작."); // 파일 처리 시작 로그
-	        for (MultipartFile file : files) // 전송된 파일 배열을 순회하며 각 파일에 대한 처리를 진행합니다.
-	        {
-	        	System.out.println("현재 파일 처리 시작: " + file.getOriginalFilename()); // 현재 처리 파일명 로그
-	            System.out.println("UUID를 사용하여 고유한 파일 이름 생성 및 확장자 추출."); // 파일 이름 생성 로그
-	            String fileName = UUID.randomUUID().toString() + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".")); // UUID를 사용하여 고유한 파일 이름을 생성하고, 원래 파일의 확장자를 유지합니다.
-	            System.out.println("생성된 파일 이름: " + fileName); // 생성된 파일 이름 로그
-	            System.out.println("파일 저장 시작: " + uploadPath + File.separator + fileName); // 파일 저장 시작 로그
-	            file.transferTo(new File(uploadPath + File.separator + fileName)); // 생성된 파일 이름으로 파일을 지정된 경로에 저장합니다.
-	            System.out.println("파일 저장 완료: " + uploadPath + File.separator + fileName); // 파일 저장 완료 로그
-	            String imageUrl = request.getContextPath() + "/resources/img/" + fileName; // 웹에서 접근 가능한 이미지 URL 생성
-	            System.out.println("생성된 이미지 URL: " + imageUrl); // 이미지 URL 로그
-	            System.out.println("생성된 이미지 URL을 리스트에 추가: " + imageUrl); // URL 리스트 추가 로그
-	            uploadedImageUrls.add(imageUrl); // 웹에서 접근 가능한 이미지 URL을 생성하여 uploadedImageUrls 리스트에 추가합니다.
-	            // request.getContextPath()는 웹 애플리케이션의 컨텍스트 경로를 반환하며, "/resources/img/" + fileName은 이미지 파일의 상대 경로입니다.
+	        System.out.println("전달받은 파일 배열을 순회하며 파일 처리 시작.");
+	        for (MultipartFile file : files) {
+	            System.out.println("현재 파일 처리 시작: " + file.getOriginalFilename());
+	            System.out.println("UUID를 사용하여 고유한 파일 이름 생성 및 확장자 추출.");
+	            String fileName = UUID.randomUUID().toString() + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+	            System.out.println("생성된 파일 이름: " + fileName);
+
+	            // uploadPath (절대 경로)를 사용하여 파일을 저장합니다.
+	            System.out.println("파일 저장 시작: " + uploadPath + File.separator + fileName);
+	            file.transferTo(new File(uploadPath, fileName)); // 더 간결하게 File 생성
+	            System.out.println("파일 저장 완료: " + uploadPath + File.separator + fileName);
+
+	            // 클라이언트에게 반환할 URL을 생성합니다. (상대 경로 사용)
+	            String imageUrl = request.getContextPath() + relativePath + "/" + fileName;  // 수정된 부분
+	            System.out.println("생성된 이미지 URL: " + imageUrl);
+	            System.out.println("생성된 이미지 URL을 리스트에 추가: " + imageUrl);
+	            uploadedImageUrls.add(imageUrl);
 	        }
-	        System.out.println("모든 파일 처리 완료."); // 모든 파일 처리 완료 로그
-	    }
-	    catch (Exception e) // 파일 업로드 중 발생할 수 있는 예외를 처리하기 위한 catch 블록입니다.
-	    {
-	    	System.out.println("파일 업로드 중 예외 발생!"); // 예외 발생 로그
-	        e.printStackTrace(); // 예외 발생 시 스택 트레이스를 출력하여 디버깅에 활용합니다.
-	        // 실제 운영 환경에서는 e.printStackTrace() 대신 로깅 라이브러리를 사용하여 로그를 기록하는 것이 좋습니다.
-	        System.out.println("예외 발생으로 인해 빈 리스트를 반환합니다."); // 예외 발생시 빈 리스트 반환 로그
-	        return Collections.emptyList(); // 예외 발생 시 빈 리스트를 반환하여 클라이언트에게 에러 상황을 알립니다.
-	        // (실제 서비스에서는 에러 코드나 메시지를 반환하는 것이 더 나은 사용자 경험을 제공할 수 있습니다.)
+	        System.out.println("모든 파일 처리 완료.");
+	    } catch (Exception e) {
+	        System.out.println("파일 업로드 중 예외 발생!");
+	        e.printStackTrace();
+	        System.out.println("예외 발생으로 인해 빈 리스트를 반환합니다.");
+	        return Collections.emptyList();
 	    }
 
-	    System.out.println("업로드된 이미지 URL 리스트 반환: " + uploadedImageUrls); // 최종 결과 반환 로그
-	    return uploadedImageUrls; // 최종적으로 업로드된 이미지의 URL 리스트를 반환합니다.
+	    System.out.println("업로드된 이미지 URL 리스트 반환: " + uploadedImageUrls);
+	    return uploadedImageUrls;
 	}
-
+*/
 	
 	@PostMapping(value="/submitForm",produces = "application/json")
     @ResponseBody
@@ -479,7 +646,7 @@ public class PostController {
 		
 	    postService.deletePost(num);
 	    
-	    return "redirect:/allBoard?page=1";
+	    return "redirect:/board/all?page=1";
 	}
 }
 

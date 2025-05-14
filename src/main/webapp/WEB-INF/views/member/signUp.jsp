@@ -194,7 +194,7 @@
 	
 	        <div class="form-group">
 	            <label for="phone1" class="formName">전화번호</label>
-	            <form:input path="phone1" id="phone1" class="textBox" placeholder="010-1234-5678"/>
+	            <form:input path="phone1" id="phone1" class="textBox" placeholder="01012345678"/>
 	            <div id="message_phone"></div>
 	        </div>
 	

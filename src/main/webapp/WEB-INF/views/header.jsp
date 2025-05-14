@@ -15,7 +15,7 @@
 
 <header>
     <div id="headerContainer">
-		<a href="${pageContext.request.contextPath}" id="logo" class="aTag">
+		<a href="/" id="logo" class="aTag"> <!-- 배포시에는 / 평소에는 ${pageContext.request.contextPath} -->
 			<img src="${pageContext.request.contextPath}/resources/img/logo.png" id="logoImg">
 		</a>
         <div id="headerLeft">

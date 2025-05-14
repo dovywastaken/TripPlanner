@@ -9,7 +9,7 @@
   <script src="${pageContext.request.contextPath}/resources/js/tourApi.js"></script>
   <script type="module" src="${pageContext.request.contextPath}/resources/js/map.js" defer="defer"></script>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/map.css">
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/maps.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/detailedMap.css">
 </head>
 
 

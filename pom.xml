@@ -13,6 +13,7 @@
       <org.springframework-version>6.0.15</org.springframework-version>
       <org.aspectj-version>1.9.9.1</org.aspectj-version>
       <org.slf4j-version>1.7.36</org.slf4j-version>
+       <ch.qos.logback-version>1.2.11</ch.qos.logback-version>
    </properties>
  <dependencies>
  
@@ -56,6 +57,36 @@
 	    <artifactId>spring-core</artifactId>
 	    <version>${org.springframework-version}</version>
 	</dependency>
+    
+    
+    
+    <!--25년 5월 14일 추가 -->
+    <!-- SLF4J API (Interface) -->
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${org.slf4j-version}</version>
+    </dependency>
+
+    <!-- Logback (SLF4J Implementation) -->
+    <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>${ch.qos.logback-version}</version> <!-- 위에서 정의한 프로퍼티 사용 -->
+        <!-- logback-classic은 logback-core와 slf4j-api를 자동으로 가져오지만, 명시적으로 slf4j-api를 두는 것이 좋음 -->
+    </dependency>
+
+    <!-- Commons Logging 대신 SLF4J로 넘겨 처리하도록 하는 의존성임 -->
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>jcl-over-slf4j</artifactId>
+        <version>${org.slf4j-version}</version>
+    </dependency>
+    
+    
+    
+    
+    
     
     <!-- 데이터 베이스 연결 connector-->
 

@@ -1,12 +1,12 @@
-let checkedEmail = '';
-let emailField = document.getElementById("email");
-let nameField = document.getElementById("name");
-let pwField = document.getElementById("pw1");
-let pwCheck = document.getElementById("pw2");
-let phoneField = document.getElementById("phone1");
-let birthdayField = document.getElementById("birthday");
-let submitButton = document.getElementById("signUp_form");
-let confirmIdButton; //이메일 중복체크 버튼 //쿼리셀렉터로 클래스로 잡아서 써. checkButton뭐 이런걸로
+var checkedEmail = '';
+var emailField = document.getElementById("email");
+var nameField = document.getElementById("name");
+var pwField = document.getElementById("pw1");
+var pwCheck = document.getElementById("pw2");
+var phoneField = document.getElementById("phone1");
+var birthdayField = document.getElementById("birthday");
+var submitButton = document.getElementById("signUp_form");
+var confirmIdButton; //이메일 중복체크 버튼 //쿼리셀렉터로 클래스로 잡아서 써. checkButton뭐 이런걸로
 
 document.addEventListener('DOMContentLoaded', function() {
 	//이메일 이름 비밀번호 이메일 휴대폰 생년월일 제출버튼 문서 로딩 시 매핑
@@ -45,9 +45,9 @@ document.addEventListener('DOMContentLoaded', function() {
 function emailChecknValidation()
 {
 	confirmIdButton.disabled = true; // 중복 체크 버튼 비활성화
-    let messageElement = document.getElementById('message_id');
+    var messageElement = document.getElementById('message_id');
     messageElement.innerHTML = ""; //메세지 초기화
-    let resultMessage = document.getElementById("resultMessage");
+    var resultMessage = document.getElementById("resultMessage");
     resultMessage.innerHTML = '';
 	
    	emailValidator(); //이메일 유효성 검사
@@ -61,8 +61,8 @@ function emailCheck(value) {
         data: {value: value},
         success: function(response) {
 			console.log("컨트롤러를 지나 다시 ajax코드로 들어왔음");
-            let messageElement = document.getElementById('message_id');
-            let resultMessage = document.getElementById("resultMessage");
+            var messageElement = document.getElementById('message_id');
+            var resultMessage = document.getElementById("resultMessage");
 			confirmIdButton = document.querySelector(".checkButton");
             if (!response.notAvailable) //available 이라면
 			{
@@ -98,12 +98,12 @@ function emailCheck(value) {
 
 function emailValidator() // 이메일 유효성 검사 함수
 {
-    let emailValue = document.getElementById("email").value.trim(); // 이메일 값 가져오기
+    const emailValue = document.getElementById("email").value.trim(); // 이메일 값 가져오기
     const emailPattern = /^[a-z0-9._-]{3,}@[a-z0-9.-]+\.[a-z]{2,}$/;
     
-    let messageElement = document.getElementById('message_id'); 
+    var messageElement = document.getElementById('message_id'); 
     confirmIdButton = document.querySelector(".checkButton"); //이메일 중복체크 이벤트 매핑
-    let resultMessage = document.getElementById("resultMessage");
+    var resultMessage = document.getElementById("resultMessage");
     
     if (emailValue === '') {
 		console.log("입력값 없음 ");
@@ -133,9 +133,9 @@ function emailValidator() // 이메일 유효성 검사 함수
 
 function nameValidator() 
 {
-    let nameValue = document.getElementById("name").value.trim();
-    let messageElement = document.getElementById('message_name'); 
-    let resultMessage = document.getElementById("resultMessage");
+    const nameValue = document.getElementById("name").value.trim();
+    var messageElement = document.getElementById('message_name'); 
+    var resultMessage = document.getElementById("resultMessage");
 
     if (nameValue.length == 1) 
 	{
@@ -185,28 +185,47 @@ function pwValidator() {
 }
 
 function phoneValidator() {
-    let phone = document.getElementById("phone1").value;
-    let phonePattern = /^\d{3}-\d{4}-\d{4}$/;
-
+    const phone = document.getElementById("phone1").value;
+    const phonePattern = /^\d{11}$/;
     var messageElement = document.getElementById('message_phone');
-    if (!phonePattern.test(phone)) {
-        messageElement.innerHTML = '<span style="color:red;">전화번호는 010-1234-5678 형식이어야 합니다.</span>';
-        return false;
-    } else {
-        messageElement.innerHTML = '<span style="color:green;">전화번호가 유효합니다.</span>';
-        return true;
-    }
+	if(phone.length == 11)
+	{
+	    if (!phonePattern.test(phone)) 
+		{
+	        messageElement.innerHTML = '<span style="color:red;">전화번호는 01012345678 형식이어야 합니다.</span>';
+	        console.log("유효성 검사 안됨");
+			return false;
+	    }
+		else
+		{
+			console.log("유효성 통과");
+	        messageElement.innerHTML = '<span style="color:green;">전화번호가 유효합니다.</span>';
+	        return true;
+		}
+	}
+	else if(phone.length > 11)
+	{
+		console.log("11자 초과");
+		messageElement.innerHTML = '<span style="color:red;">01012345678의 형태여야해요!</span>';
+		return false;
+	}
+	else
+	{
+		console.log("11자가 아님");
+		messageElement.innerHTML = ' ';
+		return false;
+	}
 }
 
 function birthdayValidator() {
-    let input = document.getElementById("birthday").value;
-	let messageElement = document.getElementById('message_birthday');
+    var input = document.getElementById("birthday").value;
+	var messageElement = document.getElementById('message_birthday');
 	
-	let year = parseInt(input.substring(0,4),10);
-	let month = parseInt(input.substring(4,6),10);
-	let day = parseInt(input.substring(6,8),10);
-	let birthdate = new Date(year,month,day);
-	let age = calculateAge(birthdate);
+	var year = parseInt(input.substring(0,4),10);
+	var month = parseInt(input.substring(4,6),10);
+	var day = parseInt(input.substring(6,8),10);
+	var birthdate = new Date(year,month,day);
+	var age = calculateAge(birthdate);
 	
     if (!input) //아무것도 입력 안했을 때
 	{
@@ -242,7 +261,7 @@ function birthdayValidator() {
 function calculateAge(birthdate) //만나이 구하는 함수
 {
     const today = new Date();
-    let age = today.getFullYear() - birthdate.getFullYear();
+    var age = today.getFullYear() - birthdate.getFullYear();
     const monthDiff = today.getMonth() - birthdate.getMonth();
 
     if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthdate.getDate())) //생월이 아직 안지났거나 월은 같은데 일이 아직 안지난 경우
@@ -269,10 +288,10 @@ function checkFormValidity() { //유효성 모두 통과하면 true 반환하는
 }
 
 function passwordCheck() { //입력한 비밀번호 2개가 모두 일치하는지 확인하는 함수
-    let pw1 = document.getElementById("pw1").value;
-    let pw2 = document.getElementById("pw2").value;
-    let pwCheck = document.getElementById("pwCheck");
-    let resultMessage = document.getElementById("resultMessage");
+    var pw1 = document.getElementById("pw1").value;
+    var pw2 = document.getElementById("pw2").value;
+    var pwCheck = document.getElementById("pwCheck");
+    var resultMessage = document.getElementById("resultMessage");
 
     if (pw1 !== pw2) {
         pwCheck.innerHTML = '<span style="color:red;">비밀번호가 서로 일치하지 않습니다.</span>';

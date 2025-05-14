@@ -45,7 +45,7 @@
                     제목을 입력하세요
                 </div>
                 <input type="hidden" id="title" name="title" class="title-input" placeholder="제목을 입력하세요">
-                <textarea id="summernote" name="contents"></textarea>
+                <textarea id="summernote" name="contents"> </textarea>
             </div>
 
             <div class="right">
@@ -63,7 +63,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="settings-group">
                         <h4>댓글 설정</h4>
                         <div class="radio-group">
@@ -85,24 +84,116 @@
     </form>
 
     <%@ include file="../footerCompact.jsp" %>
+    
+    <!-- 서머노트 에디터 관련 코드입니다. -->
+    
     <script>
     	const contextPath = "${pageContext.request.contextPath}";
-    
-        document.addEventListener('DOMContentLoaded', function () {
-            $('#summernote').summernote({
+        document.addEventListener('DOMContentLoaded', function ()
+     	{
+            $('#summernote').summernote
+            (
+        	{
                 lang: 'ko-KR',
                 height: 500,
-                toolbar: [
+                toolbar: 
+               	[
+                	/* 기존 툴바 설정 유지 */ 
+                	['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['font', ['strikethrough', 'superscript', 'subscript']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['height', ['height']],
+                    ['insert', ['picture']],
+               	],
+                // ====[ 이미지 업로드 콜백 추가/수정 ]====
+                callbacks: {
+                    onImageUpload : function(files) {
+                        for (let i = 0; i < files.length; i++) {
+                            uploadSummernoteImageFile(files[i], this);
+                        }
+                    }
+                    // onMediaDelete 콜백은 필요하면 추가
+                } // end of callbacks
+            } // end of summernote initialization
+        	);
+
+            // ... (기존 지도 관련, 폼 임시저장 관련 JS 코드 유지) ...
+
+            // ====[ 이미지 업로드 AJAX 함수 정의 (새로 추가) ]====
+            function uploadSummernoteImageFile(file, editor) {
+                let data = new FormData();
+                data.append("file", file); // Controller의 @RequestParam("file")과 이름 일치
+
+                $.ajax({
+                    url: contextPath + "/uploadSummernoteImage", // 변경된 서버 API 경로
+                    type: "POST",
+                    data: data,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    dataType: "json",
+
+                    success: function(response) {
+                        if (response && response.url) {
+                            // ★ 중요: 에디터에 이미지 삽입 (URL 사용)
+                        	let fullImageUrl = contextPath + response.url;
+                        
+                            $(editor).summernote('insertImage', fullImageUrl);
+                            console.log("이미지 삽입 성공:", response.url);
+
+                            // ★ 중요: 저장된 파일명을 숨겨진 필드 등으로 관리 (선택적이지만 권장)
+                            //    게시글 저장 시 imageNames 컬럼에 넣기 위해
+                            //    예시: 숨겨진 필드에 값 추가
+                            // let hiddenInput = '<input type="hidden" class="uploadedImageName" value="' + response.savedFilename + '">';
+                            // $('#postForm').append(hiddenInput);
+
+                        } else {
+                             alert("이미지 업로드 실패: 서버 응답 오류");
+                             console.error("서버 응답 오류:", response);
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error("이미지 업로드 AJAX 오류:", textStatus, errorThrown);
+                        let errorMsg = "이미지 업로드 실패: " + ( (jqXHR.responseJSON && jqXHR.responseJSON.error) || errorThrown || textStatus );
+                        alert(errorMsg);
+                    }
+                }); // end of $.ajax
+            } // end of uploadSummernoteImageFile function
+            // ====[ AJAX 함수 정의 끝 ]====
+
+        }); // end of DOMContentLoaded
+    </script>
+    
+    
+    
+    
+    
+    
+    <!-- 
+    이전코드
+    <script>
+    	const contextPath = "${pageContext.request.contextPath}";
+        document.addEventListener('DOMContentLoaded', function () 
+     	{
+            $('#summernote').summernote
+            (
+        	{
+                lang: 'ko-KR',
+                height: 500,
+                toolbar: 
+                [
                     ['style', ['bold', 'italic', 'underline', 'clear']],
                     ['font', ['strikethrough', 'superscript', 'subscript']],
                     ['fontsize', ['fontsize']],
                     ['color', ['color']],
                     ['para', ['ul', 'ol', 'paragraph']],
                     ['height', ['height']],
-                    ['insert', ['link', 'picture', 'video']],
-                    ['view', ['fullscreen', 'codeview', 'help']]
+                    ['insert', ['picture']],
                 ]
-            });
+            }
+        	);
 
             const openMapButton = document.getElementById("open-map");
 
@@ -120,5 +211,7 @@
             renderMyList()
         });
     </script>
+    
+    -->
 </body>
 </html>
