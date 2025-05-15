@@ -14,7 +14,7 @@
 
     <resources mapping="/resources/**" location="/resources/" />
     <!--  <resources mapping="/uploads/**" location="file:${file.uploadDir}/" />-->
-    <resources mapping="/uploads/**" location="file:$/Users/TestChamber/" />
+    <resources mapping="/uploads/**" location="file:/Users/TestChamber/" />
     <!-- <resources mapping="/uploads/**" location="file:/home/dovies401/uploads/" />-->
 
     <beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
