@@ -30,7 +30,7 @@ public class FileStorageService {
      */
     public FileStorageService(@Value("${file.uploadDir}") String uploadDir) {
         // 1. 주입받은 경로 문자열을 Path 객체로 변환하고 정규화/절대경로화
-        this.fileStorageLocation = Paths.get(uploadDir).toAbsolutePath().normalize();
+        this.fileStorageLocation = Paths.get(uploadDir.trim()).toAbsolutePath().normalize();
         logger.info("FileStorageService 초기화 완료 - 설정된 업로드 경로: {}", this.fileStorageLocation);
         // 2. 여기서 디렉토리 생성 시도(Files.createDirectories)를 제거하여 앱 시작 시 권한 오류 방지
         //    디렉토리 생성은 실제 파일 저장 시점에 수행합니다.
