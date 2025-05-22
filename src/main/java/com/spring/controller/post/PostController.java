@@ -155,9 +155,19 @@ public class PostController {
 	                     if (dataInfo != null && !dataInfo.isEmpty()) {
 	                         JSONObject jsonObject = new JSONObject(dataInfo);
 	                         Tour tour = new Tour();
-	                         // ... Tour 객체 속성 설정 ...
+	                         /*addr1, cat2, cat3, mapx, mapy */
 	                         tour.setP_unique(postId); // 생성된 게시글 ID 사용
 	                         tour.setCreated_at(timestamp);
+	                         tour.setContentid(jsonObject.getString("contentid"));
+	                         tour.setContenttypeid(jsonObject.getString("contenttypeid"));
+	                         tour.setTitle(jsonObject.getString("id"));
+	                         tour.setFirstimage(jsonObject.getString("img"));
+	                         tour.setAddr1(jsonObject.getString("addr"));
+	                         tour.setCat2(jsonObject.getString("cat2"));
+	                         tour.setCat3(jsonObject.getString("cat3"));
+	                         tour.setMapx(jsonObject.getDouble("x"));
+	                         tour.setMapy(jsonObject.getDouble("y"));
+	                         
 	                         postService.updatetour(tour);
 	                         System.out.println(" - 장소 정보 처리 완료: " + tour.getTitle());
 	                     }
@@ -181,158 +191,6 @@ public class PostController {
 	           return "redirect:/postForm"; // 에러 시 작성 폼으로
 		   }
 		}
-	
-	
-	
-	
-	
-	/*
-
-	@PostMapping("/postCreate")
-	public String postCreate(@ModelAttribute Post post,
-	                       HttpSession session,
-	                       RedirectAttributes redirect,
-	                       @RequestParam(required = false) String contents) 
-	{
-	   System.out.println("===========================================================================================");
-	   System.out.println("PostController : postCreate(Post)으로 매핑되었습니다");
-	   try 
-	   {
-		   System.out.println("postCreate(Post) : try로 들어옴");
-	       Member member = (Member)session.getAttribute("user");
-	       System.out.println("postCreate(Post) : 세션에서 로그인한 회원 데이터를 멤버 dto에 저장함");
-	       System.out.println("로그인한 회원 dto 들고왔는지 체크하기 : "+ member);
-	       Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-	       System.out.println("postCreate(Post) : 현재 시간 측정 위한 Timestamp객체 생성");
-	       post.setId(member.getEmail());
-	       System.out.println("postCreate(Post) : 게시글의 아이디를 로그인한 유저의 이메일인 " + post.getId() + "로 설정함");
-	       post.setNickname(member.getNickname());
-	       System.out.println("postCreate(Post) : 나중에 게시판에 표시할 닉네임인 " + post.getNickname() + " 가져옴");
-	       post.setPublishDate(timestamp);
-	       System.out.println("postCreate(Post) : 게시글 등록일을 timestamp객체로 현재 시간으로 등록함");
-
-	       // 이미지가 없을 경우를 위한 빈 리스트 초기화
-	       List<String> imageUrls = new ArrayList<>();
-	       System.out.println("postCreate(Post) : 이미지가 없을 수 있으니 일단 그래도 이미지를 담는 빈 리스트를 만들어 놓음");
-
-	       // contents에서 이미지 URL과 장소 정보 추출
-	       if (contents != null && !contents.isEmpty()) 
-	       {
-	    	   System.out.println("postCreate(Post) : 게시글 내용이 존재하고 빈 상태가 아니라면");
-	           Document doc = Jsoup.parse(contents);
-	           System.out.println("postCreate(Post) : Jsoup객체로 게시글을 파싱해서 Document 객체에 담음");
-	           
-	           // 이미지 URL 수집
-	           Elements images = doc.select("img");
-	           System.out.println("postCreate(Post) : img라고 되어있는 HTML요소를 Elements라는 객체에 담음");
-	           for (Element img : images) 
-	           {
-	        	   System.out.println("postCreate(Post) : 게시글에 있는 이미지를(images) 반복문을 통해 img라는 Element 객체에 집어넣음");
-	               String imageUrl = img.attr("src");
-	               System.out.println("postCreate(Post) : 첨부된 이미지의 src속성을 꺼내서 imageURL이라는 문자열에 담음");
-	               if (!imageUrl.isEmpty()) 
-	               {
-	            	   System.out.println("postCreate(Post) : 첨부된 이미지가 존재하므로 if문으로 들어옴");
-	                   imageUrls.add(imageUrl);
-	                   System.out.println("postCreate(Post) : imageUrls라는 리스트에 각각의 이미지를 담음");
-	               }
-	           }
-	       }
-	       
-	       // 이미지 URL 리스트 설정 (비어있어도 설정)
-	       post.setFileImage(imageUrls);
-	       System.out.println("postCreate(Post) : Post dto에 이미지의 URL이 담긴 리스트를 넣는다");
-
-	       postService.createPost(post);
-	       System.out.println("postCreate(Post) : db에 방금 만든 Post DTO를 넣는다");
-
-	       // 최신 게시글 ID 가져오기
-	       int postId = postService.getLatestPostId(member.getEmail());
-	       System.out.println(postId);
-	       System.out.println("1");
-	       // contents에서 장소 정보 처리
-	       if (contents != null && !contents.isEmpty()) 
-	       {
-	    	   System.out.println("2");
-	           Document doc = Jsoup.parse(contents);
-	           System.out.println("3");
-	           Elements locationButtons = doc.select(".location-name-btn");
-	           System.out.println(locationButtons);
-	           System.out.println("4");
-
-	           for (Element button : locationButtons) {
-	        	   System.out.println("5");
-	               String dataInfo = button.attr("data-info");
-	               System.out.println("6");
-	               if (dataInfo != null && !dataInfo.isEmpty()) {
-	            	   System.out.println("7");
-
-	                   JSONObject jsonObject = new JSONObject(dataInfo);
-	                   System.out.println("8");
-
-	                   Tour tour = new Tour();
-	                   System.out.println("9");
-	                   tour.setTitle(jsonObject.optString("id", ""));
-	                   System.out.println("10");
-	                   tour.setAddr1(jsonObject.optString("addr", ""));
-	                   System.out.println("11");
-	                   tour.setMapy(jsonObject.optDouble("latitude", 0.0));
-	                   System.out.println("12");
-	                   tour.setMapx(jsonObject.optDouble("longitude", 0.0));
-	                   System.out.println("13");
-	                   tour.setContentid(jsonObject.optString("contentid", ""));
-	                   System.out.println("14");
-	                   tour.setContenttypeid(jsonObject.optString("contenttypeid", ""));
-	                   System.out.println("15");
-	                   tour.setFirstimage(jsonObject.optString("img", ""));
-	                   System.out.println("16");
-	                   tour.setCat2(jsonObject.optString("catagory2", ""));
-	                   System.out.println("17");
-	                   tour.setCat3(jsonObject.optString("catagory3", ""));
-	                   System.out.println("18");
-	                   tour.setCreated_at(timestamp);
-	                   System.out.println("19");
-	                   tour.setP_unique(postId);
-	                   System.out.println("20");
-
-	                   postService.updatetour(tour);
-	                   System.out.println("21");
-	               }
-	           }
-	       }
-
-	       // 페이지 번호 가져오기
-	       System.out.println("게시글 고유번호 존재 여부 : "+ postId + "번");
-	       int page = postService.pageSearch(postId);
-	       System.out.println("22");
-	   
-	       // 리다이렉트 속성 설정
-	       redirect.addAttribute("num", postId);
-	       System.out.println("23");
-	       redirect.addAttribute("page", page);
-	       System.out.println("24");
-
-	       System.out.println("postCreate(Post) : postView로 리다렉션 합니다.");
-	       
-	       return "redirect:/postView";
-
-	   }
-	   catch (Exception e) 
-	   {
-	       System.out.println("[ERROR] 예외 발생: " + e.getMessage());
-	       e.printStackTrace();
-	       
-	       return "errorPage";
-	   }
-	}
-    
-	
-	*/
-	
-	
-	
-	
-	
 	
     @GetMapping("/postView")
     public String postview(@RequestParam int num,

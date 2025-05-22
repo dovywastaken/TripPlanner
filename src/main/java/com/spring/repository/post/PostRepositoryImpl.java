@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -19,6 +21,8 @@ public class PostRepositoryImpl implements PostRepository {
 
     @Autowired
     private JdbcTemplate template;
+    
+    private static final Logger logger = LoggerFactory.getLogger(PostRepositoryImpl.class);
     
     @Override
     public Post getPostById(int postId) {
@@ -122,7 +126,7 @@ public class PostRepositoryImpl implements PostRepository {
 		result.put("postList",postList);    
 		return result;
 	}
-
+/*
 	@Override
 	public int pageSearch(int p_unique) 
 	{
@@ -132,16 +136,43 @@ public class PostRepositoryImpl implements PostRepository {
 		String SQL= 
 				"WITH RankedPosts AS (SELECT p_unique, ROW_NUMBER() OVER (ORDER BY publishDate DESC, p_unique DESC) as row_num FROM post WHERE isPrivate = 0) SELECT CEILING(row_num / 10) as page_number"
 				+ " FROM RankedPosts WHERE p_unique = ?";
-		System.out.println("SQL문 : " + SQL);
 		int rownum = template.queryForObject(SQL, Integer.class,p_unique);
 		System.out.println("결과 값 : " + rownum);
 		System.out.println("[PostRepository : pageSearch 메서드 종료]");
 	return rownum;
 	}
+	*/
 
+	@Override
+	public int pageSearch(int p_unique) 
+	{
+		System.out.println("+++++++++++++++++++++++++++++++++++++++");
+    	System.out.println("[PostRepository : pageSearch 메서드 호출]");
+    	System.out.println("파라미터가 제대로 들어왔는지 확인하기 : "+ p_unique);
+		String SQL = 
+		    "SELECT CEILING(row_num / 10) AS page_number " +
+		    "FROM ( " +
+		    "  SELECT COUNT(*) + 1 AS row_num " +
+		    "  FROM post " +
+		    "  WHERE isPrivate = 0 " +
+		    "    AND ( " +
+		    "      publishDate > (SELECT publishDate FROM post WHERE p_unique = ?) " +
+		    "      OR (publishDate = (SELECT publishDate FROM post WHERE p_unique = ?) AND p_unique > ?) " +
+		    "    ) " +
+		    ") AS t";
+		System.out.println("SQL문 : " + SQL);
+		int rownum = template.queryForObject(SQL, Integer.class, p_unique, p_unique, p_unique);
+		System.out.println("결과 값 : " + rownum);
+		System.out.println("[PostRepository : pageSearch 메서드 종료]");
+	return rownum;
+	}
+
+	
+	
 	@Override
 	public void updatetour(Tour tour) {
 			String insertSQL="INSERT INTO tour (p_unique,contentId, contentTypeId, title, firstImage, addr1, cat2, cat3, mapx, mapy, created_at) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+			
 			template.update(insertSQL,
 							tour.getP_unique(),
 							tour.getContentid(),
@@ -155,6 +186,20 @@ public class PostRepositoryImpl implements PostRepository {
 							tour.getMapy(),
 							tour.getCreated_at()
 							);
+			logger.info(
+        		    "addr1: " + tour.getAddr1() + ", " +                // 주소
+        		    "cat2: " + tour.getCat2() + ", " +                  // 카테고리2
+        		    "cat3: " + tour.getCat3() + ", " +                  // 카테고리3
+        		    "contentId: " + tour.getContentid() + ", " +        // 콘텐츠 ID
+        		    "contentTypeId: " + tour.getContenttypeid() + ", " +// 콘텐츠 타입 ID
+        		    "createdAt: " + tour.getCreated_at() + ", " +       // 생성일시
+        		    "firstImage: " + tour.getFirstimage() + ", " +      // 대표 이미지
+        		    "id: " + tour.getId() + ", " +                      // 내부 ID
+        		    "mapX: " + tour.getMapx() + ", " +                  // 지도 X좌표(경도)
+        		    "mapY: " + tour.getMapy() + ", " +                  // 지도 Y좌표(위도)
+        		    "pUnique: " + tour.getP_unique() + ", " +           // 고유 식별자
+        		    "title: " + tour.getTitle()                         // 제목
+        		);
 	}
 	
 }

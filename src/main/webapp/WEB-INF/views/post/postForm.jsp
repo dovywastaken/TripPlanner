@@ -22,8 +22,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-lite.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/lang/summernote-ko-KR.min.js"></script>
 
-    <!-- Editor JS 파일 (module 제거) -->
-    <script src="${pageContext.request.contextPath}/resources/js/editor.js"></script>
+    
 
 </head>
 <body>
@@ -86,6 +85,9 @@
     <%@ include file="../footerCompact.jsp" %>
     
     <!-- 서머노트 에디터 관련 코드입니다. -->
+    
+    <!-- Editor JS 파일 (module 제거) -->
+    <script src="${pageContext.request.contextPath}/resources/js/editor.js"></script>
     
     <script>
     	const contextPath = "${pageContext.request.contextPath}";
@@ -162,7 +164,22 @@
                 }); // end of $.ajax
             } // end of uploadSummernoteImageFile function
             // ====[ AJAX 함수 정의 끝 ]====
+			const openMapButton = document.getElementById("open-map");
 
+            openMapButton.addEventListener('click', function () {
+                const tempData = {
+                    title: document.getElementById("titles").textContent.trim(), // titles 요소의 id를 올바르게 지정
+                    content: $('#summernote').summernote('code'),
+                    isPrivate: document.querySelector('input[name="isPrivate"]:checked').value,
+                    commentIsAllowed: document.querySelector('input[name="commentIsAllowed"]:checked').value
+                };
+
+                sessionStorage.setItem('tempPostData', JSON.stringify(tempData)); // sessionStorage 오타 수정
+                window.location.href = contextPath + '/map';
+            });
+            renderMyList()
+            	
+            	
         }); // end of DOMContentLoaded
     </script>
     

@@ -16,7 +16,32 @@
     <link href="https://cdn.jsdelivr.net/gh/sun-typeface/SUITE@2/fonts/static/woff2/SUITE.css" rel="stylesheet">
     
 	<script src="https://kit.fontawesome.com/96b1ce314a.js"></script>
-
+	
+	<script>
+		window.onload = function() 
+		{
+			const emptyId = "${emptyId}";
+			const emptyPw = "${emptyPw}";
+			const incorrectInfo = "${incorrect}";
+			console.log(emptyId);
+			console.log(emptyPw);
+			console.log(incorrectInfo);
+			
+			if(emptyId && emptyId.trim() !== "")
+			{
+				alert(emptyId);
+			}
+			if(emptyPw && emptyPw.trim() !== "")
+			{
+				alert(emptyPw);
+			}
+			if(incorrectInfo && incorrectInfo.trim() !== "")
+			{
+				alert(incorrectInfo);
+			}
+		}
+	
+	</script>
 </head>
 <%@ include file="header.jsp" %>
 	<div class="container-fluid">
@@ -39,7 +64,7 @@
 								            </div>
 								            <div class="plannerCol" id="pText">
 								            	<div>
-													<h4>${postList.id} 님의</h4> 
+													<h4>${postList.nickname} 님의</h4> 
 								                	<h3 class="plannerTitle">${postList.title}</h3>
 												</div>
 												<div class="plannerStatus">
@@ -192,7 +217,7 @@
 				        <div class="form-container">
 				            
 				            <!-- 로그인 폼 -->
-				            <form:form modelAttribute="member" method="POST" action="${pageContext.request.contextPath}/mainSignIn">
+				            <form:form modelAttribute="member" method="POST" action="${pageContext.request.contextPath}/">
 				                <div class="form-group">
 				                    <label for="id">아이디:</label>
 				                    <form:input path="email" id="id" placeholder="아이디" />
@@ -216,6 +241,7 @@
 	    
 	</div>
 	<%@ include file="footer.jsp" %>
+	
 </body>
 <script src="${pageContext.request.contextPath}/resources/js/mainPage.js" defer></script>
 </html>

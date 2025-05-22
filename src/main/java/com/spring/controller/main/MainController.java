@@ -42,8 +42,6 @@ public class MainController
 	
 	@GetMapping("/") // 메인 페이지 뷰를 띄워주는 메서드
 	public String mainPage(Model model, HttpSession session) {
-	    System.out.println("===========================================================================================");
-	    System.out.println("MainController: 프로젝트명으로 매핑되었습니다.");
 	    logger.info("=========================================================================");
 	    logger.info("MainController: 프로젝트명으로 매핑되었습니다.");
 	    Member member=new Member(); //멤버 객체 전달 안해주면 에러남
@@ -83,7 +81,6 @@ public class MainController
 	    returnTourList(model);
 	    hotboard(model);
 
-	    System.out.println("MainController: 프로젝트명으로 매핑되어 mainPage.jsp로 이동합니다.");
 	    logger.info("MainController: 프로젝트명으로 매핑되어 mainPage.jsp로 이동합니다.");
 	    return "mainPage"; // mainPage.jsp로 이동
 	}
@@ -106,7 +103,7 @@ public class MainController
 	public void hotboard(Model model) 
 	{
 	    int page = 1;
-	    int size = 3;
+	    int size = 4;
 	    Map<String, Object> result = boardService.hotBoard(size, page);
 	    System.out.println("인기게시글 들고왔는지 확인하기 : " + result);
 	    if(result.get("postList") != null) 
@@ -139,8 +136,8 @@ public class MainController
 	    
 	}
 	
-	//로그인 폼 전송
-    @PostMapping("/mainSignIn")
+	//로그인 폼 전송 mainSignIn
+    @PostMapping("/")
     public String mainPageSignIn(@ModelAttribute("member") Member member, HttpSession session, Model model)
     {
         System.out.println("===========================================================================================");
@@ -149,21 +146,38 @@ public class MainController
         // 로그인을 위한 회원 정보 조회
         Member loginMb = memberService.findById(member.getEmail());
         
-        if (loginMb != null && loginMb.getPw().equals(member.getPw())) {
+        if (loginMb != null && loginMb.getPw().equals(member.getPw())) 
+        {
             session.setAttribute("user", loginMb);
             System.out.println("로그인 성공, 메인페이지로 리다이렉션");
             return "redirect:/"; // 로그인 성공 시 메인페이지로 리다이렉션
-        } else if (member.getEmail() == null || member.getEmail().isEmpty()) {
-            model.addAttribute("EmptyForm", "아이디를 입력해주세요");
+        } 
+        else if (member.getEmail() == null || member.getEmail().isEmpty()) 
+        {
+        	returnTourList(model);
+            hotboard(model);
+            
+            model.addAttribute("emptyId", "아이디를 입력해주세요");
             System.out.println("아이디가 빈 경우");
-            return "redirect:/"; // 아이디가 빈 경우 로그인 페이지로 이동
-        } else if (member.getPw() == null || member.getPw().isEmpty()) {
-            model.addAttribute("EmptyForm", "비밀번호를 입력해주세요");
+            return "mainPage"; // 아이디가 빈 경우 로그인 페이지로 이동
+        } 
+        else if (member.getPw() == null || member.getPw().isEmpty()) 
+        {
+            model.addAttribute("emptyPw", "비밀번호를 입력해주세요");
             System.out.println("비밀번호가 빈 경우");
+            returnTourList(model);
+            hotboard(model);
+            
             return "mainPage"; // 비밀번호가 빈 경우 로그인 페이지로 이동
-        } else {
-            model.addAttribute("loginError", "아이디 또는 비밀번호가 일치하지 않습니다.");
+        } 
+        else 
+        {
+            model.addAttribute("incorrect", "아이디 또는 비밀번호가 일치하지 않습니다.");
             System.out.println("아이디 또는 비밀번호가 틀린 경우");
+            
+            returnTourList(model);
+            hotboard(model);
+            
             return "mainPage"; // 아이디 또는 비밀번호가 일치하지 않는 경우 로그인 페이지로 이동
         }
      }

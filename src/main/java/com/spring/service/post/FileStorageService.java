@@ -67,24 +67,6 @@ public class FileStorageService {
         // 4. UUID를 이용한 고유 파일명 생성
         String storedFilename = UUID.randomUUID().toString() + fileExtension;
         logger.info("서버 저장 파일명 생성: {}", storedFilename);
-/*
-        // 5. ===> 실제 파일 저장을 시도하기 전에 디렉토리 확인 및 생성 <===
-        try {
-            // 저장 디렉토리가 존재하는지 확인하고, 없으면 생성 시도
-            // 이 시점에는 실제 파일 업로드 요청이 들어왔으므로, 디렉토리 생성이 필요함
-            if (!Files.exists(this.fileStorageLocation)) {
-            	logger.info("업로드 디렉토리가 존재하지 않아 생성 시도: " + this.fileStorageLocation);
-                 Files.createDirectories(this.fileStorageLocation);
-                 logger.info("업로드 디렉토리 생성 완료.");
-                 // Cafe24 환경 등에서는 수동으로 미리 생성하고 권한 주는 것이 더 안정적일 수 있음
-            }
-        } catch (IOException ex) {
-            // 여기서 디렉토리 생성 실패 시, 권한 문제일 가능성이 높음
-        	logger.error("업로드 디렉토리 생성 실패! 경로: " + this.fileStorageLocation);
-             ex.printStackTrace();
-            throw new IOException("파일을 업로드할 디렉토리를 생성할 수 없습니다.", ex);
-        }
-*/
         // 6. 최종 저장 파일 경로 계산
         Path targetLocation = this.fileStorageLocation.resolve(storedFilename);
         logger.info("최종 저장 파일 경로: {}", targetLocation.toString());
