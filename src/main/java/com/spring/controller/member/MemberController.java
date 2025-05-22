@@ -145,7 +145,7 @@ public class MemberController {
     	
     	try 
     	{
-    		String host = "http://localhost:8080/TripPlanner/members/emailCheck";
+    		String host = "http://dovies401.cafe24.com/members/emailCheck";
     		String from = "larrydaniels751@gmail.com";
     		String to = member.getEmail(); //메일 보내기 위한 이메일 주소로써의 이메일 주소
     		String who = member.getEmail(); //링크 만들기 위한 아이디로써의 이메일 주소

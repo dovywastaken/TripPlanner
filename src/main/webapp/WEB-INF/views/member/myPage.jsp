@@ -106,25 +106,19 @@
 	function goBack() {window.history.back();}
 	//요일 이름 배열
 	const dayNames = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
-	console.log(dayNames);
+
 	// 월 이름 배열
 	const monthNames = ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'];
-	console.log(monthNames);
+
 	// 현재 날짜 가져오기
 	const today = new Date();
-	console.log(today);
+
 	
 	// 필요한 데이터 추출
 	const year = today.getFullYear();
 	const month = monthNames[today.getMonth()]; // 월은 0부터 시작
 	const date = today.getDate();
 	const day = dayNames[today.getDay()]; // 요일
-	
-	
-	console.log(year);
-	console.log(month);
-	console.log(date);
-	console.log(day);
 	
 	// 원하는 형식으로 문자열 생성
 	const formattedDate = month + " " + date + '일 ' + day;

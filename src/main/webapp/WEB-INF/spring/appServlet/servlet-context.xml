@@ -14,8 +14,6 @@
 
     <resources mapping="/resources/**" location="/resources/" />
     <resources mapping="/uploads/**" location="file:${file.uploadDir}/" />
-    <!--  <resources mapping="/uploads/**" location="file:/Users/TestChamber/" />-->
-    <!--  <resources mapping="/uploads/**" location="file:///home/dovies401/uploads/" />-->
 
     <beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <beans:property name="prefix" value="/WEB-INF/views/" />
@@ -34,7 +32,7 @@
         <beans:property name="host" value="smtp.gmail.com" />
         <beans:property name="port" value="587" />
         <beans:property name="username" value="larrydaniels751@gmail.com" /> <!-- e-mail 계정 입력 -->
-        <beans:property name="password" value="yfzz etqp axeh cuqj" /> <!-- 앱 비밀번호 입력 -->
+        <beans:property name="password" value="owps nilg rdpd mmgc" /> <!-- 앱 비밀번호 입력 -->
         <beans:property name="defaultEncoding" value="utf-8" />
         <beans:property name="javaMailProperties">
             <beans:props>
