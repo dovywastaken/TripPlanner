@@ -1,0 +1,1073 @@
+/* 기본 스타일 */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #f8f9fa;
+    color: #333;
+    font-family: 'Nanum Gothic', sans-serif;
+    line-height: 1.6;
+}
+
+/* 컨테이너 레이아웃 */
+.container {
+    display: flex;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 20px;
+    gap: 30px;
+    min-height: 100vh;
+}
+
+/* 좌측 영역 */
+.left, .right {
+    width: 250px;
+    background: white;
+    padding: 20px;
+    border-radius: 35px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 20px;
+}
+
+.left {
+    width: 250px;
+    background: white;
+    padding: 20px;
+    border-radius: 35px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 20px;
+    margin-left: -150px;
+    
+    /* 추가된 속성 */
+    max-height: 280px; /* 최대 높이 설정 */
+    overflow-y: auto;  /* 넘치는 내용은 스크롤로 표시 */
+}
+
+.right {
+    height: fit-content;
+    margin-right: 110px;
+}
+
+/* 중앙 에디터 영역 */
+.center {
+    flex: 1;
+    min-width: 800px;
+    background: white;
+    padding: 30px;
+    border-radius: 35px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 버튼 공통 스타일 */
+.map-button, .submit-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 35px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.map-button:hover, .submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+}
+
+.map-button {
+    background-color: #3498db;
+    color: white;
+}
+
+.map-button:hover {
+    background-color: #2980b9;
+}
+
+.map-button::before {
+    content: "🗺️";
+    font-size: 18px;
+}
+
+.submit-btn {
+    background-color: #27ae60;
+    color: white;
+    margin-top: 20px;
+}
+
+.submit-btn:hover {
+    background-color: #219a52;
+}
+
+.submit-btn::before {
+    content: "✏️";
+    font-size: 18px;
+}
+
+.map-button:disabled, .submit-btn:disabled {
+    background-color: #bdc3c7;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    opacity: 0.7;
+}
+
+/* 장소 정보 스타일 */
+.place-info {
+    width: 100%;
+    margin: 15px 0;
+    position: relative;
+    border-radius: 35px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    clear: both;
+}
+
+.location-btn {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f9fa;
+    border: none;
+    border-radius: 35px;
+    padding: 16px 20px;
+    transition: all 0.2s ease;
+}
+
+.location-btn:hover {
+    background-color: #f1f3f5;
+}
+
+/* 이미지 관련 스타일 */
+.image-container {
+    position: relative;
+    display: block; /* 블록 요소로 설정 */
+    max-width: 100%;
+    margin: 10px 0;
+    contenteditable: false; /* 텍스트 삽입 방지 */
+}
+
+.image-container img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    user-select: none; /* 사용자 선택 방지 */
+    pointer-events: none; /* 이미지 자체의 이벤트 방지 */
+}
+
+.image-container .delete-btn {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s;
+    z-index: 10;
+}
+
+.image-container:hover .delete-btn {
+    opacity: 1;
+}
+
+.image-container .resize-handle {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 50%;
+    bottom: -6px;
+    right: -6px;
+    cursor: se-resize;
+    opacity: 0;
+    transition: opacity 0.2s;
+    z-index: 10;
+    /* 최소 크기 설정 */
+    min-width: 10px;
+    min-height: 10px;
+}
+
+.image-container:hover .resize-handle {
+    opacity: 1;
+}
+
+.image-container.selected img {
+    outline: 2px solid #74c0fc;
+}
+
+/* 툴바 스타일 */
+.editor-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    background-color: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+/* 툴바 그룹 */
+.toolbar-group {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    border-right: 1px solid #e9ecef;
+}
+
+.toolbar-group:last-child {
+    border-right: none;
+}
+
+/* 툴바 버튼 */
+.toolbar-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    height: 36px;
+    padding: 0 8px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background: transparent;
+    color: #495057;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.toolbar-btn:hover {
+    background-color: #f8f9fa;
+    border-color: #e9ecef;
+}
+
+.toolbar-btn.active {
+    background-color: #e7f5ff;
+    border-color: #74c0fc;
+    color: #228be6;
+}
+
+.toolbar-btn i {
+    font-size: 16px;
+}
+
+/* 툴바 드롭다운 메뉴 */
+.toolbar-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.toolbar-dropdown select {
+    width: 120px;
+    height: 36px;
+    padding: 0 28px 0 12px;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    background-color: #ffffff;
+    color: #495057;
+    font-size: 14px;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23495057' d='M3 4.5L6 7.5L9 4.5H3Z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+}
+
+.toolbar-dropdown select:hover {
+    border-color: #dee2e6;
+}
+
+.toolbar-dropdown select:focus {
+    border-color: #74c0fc;
+    outline: none;
+}
+
+/* 본문 에디터 박스 스타일 */
+#titles, #editor {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e9ecef;
+    background-color: #ffffff;
+    color: #333;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+#titles {
+    min-height: 60px;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 16px;
+}
+
+#editor {
+    min-height: 70%;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-y: auto;
+}
+
+/* 색상 선택 팝업 스타일 */
+.text-color-picker {
+    position: relative;
+    display: inline-block;
+}
+
+.color-preview {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    margin-right: 4px;
+    border: 1px solid #e9ecef;
+}
+
+.toolbar-popup {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 8px;
+    background: white;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    padding: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: none;
+    width: 200px;
+}
+
+.toolbar-popup.show {
+    display: block;
+    animation: popupFadeIn 0.2s ease;
+}
+
+@keyframes popupFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.color-options {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 4px;
+    margin-bottom: 8px;
+}
+
+.color-item {
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid #e9ecef;
+    transition: all 0.2s ease;
+}
+
+.color-item:hover {
+    transform: scale(1.1);
+    border-color: #74c0fc;
+}
+
+.custom-color-input {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-top: 8px;
+    border-top: 1px solid #e9ecef;
+}
+
+.custom-color-input input[type="color"] {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* 이미지 업로드 버튼 스타일 */
+.file-upload-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    padding: 0 12px;
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    color: #495057;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.file-upload-btn:hover {
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+
+#fileImage {
+    display: none;
+}
+
+/* 이미지 크기 조절 핸들 스타일 */
+.resize-handle {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 50%;
+    bottom: -6px;
+    right: -6px;
+    cursor: se-resize;
+    opacity: 0;
+    transition: opacity 0.2s;
+    z-index: 10;
+    /* 최소 크기 설정 */
+    min-width: 10px;
+    min-height: 10px;
+}
+
+.image-container:hover .resize-handle {
+    opacity: 1;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+    .editor-toolbar {
+        flex-wrap: wrap;
+        gap: 4px;
+        padding: 8px;
+    }
+
+    .toolbar-btn {
+        min-width: 32px;
+        height: 32px;
+        padding: 0 4px;
+        font-size: 14px;
+    }
+
+    .toolbar-dropdown {
+        min-width: 100px;
+    }
+
+    .toolbar-dropdown select {
+        width: 120px;
+        height: 36px;
+        font-size: 14px;
+    }
+
+    .file-upload-btn {
+        height: 32px;
+        padding: 0 8px;
+        font-size: 12px;
+    }
+
+    /* 이미지 컨테이너 내 핸들 및 삭제 버튼 크기 조절 */
+    .image-container .delete-btn {
+        width: 20px;
+        height: 20px;
+        font-size: 14px;
+    }
+
+    .image-container .resize-handle {
+        width: 10px;
+        height: 10px;
+        bottom: -5px;
+        right: -5px;
+    }
+}
+
+/* 이미지 관련 스타일 */
+.image-container {
+    position: relative; /* 핸들러의 절대 위치 기준 */
+    display: block; /* 텍스트와 겹치지 않도록 블록 요소로 설정 */
+    max-width: 100%;
+    margin: 10px 0;
+    contenteditable: false; /* 텍스트 삽입 방지 */
+}
+
+.image-container img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    user-select: none; /* 사용자 선택 방지 */
+    pointer-events: none; /* 이미지 자체의 이벤트 방지 */
+}
+
+.image-container .delete-btn {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s;
+    z-index: 10;
+}
+
+.image-container:hover .delete-btn {
+    opacity: 1;
+}
+
+.image-container .resize-handle {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 50%;
+    bottom: 0; /* 이미지의 아래쪽에 고정 */
+    right: 0; /* 이미지의 오른쪽에 고정 */
+    cursor: se-resize;
+    opacity: 0;
+    transition: opacity 0.2s;
+    z-index: 10;
+}
+
+.image-container:hover .resize-handle {
+    opacity: 1;
+}
+
+.image-container.selected img {
+    outline: 2px solid #74c0fc;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+    /* 이미지 컨테이너 내 핸들 및 삭제 버튼 크기 조절 */
+    .image-container .delete-btn {
+        width: 20px;
+        height: 20px;
+        font-size: 14px;
+    }
+
+    .image-container .resize-handle {
+        width: 10px;
+        height: 10px;
+        bottom: 0;
+        right: 0;
+    }
+
+    /* 빈 단락 스타일 (선택 사항) */
+    #editor p:empty::before {
+        content: attr(placeholder);
+        color: #aaa;
+    }
+
+    #editor p:empty {
+        min-height: 20px;
+    }
+}
+
+
+
+.note-editable{
+	min-height: 700px;
+	max-width: 970px;
+	min-width: 970px;
+	
+	
+}
+
+
+
+
+/* 삽입된 버튼 wrapper 스타일 */
+.inserted-button-wrapper {
+    width: 66.66%; /* 2/3 폭 */
+    margin: 10px 0;
+}
+
+/* 삽입된 버튼 스타일 */
+.inserted-button {
+    width: 100%;
+    border: 1px solid #ccc;
+    padding: 10px;
+    cursor: default;
+    background-color: #f0f0f0;
+    pointer-events: none; /* 버튼 클릭 및 수정 불가 */
+    user-select: none; /* 텍스트 선택 불가 */
+}
+
+/* 마이리스트 삭제 버튼 스타일 */
+.mylist-wrapper .delete-btn {
+    margin-left: 10px;
+    background-color: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+/* 삽입된 버튼 wrapper 스타일 */
+.inserted-button-wrapper {
+    width: 66.66%; /* 2/3 폭 */
+    margin: 10px 0;
+    pointer-events: none; /* 수정 불가 */
+}
+
+/* 삽입된 버튼 스타일 */
+.inserted-button {
+    width: 100%;
+    border: 1px solid #ccc;
+    padding: 10px;
+    cursor: move; /* 드래그 가능 표시 */
+    background-color: #f0f0f0;
+    pointer-events: none; /* 클릭 및 수정 불가 */
+    user-select: none; /* 텍스트 선택 불가 */
+}
+
+/* 마이리스트 삭제 버튼 스타일 */
+.mylist-wrapper .delete-btn {
+    margin-left: 10px;
+    background-color: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+/* 마이리스트 항목 wrapper 스타일 */
+.mylist-wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+/* Sortable 플레이스홀더 스타일 */
+.sortable-placeholder {
+    border: 2px dashed #ccc;
+    background-color: #fafafa;
+    height: 40px;
+    margin: 10px 0;
+    width: 66.66%; /* 2/3 폭 */
+}
+/* 삽입된 버튼 wrapper 스타일 */
+.inserted-button-wrapper {
+    width: 66.66%; /* 2/3 폭 */
+    margin: 10px 0;
+    cursor: move; /* 드래그 가능한 표시 */
+}
+
+/* 삽입된 버튼 스타일 */
+.inserted-button {
+    width: 100%;
+    border: 1px solid #ccc;
+    padding: 10px;
+    background-color: #f0f0f0;
+    user-select: none; /* 텍스트 선택 불가 */
+    pointer-events: none; /* 클릭 및 수정 불가 */
+}
+
+/* 마이리스트 삭제 버튼 스타일 */
+.mylist-wrapper .delete-btn {
+    margin-left: 10px;
+    background-color: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+/* 마이리스트 항목 wrapper 스타일 */
+.mylist-wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+/* Sortable 플레이스홀더 스타일 */
+.sortable-placeholder {
+    border: 2px dashed #ccc;
+    background-color: #fafafa;
+    height: 40px;
+    margin: 10px 0;
+    width: 66.66%; /* 2/3 폭 */
+}
+
+.note-modal {
+    top: 40% !important; /* 팝업 창을 아래로 내림 */
+    transform: translateY(-20%) !important; /* 중앙 정렬 보정 */
+}
+
+
+#toolbar-container {
+    position: relative;
+    background-color: #fff;
+    border-bottom: 1px solid #ccc;
+    padding: 10px;
+    z-index: 999;
+}
+
+.fixed-toolbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    border-bottom: 1px solid #ccc;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+
+/* 마이리스트 기본 스타일 */
+.mylist-wrapper {
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 21px;
+    margin: 10px 0;
+    padding: 15px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.mylist-wrapper:hover {
+    background-color: #f8f9fa;
+}
+
+.mylist-item-content {
+    background-color: white;
+    position: relative;
+    cursor: pointer;
+}
+
+/* 장소 정보 스타일 */
+.place-title {
+	display:flex;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 8px; 
+}
+
+.place-address {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 4px;
+}
+
+.place-tel {
+    font-size: 13px;
+    color: #0068c3;
+}
+
+/* 태그 스타일 */
+.place-tag {
+    position: absolute;
+    top: 3px;
+    right: 0px;
+    background-color: #27ae60;
+    color: white;
+    padding: 0 8px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+/* 태그 색상 변형 */
+.place-tag-관광지 { background-color: #1E90FF; }
+.place-tag-문화시설 { background-color: #800080; }
+.place-tag-축제공연 { background-color: #FFA500; }
+.place-tag-레포츠 { background-color: #32CD32; }
+.place-tag-쇼핑 { background-color: #FF69B4; }
+.place-tag-맛집 { background-color: #FF4500; }
+.place-tag-카카오 { background-color: #FFD700; color: black; }
+.place-tag-기타 { background-color: #A9A9A9; }
+
+/* 에디터에 드롭된 장소 정보 스타일 */
+.place-info {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 12px;
+    margin: 8px 0;
+    background-color: #f8f9fa;
+}
+
+.place-info .place-title {
+    color: #333;
+    margin-bottom: 6px;
+}
+
+.place-info .place-address {
+    color: #666;
+    font-size: 12px;
+}
+
+
+.place-info {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    pointer-events: none;  /* ✅ 마우스로 수정 불가 설정 */
+}
+
+
+.place-info {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    pointer-events: none;
+}
+
+.place-info h3 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.place-info p {
+    font-size: 14px;
+    margin: 3px 0;
+}
+
+/* ✅ 에디터에 추가된 항목 스타일 */
+.location-name-btn {
+	width:100%;
+    position: relative;
+    margin-bottom: 10px;
+}
+
+/* ✅ X 버튼 스타일 */
+.remove-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* ✅ Hover 시 X 버튼 표시 */
+.location-name-btn:hover .remove-button {
+    z-index: 100;
+}
+
+
+/* ✅ 에디터에 추가된 항목 스타일 */
+.location-name-btn {
+    position: relative;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+
+
+.place-button{
+	padding:3px;
+	border:none;
+	background-color: #27ae60;
+    color: white;
+    margin-top: 0.5px;
+    border-radius: 0.1px;
+	
+}
+
+.container {
+    min-height: 100vh;
+    height: auto; /* 컨테이너 높이 자동 조절 */
+}
+
+.left {
+    width: 250px;
+    background: white;
+    padding: 20px;
+    border-radius: 35px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 20px;
+    margin-left: -150px;
+    
+    /* 높이 설정 수정 */
+    height: 280px;           /* 초기 고정 높이 */
+    max-height: 780px !important;  /* 최대 높이 강제 적용 */
+    transition: height 0.3s;  /* 부드러운 높이 변화 */
+    overflow-y: auto;
+}
+
+/* 내용물이 있을 때 높이 자동 조절 */
+.left:has(.mylist-wrapper) {
+    height: auto;
+    min-height: 280px;
+}
+
+
+
+
+/* X 버튼 스타일링 */
+.remove-button {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    display: none; /* 기본적으로 숨김 */
+    background: none;
+    border: none;
+    color: #ff0000;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 5px;
+    z-index: 10;
+}
+
+/* 장소 컨테이너에 호버했을 때 X 버튼 표시 */
+.location-name-btn:hover .remove-button {
+    display: block;
+}
+
+/* 장소 버튼 스타일링 */
+.location-name-btn {
+    position: relative;
+    width: 100%;
+    cursor: pointer;
+    background-color: #ffffff;
+    border: none;
+}
+
+/* 장소 정보 스타일링 */
+.place-info {
+    pointer-events: none; /* 내부 요소들 클릭 방지 */
+}
+
+/* 줄바꿈 p 태그 스타일링 */
+.place-container + p {
+    margin: 0;
+    padding: 5px 0;
+    pointer-events: none;
+}
+
+
+
+/* X 버튼 스타일링 */
+.remove-button {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    display: none;
+    background: none;
+    border: none;
+    color: #ff0000;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 5px;
+    z-index: 10;
+}
+
+/* 장소 컨테이너에 호버했을 때 X 버튼 표시 */
+.place-container:hover .remove-button {
+    display: block;
+}
+
+/* 장소 버튼 스타일링 */
+.location-name-btn {
+    position: relative;
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f8f9fa;
+    text-align: left; /* 텍스트 왼쪽 정렬 추가 */
+}
+
+/* 장소 정보 스타일링 */
+.place-info {
+    pointer-events: none;
+}
+
+/* 줄바꿈 p 태그 스타일링 */
+.place-container + p {
+    margin: 0;
+    padding: 5px 0;
+    pointer-events: none;
+}
+
+
+.place-container {
+    position: relative; /* 추가 */
+    width: 100%;
+    margin: 5px 0;
+}
+
+.remove-button {
+    position: absolute;
+    right: 5px;     /* 10px에서 5px로 수정 */
+    top: 5px;       /* 10px에서 5px로 수정 */
+    display: none;
+    background: none;
+    border: none;
+    color: #ff0000;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 5px;
+    z-index: 10;
+}
+
+/* 호버 대상을 place-container로 변경 */
+.place-container:hover .remove-button {
+    display: block;
+}
+
+.location-name-btn {
+    width: 100%;
+    padding: 10px;
+    margin: 0;       /* margin 제거 */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f8f9fa;
+    text-align: left;
+}
+
+.place-info {
+    pointer-events: none;
+}
+
+.place-container + p {
+    margin: 0;
+    padding: 5px 0;
+    pointer-events: none;
+}

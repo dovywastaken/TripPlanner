@@ -1,0 +1,47 @@
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Icon must be different on every volume:
+.VolumeIcon.icns
+
+# Files that might appear in the root of a volume
+.TemporaryItems
+.Trashes
+.localized
+
+# Eclipse project files
+.metadata
+.project
+.settings
+bin/
+tmp/
+tmp_tomcat/ # 필요시 톰캣 임시 폴더 (예시)
+.classpath
+.factorypath
+
+# Maven 프로젝트 빌드 결과물
+target/
+
+# 빌드 결과물 (일반적인 Java 프로젝트)
+*.class
+*.jar
+*.war
+*.ear
+
+# 로그 파일
+*.log
+
+# 임시 파일 및 스왑 파일
+*.tmp
+*.swp
+
+# IDE 설정 폴더 (혹시 모를 다른 IDE 사용을 대비하여 포함, 필요 없으면 제거)
+.idea/        # IntelliJ IDEA
+.vscode/      # VSCode
+
+src/main/resources/properties/*.properties

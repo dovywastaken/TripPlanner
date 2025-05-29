@@ -1,0 +1,125 @@
+header{
+    width: 100vw;
+    padding: 0 300px;
+    margin-bottom: 15px;
+    position: fixed;
+	background: rgba(255,255,255,0.5);
+	backdrop-filter: blur( 5px );
+	-webkit-backdrop-filter: blur( 5px );
+    box-shadow: 0px 7px 25px rgba(33,55,88,0.2);
+    z-index: 9999;
+    position: relative;
+}
+
+#headerContainer
+{
+    display: flex;
+    width : 100%;
+    justify-content: space-between;
+    height: 55px;
+    align-items: center;
+   	margin : 0 auto;
+}
+
+#logo
+{
+    position: absolute;
+    left : 30px;
+    display : flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#headerLeft {
+    display: flex;
+    align-items: center;  
+    height: 55px; 
+    white-space : nowrap;
+    max-width : 61px;
+}
+
+.headerLeft {
+    height: 21px;
+    width: 61px;
+    color: black;
+    display: flex;           
+    align-items: center;     
+    justify-content : start;
+    font-size : 13px;
+    font-weight: 500;
+    margin-right:13px;
+}
+
+.headerLeft:active {
+    transform: translateY(1px);
+    border : none;
+    border-radius : 34px;
+    box-shadow: 0px 0px 2px rgba(33,55,55,0.4);
+}
+
+#logoImg {
+    width: auto;
+    height: 27px;
+    object-fit: contain;
+    max-height: 27px;
+    margin-right: 15px;
+}
+
+#headerRight
+{
+	display: flex; 
+    align-items: center; 
+    height: 55px;
+    white-space : nowrap; 
+
+}
+
+.headerRight {
+    border: transparent 1px solid;
+    border-radius: 9.5px;
+    height: 21px;
+    width: 61px;
+    color: black;
+    display: flex;           
+    align-items: center;     
+    justify-content: center;
+    font-size : 13px;
+    font-weight: 500;
+    transition: all 0.3s ease; 
+    margin-left:13px;
+}
+
+.headerRight:nth-child(1)
+{
+    background: #e6e9ef;
+}
+
+.headerRight:last-child
+{
+	border : none;
+	transition: 0; 
+	box-shadow: 0px 0px 0px rgba(33,55,55,0);
+	transform: translateY(0px); 
+}
+
+
+.headerRight:last-child:hover
+{
+	border : none;
+	box-shadow: 0px 0px 0px rgba(33,55,55,0);
+	transform: translateY(0px); 
+}
+
+.headerRight:hover {
+    border: transparent 1px solid;
+    border-radius: 34px;
+    box-shadow: 0px 1px 1px rgba(33,55,55,0.6);
+    transform: translateY(-1px); 
+}
+
+/* 버튼 클릭 효과 추가 */
+
+.headerRight:active {
+    transform: translateY(1px);
+    box-shadow: 0px 0px 4px rgba(33,55,55,0.4);
+}

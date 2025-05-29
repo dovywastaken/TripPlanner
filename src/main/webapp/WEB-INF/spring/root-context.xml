@@ -1,0 +1,45 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+    <!-- 컴포넌트 스캔을 통해 서비스 및 리포지토리 클래스 스캔 -->
+	<context:component-scan base-package="com.spring.repository.member" />
+	<context:component-scan base-package="com.spring.repository.post" />
+	<context:component-scan base-package="com.spring.service.member" />
+	<context:component-scan base-package="com.spring.service.post" />
+    
+    <!-- properties 파일 로드 -->
+    <context:property-placeholder
+        location="classpath:properties/dbConnection.properties, classpath:properties/keys.properties"
+        ignore-unresolvable="true"/>
+    
+
+    <!-- 데이터베이스 연결 설정 -->
+<!--  -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
+        <property name="url" value="${mysql.url}" />
+        <property name="username" value="${mysql.username}" />
+        <property name="password" value="${mysql.password}" />
+    </bean>
+
+
+<!--
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="org.mariadb.jdbc.Driver" />
+        <property name="url" value="${mariadb.url}" />
+        <property name="username" value="${mariadb.username}" />
+        <property name="password" value="${mariadb.password}" />
+    </bean>
+ -->
+
+    <!-- JdbcTemplate 빈 설정 -->
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+</beans>

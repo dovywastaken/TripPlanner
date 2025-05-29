@@ -1,0 +1,323 @@
+	body 
+    {
+        background-color: #f4f7f6;
+    }
+
+    #container
+    {
+        margin: 35px 0;
+        padding: 0 300px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        
+    }
+
+    #titleBanner
+    {
+        width: 100%;
+        height: 110px;
+        padding: 40px;
+        font-weight: bold;
+        font-size: 34px;
+        background-color: #00AA77;
+        color: #FFFFFF;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: row;
+        border-radius: 34px 34px 0 0;
+        box-shadow: 0px 0px 25px rgba(33,55,88,0.1);
+        z-index: 1;
+    }
+
+
+    #boardContainer
+    {
+        width: 100%;
+        min-height: 610px;
+        background-color: white;
+        padding: 21px 34px 89px 34px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: column;
+        border-radius: 0 0 34px 34px;
+        box-shadow: 0px 7px 25px rgba(33,55,88,0.2);
+        /* outline: 1px solid magenta; */
+    }
+
+    #table
+    {
+        width: 100%; 
+        border-collapse: collapse; 
+        margin: 20px 0; 
+        font-size: 16px; 
+        text-align: left; 
+        border: 1px none #ddd;
+    }
+
+    .tableHead
+    {
+        height: 44px;
+        font-size: 16px;
+        text-align: center;
+        width: 80px;
+    }
+
+    .tableHead:first-child
+    {
+        text-align: start;
+        width: auto;
+    }
+    
+    .tableContent:first-child
+    {
+        text-align: start;
+        border-top: #e1e3e9 solid 1px;
+        height: 55px;
+    }
+    
+    .tableContent
+    {
+        text-align: center;
+        border-top: #e1e3e9 solid 1px;
+        height: 55px;
+    }
+
+    .pagination{
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 13px;
+        gap : 15px
+    }
+    
+    strong
+    {
+    	scale: 1.5;
+    }
+
+    .pageIndicatorWrapper
+    {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: row;
+        gap: 8px;
+    }
+
+    .pageIndicator
+    {
+        /* background-color: #eaecef; */
+        width: 21px;
+        height: 21px;
+        text-align: center;
+        border-radius: 15%;
+        /* outline: 1px solid magenta; */
+    }
+
+    #filter
+    {
+        transform: translateX();
+        height: 30px;
+        border: none;
+        outline: none;
+        cursor:pointer;
+    }
+
+    #searchBar
+    {
+        width: 232px;
+        height: 38px;
+        padding: 21px;
+        /* border: 1px solid #ccc; */
+        border: none;
+        background-color: #F1F3F9;
+        border-radius: 35px;
+        box-sizing: border-box;
+    }
+
+    #searchBar:hover
+    {
+        outline: 1px solid #0f7060;
+        transition: 120ms;
+    }
+
+    #searchBar:focus
+    {
+        outline: 3.1px solid #0f7060;
+        transition: 120ms;
+    }
+
+    #searchButton
+    {
+        border: none;
+        outline: 1px solid #e1e3e9;
+        background-color: #ffffff;
+        box-shadow: 5px 7px 18px 0px rgba(33,55,55,0.1);
+        border-radius: 21px;
+        height: 38px;
+        padding: 0 13px;
+        transition: 120ms;
+        box-sizing: border-box;
+        background: url('/TripPlanner/resources/img/search.svg') no-repeat center;
+        width: 38px; 
+        background-color: #007766;
+        height: 38px; 
+        border: none;
+    }
+    
+
+    #searchButton:hover
+    {
+        cursor: pointer;
+        transform: translateY(-1px);
+    }
+
+
+
+    /* --------------------------------------------------------------------------------------------------------- */
+
+
+    aside{
+        position: fixed;
+        top: 90px;
+        left: 34px;
+        z-index: 999;
+        transition: top 0.2s ease-out; /* 위치 변경 시 부드러운 애니메이션 */
+    }
+    
+    #myPanel{
+        background: rgba(255,255,255,0.3);
+        backdrop-filter: blur(30px);
+        -webkit-backdrop-filter: blur(30px);
+        box-shadow: 5px 7px 18px 0px rgba(33,55,55,0.1);
+        border-radius: 21px;
+        margin-bottom: 21px;
+        box-sizing: border-box;
+        padding: 13px;
+        width: 232px;
+        display: flex;
+        justify-content: center;
+        align-items: start;
+        flex-direction: column;
+    }
+    
+    #userInfo
+    {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 100%;
+        margin-bottom: 21px;
+        /* outline: 1px solid magenta; */
+    }
+    
+    #myPanel h1{
+        font-size: 21px; 
+        color: #2C3F3C;   
+        font-weight: bold;
+    }
+    
+    #myPanel h2
+    {
+        font-size: 15px; 
+        color: #2C3F3C;   
+        font-weight: bold;
+    }
+    
+    #links {
+        display: flex;
+        flex-direction: column; /* 세로 정렬 */
+        align-items: flex-start; /* 왼쪽 정렬 */
+        width: 100%; /* aside의 너비를 채움 */
+        gap: 0px; /* 링크 간 간격 */
+        margin-top: 20px; /* 위 요소와의 간격 */
+        border-top: solid 1px #e1e3e9;
+        border-bottom: solid 1px #e1e3e9;
+        padding: 13px 0;
+    }
+    
+    #links a {
+        font-size: 16px; 
+        font-weight: bold;
+        color: #2C3c3f; /* 다크 그린 계열 텍스트 */
+        text-decoration: none; /* 기본 밑줄 제거 */
+        padding: 12px 20px; 
+        border-radius: 12px; 
+        transition: all 0.3s ease;
+        display: block; /* 클릭 가능한 영역을 확장 */
+        width: 100%; /* 클릭 영역을 가로로 꽉 채움 */
+        box-sizing: border-box; /* 패딩 포함 너비 계산 */
+    }
+    
+    #links a:hover {
+        background-color: #f8f9fa; /* 밝은 회색 배경 */
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.12); /* 호버 시 강조된 음영 */
+        transform: translateY(-2px); /* 호버 시 약간 떠오름 */
+    }
+    
+    #links a:active {
+        background-color: #e9ecef; /* 조금 더 진한 회색 */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08); /* 클릭 시 음영 축소 */
+        transform: translateY(0); /* 클릭 시 원래 위치 */
+    }
+    
+    
+    
+    /* --------------------------------------------------------------------------------------------------------- */
+    /* 로그아웃 버튼 스타일 */
+    .signOutButton{
+        height: 34px;
+        width: 70px;
+        margin: 15px auto 0;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        color: #2C3F3C; 
+        text-decoration: none;
+    }
+    
+    /* Hover 효과 */
+    .signOutButton:hover {
+        cursor: pointer;
+        text-decoration: underline;
+    
+    }
+    
+    #backButton {
+        background-color: #313339; 
+        color: white;
+        padding: 10px 20px; 
+        border-radius: 34px; 
+        font-size: 16px;
+        font-weight: bold; 
+        text-align: center; 
+        width: 100%; 
+        cursor: pointer; 
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+        transition: all 0.3s ease; 
+    }
+    
+    #backButton:hover {
+        background-color: #616369; 
+    }
+    
+    #backButton:active {
+        background-color: #003f7f; 
+        box-shadow: 0 3px 4px rgba(0, 0, 0, 0.1); 
+        transform: translateY(0); 
+    }
+    
+    
+    
+    
+    
+    
+    
+    

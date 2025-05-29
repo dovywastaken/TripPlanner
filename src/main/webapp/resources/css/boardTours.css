@@ -1,0 +1,366 @@
+	.container
+	{
+        padding: 89px 34px 0 300px;
+        max-width: 1368px;
+	}
+
+    .container h1, h2{
+        text-wrap: nowrap;
+        color: #2C3c3f;
+    }
+
+
+	.section{
+        margin-top: 55px;
+        margin-bottom: 55px;
+        width: 100%;
+    }
+
+    .title{
+        margin: 0 0 0px 8px;
+        display: flex;
+        align-items: center;
+    }
+
+
+    .title span
+    {
+        font-size: 25px;
+        margin: 13px;
+    }
+    
+    .morePost{
+        background-color: #ffee8d;
+        font-size: 13px;
+        font-weight: bold;
+        border-radius: 13px;
+        padding: 0 8px;
+        height: 21px;
+        display: flex;
+        align-items: center;
+    }
+
+    #planner
+    {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 34px;
+
+    }
+
+
+    .recommandCard {
+        position: relative; /* 가상 요소를 위한 상대 위치 설정 */
+        display: flex;
+        flex-direction: column;
+        width: 233px;
+        min-width: 233px;
+        height: 288px;
+        background-color: #ffffff;
+        box-shadow: 0px 7px 30px rgba(33,55,55,0.1);
+        border-radius: 21px;
+        overflow: hidden;
+        padding: 8px;
+        box-sizing: border-box;
+    }
+
+    .imgFrame
+    {
+        width: 217px;
+        min-width: 217px;
+        height: 217px;
+        min-height: 217px;
+        background-color: #f1f3f9;
+        border-radius: 13px;
+        overflow: hidden;
+    }
+
+    .pImg
+    {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        outline: 1px solid magenta;
+    }
+
+
+    .plannerCol
+    {
+        width: calc(100% - 16px);
+        margin: 8px 8px 5px 8px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 136px;
+    }
+
+    .plannerTitle
+    {
+        font-size: 21px;
+        line-height: 26px;
+        font-weight: bold;
+        color: #009988;
+
+    }
+
+
+    .plannerStatus{
+        font-size: 13px;
+        color: #717379;
+        font-weight: bold;
+    }
+    
+    .hashtag{
+        font-size: 13px;
+        color: #717379;
+        font-weight: bold;
+    }
+    .plannerContents{
+        margin-top: 13px;
+        font-size: 13px;
+        line-height: 21px;
+    }
+    
+    
+    aside{
+        position: fixed;
+        top: 145px;
+        left: 34px;
+        z-index: 999;
+        transition: top 0.2s ease-out; /* 위치 변경 시 부드러운 애니메이션 */
+    }
+
+    #myPanel{
+        background: rgba(255,255,255,0.3);
+        backdrop-filter: blur(30px);
+        -webkit-backdrop-filter: blur(30px);
+        box-shadow: 5px 7px 18px 0px rgba(33,55,55,0.1);
+        border-radius: 21px;
+        margin-bottom: 21px;
+        box-sizing: border-box;
+        padding: 13px;
+        width: 232px;
+        display: flex;
+        justify-content: center;
+        align-items: start;
+        flex-direction: column;
+    }
+
+    #userInfo
+    {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 100%;
+        margin-bottom: 21px;
+        /* outline: 1px solid magenta; */
+    }
+
+    #myPanel h1{
+        font-size: 21px; 
+        color: #2C3F3C;   
+        font-weight: bold;
+    }
+
+    #myPanel h2
+    {
+        font-size: 15px; 
+        color: #2C3F3C;   
+        font-weight: bold;
+    }
+
+    #links {
+        display: flex;
+        flex-direction: column; /* 세로 정렬 */
+        align-items: flex-start; /* 왼쪽 정렬 */
+        width: 100%; /* aside의 너비를 채움 */
+        gap: 0px; /* 링크 간 간격 */
+        margin-top: 20px; /* 위 요소와의 간격 */
+        border-top: solid 1px #e1e3e9;
+        border-bottom: solid 1px #e1e3e9;
+        padding: 13px 0;
+    }
+
+    #links a {
+        font-size: 16px; 
+        font-weight: bold;
+        color: #2C3c3f; /* 다크 그린 계열 텍스트 */
+        text-decoration: none; /* 기본 밑줄 제거 */
+        padding: 12px 20px; 
+        border-radius: 12px; 
+        transition: all 0.3s ease;
+        display: block; /* 클릭 가능한 영역을 확장 */
+        width: 100%; /* 클릭 영역을 가로로 꽉 채움 */
+        box-sizing: border-box; /* 패딩 포함 너비 계산 */
+    }
+
+    #links a:hover {
+        background-color: #f8f9fa; /* 밝은 회색 배경 */
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.12); /* 호버 시 강조된 음영 */
+        transform: translateY(-2px); /* 호버 시 약간 떠오름 */
+    }
+
+    #links a:active {
+        background-color: #e9ecef; /* 조금 더 진한 회색 */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08); /* 클릭 시 음영 축소 */
+        transform: translateY(0); /* 클릭 시 원래 위치 */
+    }
+
+
+
+/* --------------------------------------------------------------------------------------------------------- */
+    /* 로그아웃 버튼 스타일 */
+	.signOutButton{
+	    height: 34px;
+        width: 70px;
+        margin: 15px auto 0;
+	    text-align: center;
+	    display: flex;
+	    align-items: center;
+	    justify-content: center;
+	    font-size: 13px;
+	    color: #2C3F3C; 
+        text-decoration: none;
+	}
+	
+	/* Hover 효과 */
+	.signOutButton:hover {
+	    cursor: pointer;
+        text-decoration: underline;
+
+	}
+
+    #backButton {
+        background-color: #313339; 
+        color: white;
+        padding: 10px 20px; 
+        border-radius: 34px; 
+        font-size: 16px;
+        font-weight: bold; 
+        text-align: center; 
+        width: 100%; 
+        cursor: pointer; 
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+        transition: all 0.3s ease; 
+    }
+
+    #backButton:hover {
+        background-color: #616369; 
+    }
+
+    #backButton:active {
+        background-color: #003f7f; 
+        box-shadow: 0 3px 4px rgba(0, 0, 0, 0.1); 
+        transform: translateY(0); 
+    }
+    
+    
+    
+    
+    /* ===================================================================================== */
+    
+    
+    
+    
+    .signInTitle
+	{
+		text-align : center;
+	}
+	
+	
+	
+	/* 로그인 폼 컨테이너 스타일 */
+	.form-container {
+	    background-color: #ffffff;
+        border-radius: 13px;
+        padding: 13px;
+        display : flex;
+        justify-content:center;
+        margin-top: 13px;
+	}
+	
+	/* 각 입력 그룹 */
+	.form-group {
+	    margin-bottom: 20px;
+	    text-align: left;
+	}
+	
+	/* 레이블 스타일 */
+	.form-group label {
+	    font-size: 14px;
+	    color: #555;
+	    display: block;
+	    margin-bottom: 5px;
+	}
+	
+	/* 텍스트 및 비밀번호 입력 필드 스타일 */
+	.form-group input[type="text"],
+	.form-group input[type="password"] {
+	    width: 100%;
+	    padding: 10px;
+	    font-size: 14px;
+	    border: 1px solid #ccc;
+	    border-radius: 5px;
+	    box-sizing: border-box;
+	}
+	
+	/* 로그인 버튼 스타일 */
+	#submitButton {
+        background: rgb(103,255,176);
+        background: linear-gradient(0deg, rgba(103,255,176,1) 0%, rgba(12,245,151,1) 5%, rgba(0,238,153,1) 12%, rgba(103,255,176,1) 91%, rgba(0,255,164,1) 100%);
+        box-shadow: 0px 1px 2px rgba(33,55,55,0.2);
+        width : 100%;
+        padding: 21px;
+        height: 34px;
+        border-radius: 34px;
+        border: none;
+        text-align: center;
+        line-height: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 21px;
+        font-size: 18px;
+        transition: 300ms;
+	}
+	
+	#submitButton:hover {
+	    cursor:pointer;
+        background: rgb(103,255,176);
+        background: linear-gradient(0deg, rgba(103,255,176,1) 0%, rgba(0,255,164,1) 5%, rgba(0,255,164,1) 12%, rgba(145,255,198,1) 91%, rgba(130,255,190,1) 100%);
+        box-shadow: 0px 0px 15px 3px rgba(133,255,188,0.6);
+        transition: 300ms;
+
+	}
+	
+	
+	#signUpButton
+	{
+		background-color: #FFFFFF;
+        width: 70px;
+        margin: 0 auto 34px auto;
+        border-radius: 8px;
+        text-align: center;
+        line-height: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+	}	
+    
+    #signUpButton:hover
+	{
+    text-decoration: underline;	
+    }
+	
+	
+	/* 에러 메시지 표시 */
+	.alert {
+	    font-size: 14px;
+	    color: red;
+	    margin-top: 10px;
+	}
+	
+    
+    
