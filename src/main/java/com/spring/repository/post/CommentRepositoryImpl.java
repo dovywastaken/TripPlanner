@@ -30,7 +30,7 @@ public class CommentRepositoryImpl implements CommentRepository {
 	 		    offset = 0;
 	 		}
 	 	 Map<String,Object> response=new HashMap<String, Object>();
-	 	 String sql = "SELECT c_unique, p_unique, id, comments, commentDate, commentLikes " +
+	 	 String sql = "SELECT c_unique, p_unique, id, comments, commentDate, commentLikes, nickname " +
              "FROM comments WHERE p_unique = ? ORDER BY commentDate ASC LIMIT ? OFFSET ?";
 	 	 List<Comment> comments=template.query(sql, new CommentRowMapper(), postId, limit, offset);
 	 	 List<Integer> isLike=new ArrayList<Integer>();
@@ -69,10 +69,11 @@ public class CommentRepositoryImpl implements CommentRepository {
 
 	    @Override
 	    public void insertComment(Comment comment) {
-	        String sql = "INSERT INTO comments (p_unique, id, comments, commentDate, commentLikes) VALUES (?,?,?,?,?)";
+	        String sql = "INSERT INTO comments (p_unique, id, nickname, comments, commentDate, commentLikes) VALUES (?,?,?,?,?,?)";
 	        template.update(sql,
 	                comment.getP_unique(),
 	                comment.getEmail(),
+	                comment.getNickname(),
 	                comment.getComments(),
 	                comment.getCommentDate(),
 	                comment.getCommentLikes()

@@ -107,7 +107,8 @@ public class CommentController {
     @PostMapping
     public Map<String,Object> createComment(@RequestParam("postId") int postId,
                                             @RequestParam("id") String userEmail,
-                                            @RequestParam("comments") String commentText)
+                                            @RequestParam("comments") String commentText,
+                                            @RequestParam("nickname") String nickname)
     {
         logger.info("===========================================================================================");
         logger.info("CommentController : createComment (POST) 매핑. 댓글 생성 요청 받음.");
@@ -121,6 +122,7 @@ public class CommentController {
         comment.setComments(commentText);
         comment.setCommentDate(timestamp);
         comment.setCommentLikes(0); // 초기 좋아요 수는 0으로 설정
+        comment.setNickname(nickname);
 
         logger.debug("생성할 Comment DTO: {}", comment);
 

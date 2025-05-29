@@ -53,7 +53,7 @@
             <div id="commentSection" class="comments-list"></div>
             <div id="pagination" class="pagination"></div>
             
-                 <c:choose>
+                <c:choose>
                 <c:when test="${not empty member.email}">
                     <div class="comment-box">
                         <form id="commentForm">
@@ -136,6 +136,7 @@
         var contextPath = "${pageContext.request.contextPath}";
         var postId = "${postId}";
         var sessionId = "${member.email}";
+        var sessionNickname = "${member.nickname}";
         var totalPages = ${totalPages};
     </script>
     

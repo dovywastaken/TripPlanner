@@ -20,6 +20,7 @@ $(document).ready(function() {
             alert("댓글 내용을 입력해주세요.");
             return;
         }
+        let nickname = sessionNickname;
 
         $.ajax({
             url: contextPath+"/api/comments",
@@ -28,7 +29,8 @@ $(document).ready(function() {
             data: {
                 postId: postId,
                 id: sessionId,
-                comments: commentContent
+                comments: commentContent,
+                nickname: sessionNickname
             },
             success: function(response) {
                 if (response.message === "success") {
@@ -227,7 +229,7 @@ $(document).ready(function() {
 	        var html = `
 	            <div class="comment" data-id="${comment.c_unique}">
 	                <div class="comment-header">
-	                    <span class="comment-author">${comment.email}</span>
+	                    <span class="comment-author">${comment.nickname}</span>
 	                    <span class="comment-date">${commentDate[i]}</span>
 	                </div>
 	                <div class="comment-content">${comment.comments}</div>

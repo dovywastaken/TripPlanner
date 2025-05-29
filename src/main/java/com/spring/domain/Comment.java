@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 public class Comment 
 {
 	private String email;
+	private String nickname;
 	private String comments;
 	private Timestamp commentDate;
 	private int commentLikes;
@@ -25,6 +26,15 @@ public class Comment
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
 	public Timestamp getCommentDate() {
 		return commentDate;
 	}
