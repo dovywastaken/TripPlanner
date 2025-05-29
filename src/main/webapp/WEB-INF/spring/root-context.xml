@@ -20,6 +20,7 @@
 
     <!-- 데이터베이스 연결 설정 -->
 <!--  -->
+
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
         <property name="url" value="${mysql.url}" />
@@ -28,7 +29,9 @@
     </bean>
 
 
+
 <!--
+
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="org.mariadb.jdbc.Driver" />
         <property name="url" value="${mariadb.url}" />

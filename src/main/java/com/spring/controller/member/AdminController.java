@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,6 +39,7 @@ public class AdminController
     {
     	logger.info("===========================================================================================");
     	logger.info("AdminController : admin/dashboard 로 매핑");
+
         int limit = 10; // 한 페이지에 표시할 회원 수
 
         // 키워드가 비어 있으면 null로 설정
@@ -48,8 +50,8 @@ public class AdminController
 
         // 페이징 데이터 설정
         setPagingData(model, page, searchKeyword, limit); //이렇게 되면 멤버 리스트, 페이지의 값, 키워드의 값, 한 페이지당 보여줄 회원수를 해당 함수에 파라미터로 전달한다
-        
         logger.info("AdminController : admin.jsp 로 이동");
+
         return "member/admin";
     }
 
@@ -59,6 +61,7 @@ public class AdminController
     {
     	logger.info("===========================================================================================");
     	logger.info("AdminController : setPagingData 메서드 호출");
+
         int offset = (page - 1) * limit; // 몇 번 째 회원부터 페이지에 표시할 지를 정해준다
         List<Member> memberList; //회원 명단을 담을 리스트를 하나 만들어준다
 
@@ -78,6 +81,5 @@ public class AdminController
         model.addAttribute("memberList", memberList);
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("keyword", keyword);
-        logger.info("AdminController : setPagingData 메서드 종료");
     }
 }

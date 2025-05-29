@@ -61,6 +61,7 @@ public class PostController {
 		System.out.println("===========================================================================================");
 		System.out.println("PostController : postForm(GET)으로 매핑되었습니다");
 		logger.info("===========================================================================================");		
+
 		
 		return "post/postForm";
 		

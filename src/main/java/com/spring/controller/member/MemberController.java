@@ -40,6 +40,7 @@ public class MemberController {
         // 회원 가입 폼 페이지로 이동
         logger.info("===========================================================================================");
         logger.info("MemberController : members/signUp(GET)으로 매핑되어 signUp.jsp로 이동합니다");
+
         model.addAttribute("member", new Member()); //폼 태그에서 modelAttribute="member"를 사용하고 있기 때문에 멤버 객체를 들고 가야한다
         return "member/signUp";
     }
@@ -76,6 +77,7 @@ public class MemberController {
         logger.info("이메일 실제로 받는지 체크 : " + member.getEmail());
         memberService.createMember(member);
         logger.info("메인페이지로 리다렉션");
+
         return "redirect:/";
     }
 
@@ -85,6 +87,7 @@ public class MemberController {
         // 로그인 페이지로 이동
     	logger.info("===========================================================================================");
     	logger.info("메인페이지로 리다렉션");
+
         System.out.println("MemberController : members/signIn(GET)으로 매핑되어 signIn.jsp로 이동합니다");
         model.addAttribute("member", new Member());
         return "member/signIn";
@@ -96,6 +99,7 @@ public class MemberController {
     {
     	logger.info("===========================================================================================");
     	logger.info("MemberController : members/signIn(POST)으로 매핑되었습니다");
+
         
         // 로그인을 위한 회원 정보 조회
         Member loginMb = memberService.findById(member.getEmail());
@@ -146,10 +150,6 @@ public class MemberController {
         model.addAttribute("member", new Member());
         return "member/myPage";
     }
-
-    
-   
-    
     //AJAX 요청 이메일 전송 메서드
     @GetMapping("/email")
     @ResponseBody
@@ -157,6 +157,7 @@ public class MemberController {
     {
     	logger.info("===========================================================================================");
     	logger.info("MemberController : members/email(GET)으로 AJAX 매핑");
+
     	Map<String, String> response = new HashMap<>();
     	
     	Member member = (Member)session.getAttribute("user");
@@ -208,6 +209,7 @@ public class MemberController {
     	else 
     	{
     		logger.warn("아이디와 요청한 이메일의 아이디가 일치하지 않습니다");
+
     	}
     	
     	return "redirect:/members/myPage";
@@ -237,6 +239,7 @@ public class MemberController {
         String email = loginMember.getEmail();
         
         logger.info("세션에 담긴 정보 : " + loginMember.getEmail() + loginMember.getNickname() + loginMember.getPhone1() + loginMember.getPhone2() + loginMember.getPhone3());
+
         
         //이메일도 dto에 넣어줘야함
         member.setEmail(email);
@@ -249,6 +252,7 @@ public class MemberController {
         member.setPhone3(phoneList[2]);
         
         logger.info("새로 업데이트 할 정보 : " + member.getEmail() + member.getNickname() + member.getPhone1() + member.getPhone2() + member.getPhone3());
+
         //여기까지 왔으면 새로 수정한 이메일, 휴대폰 번호가 들어간 member dto가 만들어짐
         
         // 회원 정보 업데이트
@@ -259,6 +263,7 @@ public class MemberController {
         session.setAttribute("user", updatedMember);
 
         logger.info("updateMemberComplete 메서드로 리다렉션");
+
         return "redirect:/";
     }
 
@@ -273,6 +278,7 @@ public class MemberController {
     	model.addAttribute("member", new Member());
     	
     	logger.info("pwChange.jsp로 이동합니다");
+
     	return "member/pwChange";
     }
     
@@ -282,6 +288,7 @@ public class MemberController {
     {
     	logger.info("===========================================================================================");
     	logger.info("MemberController : /members/toPwChange(POST)으로 매핑되었습니다");
+
         Member mb = (Member)session.getAttribute("user");
         String id = mb.getEmail();
         String pw = member.getPw();
@@ -291,6 +298,7 @@ public class MemberController {
     	Member updatedMember = memberService.findById(id);
     	session.setAttribute("user", updatedMember);
     	logger.info("메인페이지로 리다렉션합니다");
+
     	return "redirect:/";
     }
     
@@ -308,6 +316,7 @@ public class MemberController {
     	String pw = member.getPw();
     	
     	logger.info("현재 비밀번호" + pw);
+
     	if(pw.equals(value)) {response.put("true", "true");}else if(value.equals("")) {response.put("none", "none");}else {response.put("false", "false");}
     	System.out.println(response);
     	
@@ -324,6 +333,7 @@ public class MemberController {
         model.addAttribute("member", member);
         
         logger.info("deleteMember.jsp로 이동합니다");
+
         return "member/deleteMember";
     }
 

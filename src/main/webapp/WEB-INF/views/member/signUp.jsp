@@ -157,6 +157,8 @@
 	            </div>
 	            <form:input path="email" id="email" class="textBox" placeholder="abc@sample.com" onchange="emailValidator()" />
 	            
+	            </div>
+	            <form:input path="email" id="email" class="textBox" placeholder="abc@sample.com" onchange="emailValidator()" />
 	            <form:errors path="email" class="error-color"/>
 	        </div>
 	

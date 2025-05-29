@@ -7,6 +7,7 @@ import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -18,20 +19,16 @@ public class MemberRepositoryImpl implements MemberRepository
 {
 	
 	private static final Logger logger = LoggerFactory.getLogger(MemberRepositoryImpl.class);
-	
-	
     private JdbcTemplate template;
 
     //db연결
     @Autowired
     public void setJdbcTemplate(DataSource dataSource) 
     {
-    	
-    	
-    	
     	logger.info("+++++++++++++++++++++++++++++++++++++++");
     	logger.info("[MemberRepository : setJdbcTemplate 메서드 호출]");
     	logger.info("db연결");
+
         this.template = new JdbcTemplate(dataSource);
     }
 
@@ -75,7 +72,6 @@ public class MemberRepositoryImpl implements MemberRepository
     {
     	logger.info("+++++++++++++++++++++++++++++++++++++++");
     	logger.info("[MemberRepository : findById 메서드 호출]");
-    	
     	if(id.trim() == null || id.trim().isEmpty()) 
     	{
     		return null;
@@ -160,6 +156,7 @@ public class MemberRepositoryImpl implements MemberRepository
 	    catch (Exception e) 
 	    {
 	    	logger.warn("아이디가 존재하지 않습니다.");
+
 	        return null; // 해당 id가 없을 경우 null 반환
 	    }
 	}
@@ -177,8 +174,8 @@ public class MemberRepositoryImpl implements MemberRepository
 	    // 회원 정보 업데이트 쿼리
 	    String sql = "UPDATE members SET nickname = ?, phone1 = ?, phone2 = ?, phone3 = ? WHERE id = ?";    
 	    template.update(sql, member.getNickname() ,member.getPhone1(), member.getPhone2(), member.getPhone3(),member.getEmail());
-
 	    logger.info("[MemberRepository : updateMember 메서드 종료]");
+
 	}
 
 	
@@ -201,6 +198,7 @@ public class MemberRepositoryImpl implements MemberRepository
 		logger.info("이메일 update sql문"+sql + id);
         template.update(sql,id);
         logger.info("update sql문 실행");
+
 	}
 	
     //Delete
