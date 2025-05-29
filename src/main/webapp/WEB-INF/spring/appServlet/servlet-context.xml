@@ -11,6 +11,8 @@
         http://www.springframework.org/schema/context/spring-context.xsd">
 
     <annotation-driven/>
+    
+	<context:property-placeholder location="classpath:properties/keys.properties" ignore-unresolvable="true"/>
 
     <resources mapping="/resources/**" location="/resources/" />
     <resources mapping="/uploads/**" location="file:${file.uploadDir}/" />

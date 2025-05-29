@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -14,6 +16,10 @@ import com.spring.domain.Likes;
 
 @Repository
 public class CommentRepositoryImpl implements CommentRepository {
+	
+	
+	private static final Logger logger = LoggerFactory.getLogger(CommentRepositoryImpl.class);
+	
 	
 	 @Autowired
 	    private JdbcTemplate template;
@@ -32,7 +38,7 @@ public class CommentRepositoryImpl implements CommentRepository {
 	 	 if(id!=null) {
 	 		 for(int i=0;i<comments.size();i++) {
 		    	 int C_unique=comments.get(i).getC_unique();
-		    	 String Likefindsql="select count(*) from commentLike where id=? and c_unique=?";
+		    	 String Likefindsql="select count(*) from commentsLike where id=? and c_unique=?";
 		    	 int isLikes=template.queryForObject(Likefindsql, Integer.class,id,C_unique);
 		    	 isLike.add(isLikes);
 	    	 }
@@ -97,16 +103,16 @@ public class CommentRepositoryImpl implements CommentRepository {
 	    @Override
 	    public List<Integer> incrementCommentLikes(Likes like) {
 	    	List<Integer> result=new ArrayList<Integer>();
-	    	String SQL="select count(*) from commentLikes where id=? and c_unique=?";
+	    	String SQL="select count(*) from commentsLike where id=? and c_unique=?";
 	    	int count=template.queryForObject(SQL, Integer.class,like.getId(),like.getC_unique());
 	    	if(count==0) {
-	        String insertSQL = "insert commentLikes(id,c_unique,likesDate) values(?,?,?)";
+	        String insertSQL = "insert commentsLike(id,c_unique,likesDate) values(?,?,?)";
 	        template.update(insertSQL,like.getId(),like.getC_unique(),like.getLikesDate());
 	        String plusSQL= "update comments set commentLikes=commentLikes+1 where c_unique=? ";
 	        template.update(plusSQL,like.getC_unique());
 	        count=1;
 	        }else {
-	        String deleteSQL = "delete from commentLike where id=? and c_unique=?";
+	        String deleteSQL = "delete from commentsLike where id=? and c_unique=?";
 		    template.update(deleteSQL,like.getId(),like.getC_unique());
 		    String minusSQL= "update comments set commentLikes=commentLikes-1 where c_unique=? and commentLikes>0";
 	        template.update(minusSQL,like.getC_unique());

@@ -227,7 +227,7 @@ $(document).ready(function() {
 	        var html = `
 	            <div class="comment" data-id="${comment.c_unique}">
 	                <div class="comment-header">
-	                    <span class="comment-author">${comment.id}</span>
+	                    <span class="comment-author">${comment.email}</span>
 	                    <span class="comment-date">${commentDate[i]}</span>
 	                </div>
 	                <div class="comment-content">${comment.comments}</div>
