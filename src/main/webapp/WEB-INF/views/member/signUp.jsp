@@ -138,6 +138,12 @@
         margin : 0 5px 0 5px;
         background-color: white;
     }
+    
+    #message_id
+    {
+    	margin-left : 4px;
+    }
+    
 </style>
 </head>
 <body>
@@ -154,9 +160,6 @@
 	                <input type="button" id="buttonActive" class="checkButton" value="중복체크" style="display:none">
 	                <input type="button" id="buttonConfirmed" class="checkButton" value="체크완료" style="display:none">
 	                <div id="message_id"></div> 
-	            </div>
-	            <form:input path="email" id="email" class="textBox" placeholder="abc@sample.com" onchange="emailValidator()" />
-	            
 	            </div>
 	            <form:input path="email" id="email" class="textBox" placeholder="abc@sample.com" onchange="emailValidator()" />
 	            <form:errors path="email" class="error-color"/>

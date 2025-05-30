@@ -51,6 +51,8 @@ public class BoardRepositoryImpl implements BoardRepository
 	@Override
     public Map<String, Object> allBoardSearch(String type, String keyword, int page) 
 	{
+		logger.info("+++++++++++++++++++++++++++++++++++++++");
+		logger.info("[BoardRepository : allBoardSearch 메서드 호출]");
         int pageSize = 10; 
         int offset = (page - 1) * pageSize; 
 
@@ -79,6 +81,8 @@ public class BoardRepositoryImpl implements BoardRepository
 	@Override
 	public Map<String, Object> myBoard(String member, int page) 
 	{
+		logger.info("+++++++++++++++++++++++++++++++++++++++");
+		logger.info("[BoardRepository : myBoard 메서드 호출]");
 		int pageSize = 10; 
 	    int offset = (page - 1) * pageSize; 
 	    Map<String, Object>result = new HashMap<String,Object>();
@@ -88,6 +92,9 @@ public class BoardRepositoryImpl implements BoardRepository
 	    
 		List<Post> postList = template.query(postListSQL, new PostRowMapper(),member, offset, pageSize);
 		int postSize = template.queryForObject(postSizeSQL, Integer.class,member);
+		
+		logger.info("포스트된 게시글의 수 {}", postSize);
+		logger.info("게시글의 종류 : {}" , postList);
 		result.put("postList", postList);
 		result.put("postSize",postSize);
 		

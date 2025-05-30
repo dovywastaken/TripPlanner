@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.spring.domain.Member;
 import com.spring.service.member.MemberService;
+import com.spring.service.post.BoardService;
 
 @Controller
 @RequestMapping("/members")
@@ -30,6 +31,9 @@ public class MemberController {
 	
     @Autowired
     private MemberService memberService;
+    
+    @Autowired
+    private BoardService boardService;
     
     @Autowired
 	MailSender sender; //메일 서버에 접근해서 메일을 보내기 위해 사용하는 객체
@@ -330,7 +334,11 @@ public class MemberController {
     	logger.info("===========================================================================================");
     	logger.info("MemberController : members/deleteMember(GET)으로 매핑되었습니다");
         Member member = (Member) session.getAttribute("user");
+        Map<String, Object> post = boardService.myBoard(member.getEmail(), 1);
+        int postSize = (int)post.get("postSize");
+        logger.info("포스트 사이즈 : {} ", postSize);
         model.addAttribute("member", member);
+        model.addAttribute("postSize", postSize);
         
         logger.info("deleteMember.jsp로 이동합니다");
 

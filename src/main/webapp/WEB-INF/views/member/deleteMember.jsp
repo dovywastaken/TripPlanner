@@ -135,14 +135,14 @@
         <h2 id="headText">${member.nickname}님! 잠깐만요!</h2>
         
         <c:choose>
-            <c:when test="${not empty userPosts}">
+            <c:when test="${not empty postSize}">
                 <!-- 글이 있을 경우 -->
-                <p class="goodbyeMessage">지금까지 ${post.size()} 개의 여행 계획을 저희와 함께 했습니다 </p>
+                <p class="goodbyeMessage">지금까지 ${postSize} 개의 여행 계획을 저희와 함께 했습니다 </p>
                 <p class="goodbyeMessage">회원 탈퇴시 해당 글 삭제 및 수정이 불가능 해집니다.</p>
             </c:when>
             <c:otherwise>
                 <!-- 글이 없을 경우 -->
-                <p class="goodbyeMessage">작성한 여행 계획이 없습니다. 바로 회원 탈퇴가 가능합니다.</p>
+                <p class="goodbyeMessage">작성한 여행 계획이 없습니다. 탈퇴 하시겠습니까?</p>
             </c:otherwise>
         </c:choose>
 

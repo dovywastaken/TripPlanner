@@ -3,8 +3,8 @@
 
     <!-- 변수 설정 (선택 사항이지만 유용) -->
     <!-- 로그 파일이 저장될 경로 (Cafe24 환경에서는 쓰기 가능한 경로로 수정 필요) -->
-<!--    <property name="LOG_DIR" value="/home/hosting_users/dovies401/logs" />  -->
-    <property name="LOG_DIR" value="/Users/TestChamber/logs" />
+ <!--    <property name="LOG_DIR" value="/home/hosting_users/dovies401/logs" /> -->
+ <!--  -->   <property name="LOG_DIR" value="/Users/TestChamber/logs" /> 
     <!-- 콘솔 로그 패턴 -->
     <property name="CONSOLE_LOG_PATTERN" value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
     <!-- 파일 로그 패턴 -->
@@ -24,9 +24,9 @@
          만약 파일 로깅이 필요 없다면 이 appender 전체를 주석 처리하거나 삭제해도 됩니다. -->
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_DIR}/tripplanner.log</file>
+        <file>${log_dir}/tripplanner.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_DIR}/tripplanner.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${log_dir}/tripplanner.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>10MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>

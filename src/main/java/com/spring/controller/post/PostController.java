@@ -356,7 +356,8 @@ public class PostController {
         {
             // 기존 게시글 정보 가져오기
             Post existingPost = postService.getPostById(post.getP_unique());
-            if (existingPost == null) {
+            if (existingPost == null) 
+            {
                 logger.warn("게시글 ID {}을 찾을 수 없습니다. 업데이트 실패.", post.getP_unique());
                 redirect.addFlashAttribute("errorMessage", "수정할 게시글을 찾을 수 없습니다.");
                 return "redirect:/postList"; // 또는 적절한 에러 페이지
@@ -375,13 +376,16 @@ public class PostController {
                 for (Element img : images)
                 {
                     String src = img.attr("src");
-                    if (src != null && src.contains("/uploads/")) {
+                    if (src != null && src.contains("/uploads/")) 
+                    {
                         String filename = src.substring(src.lastIndexOf('/') + 1);
                         imageUrls.add(filename);
                         logger.debug(" - 추출된 서버 저장 파일명: {}", filename);
                     }
                 }
-            } else {
+            } 
+            else 
+            {
                 logger.info("contents 필드가 비어있거나 null입니다. 이미지 URL 수집 건너뜜.");
             }
 
@@ -424,11 +428,15 @@ public class PostController {
                         postService.updatetour(tour);
                         logger.info(" - 장소 정보 처리 완료: {}", tour.getTitle());
                         logger.debug("처리된 Tour 객체: {}", tour); // 상세 Tour 객체 정보는 DEBUG 레벨로
-                    } else {
+                    } 
+                    else 
+                    {
                         logger.debug(" - data-info 속성이 비어있거나 null입니다. 장소 정보 처리 건너뜜.");
                     }
                 }
-            } else {
+            } 
+            else 
+            {
                 logger.info("contents 필드가 비어있거나 null이므로 장소 정보 처리 건너뜜.");
             }
 
