@@ -93,55 +93,82 @@
 
     <aside>
         <div class="sidePanelContainer">
-            <div id="myPanel">
-                    <!-- 로그인한 사용자가 있을 때 보여줄 내용 -->
-                    <div id="userInfo">
-                        <h1>${user.nickname}</h1>
-                        <h2>${user.email}</h2>
-                    </div>
-                    <p id="currentDate" style="text-align: center; width: 100%; color: #2C3F3C;"></p>
-                    <c:if test="${user.emailCheck == 0}">
-                    <p style="text-align : center; margin-top : 12px; width: 100%;">아직 이메일 인증이 안됐어요!</p>
-                    	<a href="${pageContext.request.contextPath}/members/myPage" 
-                    		style="outline: 2px solid #313339; 
-					        background-color: #ffffff;
-					        line-height: 0;
-					        height: 21px;
-					        width: 50%;
-					        margin : 15px auto 0;
-					        border: none;
-					        border-radius: 34px;
-					        font-size: 13px;
-					        font-weight: bold;
-					        display: flex;
-					        justify-content: center;
-					        align-items: center;
-					        color: #313339;
-					        text-align: center;">인증하러 가기
-					    </a>
-                    </c:if>
-                    <hr style="border: 1px solid #F1F3F9; margin : 34px auto 10px auto; width: 80%;">
-
-                    <div id="links"> 
-                    	<c:if test="${not empty user}">
-                    	<a href="${pageContext.request.contextPath}/board/myBoard">• 내 여행 계획</a>
-                    	</c:if>
-                        <a href="${pageContext.request.contextPath}/board/hot">• 추천 여행 계획</a>
-                        <a href="${pageContext.request.contextPath}/board/all">• 전체 게시판</a>
-                        <a href="${pageContext.request.contextPath}/board/festival">• 인기 축제</a>
-                        <a href="${pageContext.request.contextPath}/board/tour">• 인기 관광지</a>
-                        <a href="${pageContext.request.contextPath}/board/restaurant">• 인기 음식점</a>
-                    </div>
-                    <a href="${pageContext.request.contextPath}/members/signOut" class="signOutButton">로그아웃</a>
+            <div id="searchBar">
+                <p id="currentDate" style="text-align: center; width: 100%; color: #2C3F3C;"></p>
             </div>
-            <div id="backButton" onclick="goBack()">뒤로 가기</div>
+            <div id="myPanel">
+			    <c:if test="${not empty user}">
+			        <!-- 로그인한 사용자가 있을 때 보여줄 내용 -->
+			        <h1>${user.nickname} 님, <br>떠날 준비 되셨나요?</h1>
+			        <div class="myPost">
+			            <div class="myPostTitle">
+			                <div class="postTitle">최근 작성 글</div>
+			            </div>
+			            <c:if test="${postList.size() == 0}">
+			            	<h3>최근 작성글이 없어요!</h3>
+			            </c:if>
+			            <c:forEach var="post" items="${postList}" varStatus="status">
+						    <c:choose>
+						        <c:when test="${status.index == 0}">
+						            <div class="post">
+						                <div class="postName">${post.title}</div>
+						                <div class="postTime">${days[status.index]}</div>
+						            </div>
+						            <div class="myPost">
+						                <div class="myPostTitle">
+						                    <div id="postTitle">
+						                        <span>내 여행 계획 </span>
+						                        <span id="postCount">${count}</span>
+						                    </div>
+						                    <a class="postMore" href='${pageContext.request.contextPath}/board/myBoard'>더보기</a>
+						                </div>
+						            </div>
+						        </c:when>
+						        <c:otherwise>
+						            <div class="post">
+						                <div class="postName">${post.title}</div>
+						                <div class="postTime">${days[status.index]}</div>
+						            </div>
+						        </c:otherwise>
+						    </c:choose>
+						</c:forEach>
+					</div>
+			        <a href="${pageContext.request.contextPath}/postForm" class="postButton">+ 새 여정 만들기</a>
+			        <a href="${pageContext.request.contextPath}/members/signOut" class="signOutButton">로그아웃</a>
+			    </c:if>
+			
+			    <c:if test="${empty user}">
+			    <br>
+			    <h1 class="signInTitle">로그인하고</h1>
+			    <h1 class="signInTitle">여정을 떠나봐요!</h1>
+				    <!-- 로그인 폼이 보이는 부분 -->
+			        <div class="form-container">
+			            
+			            <!-- 로그인 폼 -->
+			            <form:form modelAttribute="member" method="POST" action="${pageContext.request.contextPath}/">
+			                <div class="form-group">
+			                    <label for="id">아이디:</label>
+			                    <form:input path="email" id="id" placeholder="아이디" />
+			                </div>
+			                <div class="form-group">
+			                    <label for="pw">비밀번호:</label>
+			                    <form:input path="pw" id="pw" placeholder="비밀번호" type="password" />
+			                </div>
+			                <!-- hidden 필드 추가 -->
+			                <div class="form-group">
+			                    <input type="submit" id="submitButton" value="로그인">
+			                </div>
+			                <a href="${pageContext.request.contextPath}/members/signUp" id="signUpButton">가입하기</a>
+			            </form:form>
+			        </div>
+				</c:if>
+			</div>
         </div>
     </aside>
     <%@ include file="../footerCompact.jsp" %>
 </body>
 
 <script>
-	function goBack(){window.history.back();}
     // 요일 이름 배열
     const dayNames = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
     

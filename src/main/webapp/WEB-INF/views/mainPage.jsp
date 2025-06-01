@@ -23,9 +23,6 @@
 			const emptyId = "${emptyId}";
 			const emptyPw = "${emptyPw}";
 			const incorrectInfo = "${incorrect}";
-			console.log(emptyId);
-			console.log(emptyPw);
-			console.log(incorrectInfo);
 			
 			if(emptyId && emptyId.trim() !== "")
 			{
@@ -40,12 +37,86 @@
 				alert(incorrectInfo);
 			}
 		}
-	
 	</script>
 </head>
-<%@ include file="header.jsp" %>
-	<div class="container-fluid">
+	<body> 
+		<%@ include file="header.jsp" %>
+	    
 	    <main>
+	   		<aside>
+		        <div class="sidePanelContainer">
+		            <div id="myPanel">
+					    <c:if test="${not empty user}">
+					        <!-- 로그인한 사용자가 있을 때 보여줄 내용 -->
+					        <h1>${user.nickname} 님, <br>떠날 준비 되셨나요?</h1>
+					        <div class="myPost">
+					            <div class="myPostTitle">
+					                <div class="postTitle">최근 작성 글</div>
+					            </div>
+					            <c:if test="${postList.size() == 0}">
+					            	<h3>최근 작성글이 없어요!</h3>
+					            </c:if>
+					            <c:forEach var="post" items="${postList}" varStatus="status">
+								    <c:choose>
+								        <c:when test="${status.index == 0}">
+								            <div class="post">
+								                <div class="postName">${post.title}</div>
+								                <div class="postTime">${days[status.index]}</div>
+								            </div>
+								            <div class="myPost">
+								                <div class="myPostTitle">
+								                    <div id="postTitle">
+								                        <span>내 여행 계획 </span>
+								                        <span id="postCount">${count}</span>
+								                    </div>
+								                    <a class="postMore" href='${pageContext.request.contextPath}/board/myBoard'>더보기</a>
+								                </div>
+								            </div>
+								        </c:when>
+								        <c:otherwise>
+								            <div class="post">
+								                <div class="postName">${post.title}</div>
+								                <div class="postTime">${days[status.index]}</div>
+								            </div>
+								        </c:otherwise>
+								    </c:choose>
+								</c:forEach>
+							</div>
+					        <a href="${pageContext.request.contextPath}/postForm" class="postButton">+ 새 여정 만들기</a>
+					        <a href="${pageContext.request.contextPath}/members/signOut" class="signOutButton">로그아웃</a>
+					    </c:if>
+					
+					    <c:if test="${empty user}">
+					    <br>
+					    <h1 class="signInTitle">로그인하고</h1>
+					    <h1 class="signInTitle">여정을 떠나봐요!</h1>
+						    <!-- 로그인 폼이 보이는 부분 -->
+					        <div class="form-container">
+					            
+					            <!-- 로그인 폼 -->
+					            <form:form modelAttribute="member" method="POST" action="${pageContext.request.contextPath}/">
+					                <div class="form-group">
+					                    <label for="id">아이디:</label>
+					                    <form:input path="email" id="id" placeholder="아이디" />
+					                </div>
+					                <div class="form-group">
+					                    <label for="pw">비밀번호:</label>
+					                    <form:input path="pw" id="pw" placeholder="비밀번호" type="password" />
+					                </div>
+					                <!-- hidden 필드 추가 -->
+					                <div class="form-group">
+					                    <input type="submit" id="submitButton" value="로그인">
+					                </div>
+					                <a href="${pageContext.request.contextPath}/members/signUp" id="signUpButton">가입하기</a>
+					            </form:form>
+					        </div>
+						</c:if>
+					</div>
+	
+		        </div>
+		    </aside>
+	    
+	    
 	        <div class="mainContainer">
 	            <div class="section">
 	                <div class="title">
@@ -82,7 +153,6 @@
 	
 	
 				<div id="tourDividerTitle">트립플래너가 추천하는 지역 명소들</div>
-				<br>
 	            <div class="section">
 	                <div class="title">
 	                    <span>추천 축제</span>
@@ -162,87 +232,10 @@
 	              </div>
 	        </div>
 	    </main>
-	
-	    <aside>
-	        <div class="sidePanelContainer">
-	            <div id="searchBar">
-	                <input type="text" placeholder="플래너 검색">
-	            </div>
-	            <div id="myPanel">
-				    <c:if test="${not empty user}">
-				        <!-- 로그인한 사용자가 있을 때 보여줄 내용 -->
-				        <h1>${user.nickname} 님, <br>떠날 준비 되셨나요?</h1>
-				        <div class="myPost">
-				            <div class="myPostTitle">
-				                <div class="postTitle">최근 작성 글</div>
-				            </div>
-				            <c:if test="${postList.size() == 0}">
-				            	<h3>최근 작성글이 없어요!</h3>
-				            </c:if>
-				            <c:forEach var="post" items="${postList}" varStatus="status">
-							    <c:choose>
-							        <c:when test="${status.index == 0}">
-							            <div class="post">
-							                <div class="postName">${post.title}</div>
-							                <div class="postTime">${days[status.index]}</div>
-							            </div>
-							            <div class="myPost">
-							                <div class="myPostTitle">
-							                    <div id="postTitle">
-							                        <span>내 여행 계획 </span>
-							                        <span id="postCount">${count}</span>
-							                    </div>
-							                    <a class="postMore" href='${pageContext.request.contextPath}/board/myBoard'>더보기</a>
-							                </div>
-							            </div>
-							        </c:when>
-							        <c:otherwise>
-							            <div class="post">
-							                <div class="postName">${post.title}</div>
-							                <div class="postTime">${days[status.index]}</div>
-							            </div>
-							        </c:otherwise>
-							    </c:choose>
-							</c:forEach>
-						</div>
-				        <a href="${pageContext.request.contextPath}/postForm" class="postButton">+ 새 여정 만들기</a>
-				        <a href="${pageContext.request.contextPath}/members/signOut" class="signOutButton">로그아웃</a>
-				    </c:if>
-				
-				    <c:if test="${empty user}">
-				    <br>
-				    <h1 class="signInTitle">로그인하고</h1>
-				    <h1 class="signInTitle">여정을 떠나봐요!</h1>
-					    <!-- 로그인 폼이 보이는 부분 -->
-				        <div class="form-container">
-				            
-				            <!-- 로그인 폼 -->
-				            <form:form modelAttribute="member" method="POST" action="${pageContext.request.contextPath}/">
-				                <div class="form-group">
-				                    <label for="id">아이디:</label>
-				                    <form:input path="email" id="id" placeholder="아이디" />
-				                </div>
-				                <div class="form-group">
-				                    <label for="pw">비밀번호:</label>
-				                    <form:input path="pw" id="pw" placeholder="비밀번호" type="password" />
-				                </div>
-				                <!-- hidden 필드 추가 -->
-				                <div class="form-group">
-				                    <input type="submit" id="submitButton" value="로그인">
-				                </div>
-				                <a href="${pageContext.request.contextPath}/members/signUp" id="signUpButton">가입하기</a>
-				            </form:form>
-				        </div>
-					</c:if>
-				</div>
+    
+		<%@ include file="footer.jsp" %>
+	</body>
 
-	        </div>
-	    </aside>
-	    
-	</div>
-	<%@ include file="footer.jsp" %>
-	
-</body>
-<script src="${pageContext.request.contextPath}/resources/js/mainPage.js" defer></script>
+	<script src="${pageContext.request.contextPath}/resources/js/mainPage.js" defer></script>
 </html>
 

@@ -122,6 +122,7 @@
                     </div>
                     <a href="${pageContext.request.contextPath}/members/signOut" class="signOutButton">로그아웃</a>
             </div>
+            <a href="${pageContext.request.contextPath}/postForm" class="postButton">+ 새 여정 만들기</a>
             <div id="backButton" onclick="goBack()">뒤로 가기</div>
         </div>
     </aside>
@@ -133,11 +134,11 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        var contextPath = "${pageContext.request.contextPath}";
-        var postId = "${postId}";
-        var sessionId = "${member.email}";
-        var sessionNickname = "${member.nickname}";
-        var totalPages = ${totalPages};
+        let contextPath = "${pageContext.request.contextPath}";
+        let postId = "${postId}";
+        let sessionId = "${member.email}";
+        let sessionNickname = "${member.nickname}";
+        let totalPages = ${totalPages};
     </script>
     
     

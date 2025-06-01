@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-    <!-- 변수 설정 (선택 사항이지만 유용) -->
+    <!-- 변수 설정 -->
     <!-- 로그 파일이 저장될 경로 (Cafe24 환경에서는 쓰기 가능한 경로로 수정 필요) -->
  <!--    <property name="LOG_DIR" value="/home/hosting_users/dovies401/logs" /> -->
  <!--  -->   <property name="LOG_DIR" value="/Users/TestChamber/logs" /> 
@@ -18,15 +18,13 @@
         </encoder>
     </appender>
 
-    <!-- 2. File Appender: 로그를 파일로 저장 (선택 사항) -->
-    <!-- 배포 환경(Cafe24 등)에서는 <file> 및 <fileNamePattern> 경로를
-         쓰기 가능한 실제 경로로 수정해야 합니다.
-         만약 파일 로깅이 필요 없다면 이 appender 전체를 주석 처리하거나 삭제해도 됩니다. -->
+    <!-- 2. File Appender: 로그를 파일로 저장 -->
+
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${log_dir}/tripplanner.log</file>
+        <file>${LOG_DIR}/tripplanner.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${log_dir}/tripplanner.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${LOG_DIR}/tripplanner.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>10MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
@@ -40,7 +38,6 @@
 
     <!-- 3. 로거(Logger) 설정 -->
     <!-- 특정 패키지 또는 클래스에 대한 로그 레벨 및 Appender 지정 -->
-    <!-- 개발 중에는 DEBUG 레벨로 설정하여 상세 로그 확인 -->
     <logger name="com.spring.controller" level="DEBUG" additivity="false">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="FILE" /> <!-- 파일 로깅 사용 시 -->

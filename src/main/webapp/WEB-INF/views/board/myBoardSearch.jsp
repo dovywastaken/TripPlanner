@@ -130,6 +130,7 @@
                     </div>
                     <a href="${pageContext.request.contextPath}/members/signOut" class="signOutButton">로그아웃</a>
             </div>
+            <a href="${pageContext.request.contextPath}/postForm" class="postButton">+ 새 여정 만들기</a>
             <div id="backButton" onclick="goBack()">뒤로 가기</div>
         </div>
     </aside>

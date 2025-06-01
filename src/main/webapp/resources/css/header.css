@@ -1,41 +1,43 @@
 header{
-    width: 100vw;
-    padding: 0 300px;
-    margin-bottom: 15px;
     position: fixed;
 	background: rgba(255,255,255,0.5);
 	backdrop-filter: blur( 5px );
 	-webkit-backdrop-filter: blur( 5px );
     box-shadow: 0px 7px 25px rgba(33,55,88,0.2);
     z-index: 9999;
-    position: relative;
+    width: 100%;
+    height: 55px;
 }
 
 #headerContainer
 {
     display: flex;
-    width : 100%;
+    width : 1600px;
+    /* min-width: 70%; */
     justify-content: space-between;
     height: 55px;
     align-items: center;
    	margin : 0 auto;
+    /* outline: 3px solid magenta; */
 }
 
 #logo
 {
-    position: absolute;
-    left : 30px;
-    display : flex;
+    display: flex;
     justify-content: center;
     align-items: center;
+    padding-right: calc(63px + 5%);
+
 }
+
 
 #headerLeft {
     display: flex;
-    align-items: center;  
+    align-items: center;
     height: 55px; 
     white-space : nowrap;
-    max-width : 61px;
+    width : 1034px;
+    /* outline: 1px solid magenta; */
 }
 
 .headerLeft {
@@ -71,8 +73,12 @@ header{
     align-items: center; 
     height: 55px;
     white-space : nowrap; 
-
+    justify-content: right;
+    min-width: calc(100% - 1034px - 30px);
+    margin-right: 30px;
 }
+
+/* 3,5,8,13,21,34,55,89,144,233,377 */
 
 .headerRight {
     border: transparent 1px solid;
@@ -86,7 +92,6 @@ header{
     font-size : 13px;
     font-weight: 500;
     transition: all 0.3s ease; 
-    margin-left:13px;
 }
 
 .headerRight:nth-child(1)
@@ -100,6 +105,7 @@ header{
 	transition: 0; 
 	box-shadow: 0px 0px 0px rgba(33,55,55,0);
 	transform: translateY(0px); 
+    margin-left: 34px;
 }
 
 
@@ -119,7 +125,7 @@ header{
 
 /* 버튼 클릭 효과 추가 */
 
-.headerRight:active {
+.headerRight:not(:last-child):active {
     transform: translateY(1px);
     box-shadow: 0px 0px 4px rgba(33,55,55,0.4);
 }
