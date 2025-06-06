@@ -36,6 +36,7 @@ public class PostRepositoryImpl implements PostRepository {
     public void createPost(Post post) {
         String sql = "INSERT INTO post (id, title, contents, publishDate, isPrivate, commentIsAllowed, imageNames, nickname) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         String imageNames = String.join(",", post.getFileImage());
+        String title;
         template.update(sql,
                 post.getId(),
                 post.getTitle(),

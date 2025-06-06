@@ -19,7 +19,7 @@
     
 
     <!-- 데이터베이스 연결 설정 -->
-<!--  -->
+<!--  
 
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
@@ -28,9 +28,9 @@
         <property name="password" value="${mysql.password}" />
     </bean>
 
+-->
 
-
-<!-- 
+<!-- -->
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="org.mariadb.jdbc.Driver" />
@@ -38,7 +38,7 @@
         <property name="username" value="${mariadb.username}" />
         <property name="password" value="${mariadb.password}" />
     </bean>
- -->
+ 
 
     <!-- JdbcTemplate 빈 설정 -->
     <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">

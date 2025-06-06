@@ -106,6 +106,65 @@ function addToMyList(item) {
 
 
 
+/* */
+
+$(document).ready(function () {
+
+    $('#titles').on('input', function() {
+        const titleText = $(this).text().trim();
+        $('#title').val(titleText);  // hidden input에 값 설정
+    });
+
+    $('#titles').on('focus', function() {
+        if ($(this).text().trim() === '제목을 입력하세요') {
+            $(this).text('');
+        }
+    });
+
+    $('#titles').on('blur', function() {
+        if ($(this).text().trim() === '') {
+            $(this).text('제목을 입력하세요');
+        }
+    });
+
+    $('#postForm').on('submit', function(e) {
+        const titleText = $('#titles').text().trim();
+
+        // 1. 제목 입력 여부 및 기본 텍스트 검증
+        if (titleText === '' || titleText === '제목을 입력하세요') {
+            e.preventDefault(); // 폼 제출 방지
+            // 사용자에게 메시지 표시 (alert 대신 커스텀 모달 또는 UI 메시지를 사용하는 것이 좋습니다)
+            alert('제목을 입력해주세요.'); // alert() 사용하지 않음
+            $('#titles').focus();
+            return false;
+        }
+
+        // 2. 제목 길이 검증 (20자 초과 금지)
+        if (titleText.length > 40) {
+            e.preventDefault(); // 폼 제출 방지
+            alert('제목은 40자를 초과할 수 없습니다.'); // alert() 사용하지 않음
+            $('#titles').focus();
+            return false;
+        }
+
+        // 3. HTML 태그 포함 여부 검증
+        // 정규식을 사용하여 HTML 태그 패턴을 확인합니다.
+        // 예를 들어, <p>, <div>, <span> 등 일반적인 HTML 태그를 검사합니다.
+        // 더 복잡한 태그나 속성까지 검사하려면 정규식을 더 정교하게 작성해야 합니다.
+        const htmlTagRegex = /<[^>]+>/; // <로 시작해서 >로 끝나는 패턴
+        if (htmlTagRegex.test(titleText)) {
+            e.preventDefault(); // 폼 제출 방지
+            alert('제목을 다시 확인해주세요.');
+            $('#titles').focus();
+            return false;
+        }
+
+        // 모든 검증을 통과하면 hidden input에 값 설정 후 폼 제출
+        $('#title').val(titleText);
+    });
+});
+
+/* 
 $(document).ready(function () {
  
     $('#titles').on('input', function() {
@@ -140,7 +199,7 @@ $(document).ready(function () {
     });
 });
 
-
+*/
 
 $(document).ready(function () {
 

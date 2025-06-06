@@ -93,9 +93,6 @@
 
     <aside>
         <div class="sidePanelContainer">
-            <div id="searchBar">
-                <p id="currentDate" style="text-align: center; width: 100%; color: #2C3F3C;"></p>
-            </div>
             <div id="myPanel">
 			    <c:if test="${not empty user}">
 			        <!-- 로그인한 사용자가 있을 때 보여줄 내용 -->

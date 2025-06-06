@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -56,11 +58,19 @@ public class PostController {
 	private FileStorageService fileStorageService;
 	
 	@GetMapping("/postForm")
-	public String postForm() 
+	public String postForm(HttpSession session) 
 	{
 		logger.info("===========================================================================================");		
 	 	logger.info("PostController : postForm(GET)으로 매핑되었습니다");
+	 	Member member = (Member)session.getAttribute("user");
+	 	if(member == null) 
+	 	{
+	 		logger.warn("postCreate(Post) : 로그인되지 않은 사용자의 접근 시도. 로그인 페이지로 리다이렉트합니다.");
+	 		return "redirect:/members/signIn";
+	 	}
+	 	
 	 	logger.info("PostController: postForm(GET)으로 매핑되어 postForm.jsp로 이동합니다.");
+	 	
 		return "post/postForm";
 	}
 		
@@ -91,7 +101,7 @@ public class PostController {
            if (member == null) {
                 // 로그인 안된 경우 처리
                 logger.warn("postCreate(Post) : 로그인되지 않은 사용자의 접근 시도. 로그인 페이지로 리다이렉트합니다.");
-                return "redirect:/login"; // 실제 로그인 페이지 경로로 수정
+                return "redirect:/members/signIn"; // 실제 로그인 페이지 경로로 수정
             }
 
            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -107,6 +117,31 @@ public class PostController {
            // System.out.println("postCreate(Post) : 게시일 설정");
            logger.info("postCreate(Post) : 게시일 설정됨");
 
+           // ====[ 유효성 검사 로직 ]====
+           String title = post.getTitle();
+           String errorMessage = null;
+           
+           // 정규표현식 패턴: < 로 시작하고 > 로 끝나는 모든 HTML 태그를 찾습니다.
+           Pattern tagPattern = Pattern.compile("<[^>]*>");
+           Matcher tagMatcher = tagPattern.matcher(title != null ? title : "");
+
+           if (title == null || title.trim().isEmpty()) {
+               errorMessage = "제목을 입력해주세요.";
+           } else if (title.length() > 40) {
+               errorMessage = "제목은 40자를 초과할 수 없습니다. (현재 " + title.length() + "자)";
+           } else if (tagMatcher.find()) { // 제목에서 HTML 태그 패턴이 발견되면
+               errorMessage = "입력 불가능한 표현이 포함되어있습니다! 다시 작성해주세요!";
+           }
+
+           // 유효성 검사에 실패한 경우 (이하 로직은 이전과 동일)
+           if (errorMessage != null) {
+               logger.warn("게시글 생성 유효성 검사 실패 (작성자: {}): {}", member.getEmail(), errorMessage);
+               redirect.addFlashAttribute("errorMessage", errorMessage); 
+               redirect.addFlashAttribute("post", post); 
+               return "redirect:/postForm";
+           }
+           
+           
            // ====[ fileImage 필드 설정 로직 ]====
            // contents HTML에서 서버 저장 파일명(UUID.확장자) 리스트를 추출하여
            // Post 객체의 fileImage 필드(List<String>)에 설정합니다.
@@ -137,6 +172,9 @@ public class PostController {
            logger.info("postCreate(Post) : Post DTO의 fileImage 필드 설정 완료: {}", storedFileNamesFromContent);
            // ====[ fileImage 필드 설정 로직 끝 ]====
 
+           
+           
+           
            // 서비스 호출하여 게시글 저장
            // PostRepository는 내부적으로 post.getFileImage()를 호출하여
            // List<String>을 받아 String.join(",")으로 imageNames 컬럼에 저장할 것임
@@ -310,26 +348,36 @@ public class PostController {
 	
 	
 	@GetMapping("/postView/update")
-	public String toUpdatePost(@RequestParam int num, Model model)
+	public String toUpdatePost(@RequestParam int num, Model model, HttpSession session)
 	{
 		// System.out.println("===========================================================================================");
 		logger.info("===========================================================================================");
 		// System.out.println("PostController : /postView/update(GET)으로 매핑되었습니다");
 		logger.info("PostController : /postView/update (GET) 매핑. 요청 파라미터 - num: {}", num);
-
-		Post result = (Post) postService.getPostById(num); // 형변환이 꼭 필요한지 확인 필요, getPostById가 Post를 반환한다면 형변환 불필요
-
-		if (result != null) {
-			logger.info("ID {}에 해당하는 게시글 조회 성공. 수정 폼으로 전달합니다.", num);
-			// logger.debug("조회된 게시글 정보: {}", result); // 필요시 게시글 상세 정보 로깅 (DEBUG 레벨)
-		} else {
-			logger.warn("ID {}에 해당하는 게시글을 찾을 수 없어 수정 폼으로 전달할 데이터가 없습니다.", num);
-			// 게시글이 없을 경우의 처리 (예: 에러 페이지로 리다이렉트 또는 메시지 전달)
-            // model.addAttribute("errorMessage", "수정할 게시글을 찾을 수 없습니다.");
-            // return "errorPage"; // 또는 적절한 다른 뷰
+		Member member = (Member) session.getAttribute("user");
+		if(member == null) 
+		{
+			logger.warn("postCreate(Post) : 로그인되지 않은 사용자의 접근 시도. 로그인 페이지로 리다이렉트합니다.");
+	 		return "redirect:/members/signIn";
 		}
-		model.addAttribute("result", result);
-		logger.info("Model에 'result' 속성으로 게시글 정보 추가 완료.");
+		
+		Post result = (Post) postService.getPostById(num);
+		if(result.getId().equals(member.getEmail())) 
+		{
+			if (result != null) 
+			{
+				logger.info("ID {}에 해당하는 게시글 조회 성공. 수정 폼으로 전달합니다.", num);
+				// logger.debug("조회된 게시글 정보: {}", result); // 필요시 게시글 상세 정보 로깅 (DEBUG 레벨)
+			} 
+			model.addAttribute("result", result);
+			logger.info("Model에 'result' 속성으로 게시글 정보 추가 완료.");
+		}
+		else 
+		{
+			logger.warn("ID {}에 해당하는 게시글을 찾을 수 없어 수정 폼으로 전달할 데이터가 없습니다.", num);
+			model.addAttribute("errorMessage", "수정할 게시글을 찾을 수 없습니다.");
+			return "errorPage";
+		}
 
 		return "post/updateForm";
 	}

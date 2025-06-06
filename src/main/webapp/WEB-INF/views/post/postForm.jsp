@@ -9,7 +9,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-lite.min.css" rel="stylesheet">
 
     <!-- PostForm CSS -->
-    <link rel="stylesheet" href="<%= request.getContextPath() %>/resources/css/postForm.css">
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/resources/css/postForm.css?v=250606_2">
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -27,6 +27,7 @@
 </head>
 <body>
     <%@ include file="../header.jsp" %>
+
     <form id="postForm" action="${pageContext.request.contextPath}/postCreate" method="POST" enctype="multipart/form-data">
         <div class="container">
             <div class="left">
@@ -43,6 +44,12 @@
                 <div id="titles" contenteditable="true" class="title-div" style="border: 1px solid #ccc; padding: 8px; margin-bottom: 10px;">
                     제목을 입력하세요
                 </div>
+            	<%-- 에러 메시지가 있을 경우에만 표시 --%>
+				<c:if test="${not empty errorMessage}">
+				    <div style="color: red; margin-bottom: 10px;">
+				        ${errorMessage}
+				    </div>
+				</c:if>
                 <input type="hidden" id="title" name="title" class="title-input" placeholder="제목을 입력하세요">
                 <textarea id="summernote" name="contents"> </textarea>
             </div>
@@ -87,7 +94,7 @@
     <!-- 서머노트 에디터 관련 코드입니다. -->
     
     <!-- Editor JS 파일 (module 제거) -->
-    <script src="${pageContext.request.contextPath}/resources/js/editor.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/editor.js?v=250606_1"></script>
     
     <script>
     	const contextPath = "${pageContext.request.contextPath}";

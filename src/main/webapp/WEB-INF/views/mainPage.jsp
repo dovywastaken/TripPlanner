@@ -12,7 +12,7 @@
          window.contextPath = '${pageContext.request.contextPath}';
     </script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/normalize.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mainPage.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mainPage.css?v=250606">
     <link href="https://cdn.jsdelivr.net/gh/sun-typeface/SUITE@2/fonts/static/woff2/SUITE.css" rel="stylesheet">
     
 	<script src="https://kit.fontawesome.com/96b1ce314a.js"></script>
@@ -49,6 +49,7 @@
 					    <c:if test="${not empty user}">
 					        <!-- 로그인한 사용자가 있을 때 보여줄 내용 -->
 					        <h1>${user.nickname} 님, <br>떠날 준비 되셨나요?</h1>
+					        <a href="${pageContext.request.contextPath}/members/myPage" class="headerRight">내 정보</a>
 					        <div class="myPost">
 					            <div class="myPostTitle">
 					                <div class="postTitle">최근 작성 글</div>
@@ -236,6 +237,6 @@
 		<%@ include file="footer.jsp" %>
 	</body>
 
-	<script src="${pageContext.request.contextPath}/resources/js/mainPage.js" defer></script>
+	<script src="${pageContext.request.contextPath}/resources/js/mainPage.js?v=250606" defer></script>
 </html>
 
